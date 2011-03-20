@@ -122,3 +122,18 @@ h2 {
     background-color: #fff;
     position: relative;
 }
+
+.snippet .info {
+    float: right;
+    display: inline;
+    margin: 10px 0 0px 0;
+    font-size: 11px;
+    background-color: #efefef;
+    padding: 5px 10px 5px 10px;
+}
+
+.snippet .info a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
