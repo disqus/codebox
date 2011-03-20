@@ -36,6 +36,21 @@ table { border-collapse: collapse; border-spacing: 0; }
     width: 990px;
 }
 
+#footer .wrapper {
+    float: right;
+    padding: 20px 0 20px;
+    display: inline;
+    font-size: 11px;
+    font-family: 'helvetica', 'arial', sans-serif;
+    color: #666;
+}
+
+#footer .wrapper a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 h1, h2 {
   font-family: 'Josefin Sans', serif;
   font-size: 36px;
