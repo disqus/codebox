@@ -11,6 +11,7 @@ YAMMER_SECRET = 'lNLCt5bCQDEXikioA2nhgbIyHln1C6qgON7TdyZA'
 class User(Model):
     name = String()
     avatar = String(required=False)
+    created_at = Float(default=time.time)
     
     def get_all_organizations(self, user):
         from codesharer.apps.organizations.models import OrganizationMember, Organization
