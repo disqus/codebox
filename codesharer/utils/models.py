@@ -148,7 +148,9 @@ class Manager(object):
             if name not in kwargs and not field.default:
                 raise ValueError('Missing required field: %s' % name)
 
-        pk = uuid.uuid4().hex
+        pk = kwargs.get('pk')
+        if not pk:
+            pk = uuid.uuid4().hex
         
         inst = self.model(pk=pk)
         
