@@ -2,7 +2,7 @@ from flask import Flask
 from flaskext.redis import Redis
 
 def create_app():
-    from codesharer.apps.classifier.views import frontend
+    from codesharer.apps.snippets.views import frontend
 
     app = Flask(__name__)
     app.config.from_object('codesharer.conf.Config')
