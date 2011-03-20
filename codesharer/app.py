@@ -11,6 +11,7 @@ def create_app():
 
     app.register_module(frontend)
     app.register_module(auth)
+    app.register_module(yammer)
 
     db = Redis(app)
     db.init_app(app)
