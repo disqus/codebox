@@ -99,10 +99,14 @@ class Options(object):
                 fields.append((obj_name, obj))
 
         self.fields = dict(fields)
-        self.indexes = list(meta.__dict__.get('indexes', []))
-        self.app_label = meta.__dict__['__module__'].split('.', 3)[1]
+        self.app_label = cls.__module__.split('.', 3)[1]
         self.module_name = cls.__name__
-        self.db_name = meta.__dict__.get('db_name', '%s_%s' % (self.app_label, self.module_name))
+        if meta:
+            self.indexes = list(meta.__dict__.get('indexes', []))
+            self.db_name = meta.__dict__.get('db_name', '%s_%s' % (self.app_label, self.module_name))
+        else:
+            self.indexes = ()
+            self.db_name = '%s_%s' % (self.app_label, self.module_name)
 
 class Manager(object):
     def __init__(self, model):
