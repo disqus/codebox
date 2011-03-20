@@ -11,14 +11,14 @@
 <ul>
     {% for snippet in snippets %}
     <li>
-        <div class="snippet snippet-short">
+        <div class="snippet snippet-short clearfix">
             <p class="text">{{ snippet.text|truncate(length=50)|colorize|safe }}</p>
             <p class="info">
-                <span class="author">{{ snippet.author }}</span>
-                <span class="org">{{ snippet.org }}</span>
                 <span class="link">
                     <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}">View</a>
                 </span>
+                &mdash;
+                <span class="org">{{ snippet.org }}</span>
             </p>
         </div>
     </li>
