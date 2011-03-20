@@ -138,6 +138,10 @@ h2 {
     text-decoration: none;
 }
 
+.snippet .info a:hover {
+    text-decoration: underline;
+}
+
 .new-snippet textarea {
     display: block;
     width: 100%;
