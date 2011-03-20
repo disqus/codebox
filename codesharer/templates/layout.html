@@ -17,10 +17,8 @@
     <!-- <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
 
-    <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz:light,regular&amp;subset=latin' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global.css') }}">
-
-    <script src="{{ url_for('static', filename='js/libs/modernizr-1.6.min.js') }}"></script>
+    <link  href="http://fonts.googleapis.com/css?family=Josefin+Sans:100,100italic,300,300italic,400,400italic,600,600italic,700,700italic" rel="stylesheet" type="text/css" >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
 </head>
 
 <body>
@@ -28,7 +26,13 @@
     <div id="container">
         <header>
             <div class="wrapper">
-                <div id="heading"><a href="{{ url_for('dashboard') }}">Code Thing</a></div>
+                <div id="heading">
+                    <h1 class="clearfix">
+                    <img height="60" src="{{ url_for('static', filename="images/box.png") }}" />
+                    <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
+                    <small>(All Your Code Belong to Us)</small>
+                    </h1>
+                </div>
             </div>
         </header>
 

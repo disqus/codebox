@@ -1,0 +1,70 @@
+/* Reset.css by Eric Meyer: http://meyerweb.com/eric/thoughts/2008/01/15/resetting-again/ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+margin: 0; padding: 0; border: 0; outline: 0;
+font-size: 100%; vertical-align: baseline;
+background: transparent; }
+body { line-height: 1; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+ins { text-decoration: none; }
+del {text-decoration: line-through;}
+table { border-collapse: collapse; border-spacing: 0; }
+
+/* http://www.positioniseverything.net/easyclearing.html */
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+.clearfix {display: block;}
+* html .clearfix {height: 1%;}
+/* end hide from IE-mac */
+
+#container {
+    margin: auto;
+    width: 990px;
+}
+
+#heading h1 {
+  font-family: 'Josefin Sans', serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: none;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 40px;
+}
+
+    #heading h1 img {
+        display: inline;
+        float: left;
+    }
+
+    #heading h1 a {
+        float: left;
+        display: inline;
+        margin: 20px 0 0 7px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #heading h1 small {
+        font-size: 12px;
+        float: right;
+        display: inline;
+        margin-top: 30px;
+    }
+
+
