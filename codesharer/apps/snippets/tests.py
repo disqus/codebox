@@ -5,7 +5,7 @@ from codesharer.app import create_app
 from codesharer.apps.snippets.models import Snippet
 from flask import g, Response
 
-class SnippetTestCase(unittest2.TestCase):
+class FlaskTest(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
         self.app.config.from_object('codesharer.conf.TestingConfig')
@@ -20,7 +20,8 @@ class SnippetTestCase(unittest2.TestCase):
     def tearDown(self):
         self.app.process_response(Response())
         self._ctx.pop()
-    
+
+class SnippetTestCase(FlaskTest):
     def test_snippets(self):
         """
         Simplest test we can do. Train using ours and train using the built-in.
@@ -43,14 +44,7 @@ class SnippetTestCase(unittest2.TestCase):
         for n, sn in enumerate(Snippet.objects.all()):
             self.assertEquals(res[n], sn)
 
-class SnippetFrontendTestCase(unittest2.TestCase):
-    def setUp(self):
-        self.app = create_app()
-        self.app.config.from_object('codesharer.conf.TestingConfig')
-        self.db = self.app.db.connect()
-        self.db.flushdb()
-        self.client = self.app.test_client()
-
+class SnippetFrontendTestCase(FlaskTest):
     def test_snippet_creation(self):
         """
         test snippet creation via post to url
