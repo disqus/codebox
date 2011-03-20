@@ -18,8 +18,17 @@ def dashboard():
 
 
     return render_template('snippets/dashboard.html', **{
-        'snippets': snippets,
-    })
+            'snippets': snippets,
+            })
+
+@frontend.route('/<id>')
+def snippet_detail(id):
+    snippets = Snippets(g.redis)
+    snippet = snippets[id]
+
+    return render_template('snippets/detail.html', **{
+            'snippet': snippet,
+            })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])
 #@login_required
