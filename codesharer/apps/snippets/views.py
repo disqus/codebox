@@ -2,7 +2,6 @@ from flask import current_app as app, g, request, Module, render_template, redir
 
 from codesharer.apps.snippets.models import Snippets
 from codesharer.apps.snippets.forms import NewSnippetForm
-from codesharer.utils.readability import summarize_url
 
 frontend = Module(__name__)
 
