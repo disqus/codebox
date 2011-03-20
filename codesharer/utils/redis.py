@@ -88,6 +88,9 @@ class RedisHashMap(collections.MutableMapping):
     def __delitem__(self, key):
         self._r.hdel(self._name, encode_key(key))
     
+    def __getattr__(self, key):
+        return self[key]
+    
     def keys(self):
         return self._r.hkeys(self._name)
     
