@@ -6,7 +6,7 @@ from codesharer.apps.snippets.forms import NewSnippetForm
 frontend = Module(__name__)
 
 @frontend.route('/')
-def dashboard(org):
+def dashboard():
     """
     Shows organizations/recent pastes/etc
     """
@@ -15,7 +15,7 @@ def dashboard(org):
 
     })
 
-@frontend.route('/:org/new', methods=['GET', 'POST'])
+@frontend.route('/<org>/new', methods=['GET', 'POST'])
 def new_snippet(org):
     """
     Creates a new snippet for an organization.
@@ -36,7 +36,7 @@ def new_snippet(org):
         'org': org,
     })
 
-@frontend.route('/:org')
+@frontend.route('/<org>')
 def list_snippets(org):
     """
     Displays a list of all snippets for an organization
