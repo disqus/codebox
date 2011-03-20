@@ -11,10 +11,11 @@
             </p>
         </div>
         <h2>Enter application code to complete oauth verification</h2>
-        <form method="POST" action="{{ org }}/verify/confirm">
+        <form method="POST" action="/{{ org }}/verify/confirm">
             <label for="code">
                 Enter verification code
                 <input type="text" name="code" />
+                <input type="submit" value="Grant" />
             </label>
         </form>
     </body>
