@@ -167,7 +167,7 @@ class Manager(object):
         
         # Default index
         index = RedisOrderedDict(g.redis, self._get_default_index_key())
-        index[pk] = inst.created_at
+        index[pk] = time.time()
         
         g.redis.incr(self._get_default_count_key())
 
