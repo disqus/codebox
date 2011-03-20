@@ -26,7 +26,7 @@ def new_snippet(org):
     form = NewSnippetForm()
     if form.validate_on_submit():
         # Generate a unique slug from name
-        snippet = snippets.new(text=form.text.data)
+        snippet = snippets.create(text=form.text.data)
 
         flash("Success")
 
