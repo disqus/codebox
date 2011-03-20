@@ -3,7 +3,7 @@ import unittest2
 
 from codesharer.app import create_app
 from codesharer.apps.snippets.models import Snippet
-from flask import g, Response
+from flask import g, Response, request
 
 class FlaskTest(unittest2.TestCase):
     def setUp(self):
@@ -23,9 +23,7 @@ class FlaskTest(unittest2.TestCase):
 
 class SnippetTestCase(FlaskTest):
     def test_snippets(self):
-        """
-        Simplest test we can do. Train using ours and train using the built-in.
-        """            
+        """Basic api test of model"""
         self.assertEquals(Snippet.objects.count(), 0)
     
         res = []
