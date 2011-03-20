@@ -7,7 +7,10 @@ class Organization(Model):
     created_at = Float(default=time.time)
 
     def get_all_members(self):
-        return OrganizationMember.objects.for_index('org', self.pk)
+        from codesharer.apps.auth.models import User
+        
+        memberships = list(OrganizationMember.objects.for_index('org', self.pk))
+        return User.objects.get_many([m.user for m in memberships])
 
 class OrganizationMember(Model):
     org = String()

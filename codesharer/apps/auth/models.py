@@ -2,10 +2,22 @@ import time
 
 from codesharer.utils import yammer
 from codesharer.utils.models import Model, String, Float
+
 from flask import session
 
 YAMMER_KEY = 'kZO991WvBUdApnD6f7g'
 YAMMER_SECRET = 'lNLCt5bCQDEXikioA2nhgbIyHln1C6qgON7TdyZA'
+
+class User(Model):
+    name = String()
+    avatar = String(required=False)
+    created_at = Float(default=time.time)
+    
+    def get_all_organizations(self, user):
+        from codesharer.apps.organizations.models import OrganizationMember, Organization
+
+        memberships = list(OrganizationMember.objects.for_index('user', user))
+        return Organization.objects.get_many([m.org for m in memberships])
 
 class YammerOAuth(Model):
 
