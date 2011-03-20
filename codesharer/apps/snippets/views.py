@@ -1,9 +1,8 @@
 from flask import current_app as app, g, request, Module, render_template, redirect
-from disqusapi import DisqusAPI
 
-from sherlock.apps.snippets.models import Snippets
-from sherlock.apps.snippets.forms import NewSnippetForm
-from sherlock.utils.readability import summarize_url
+from codesharer.apps.snippets.models import Snippets
+from codesharer.apps.snippets.forms import NewSnippetForm
+from codesharer.utils.readability import summarize_url
 
 frontend = Module(__name__)
 
