@@ -32,9 +32,9 @@ class SnippetTestCase(FlaskTest):
         for i in xrange(3):
             time.sleep(0.01)
             res.append(Snippet.objects.create(
-                org='disqus',
+                org=1,
                 text='test %d' % i,
-                author=1,
+                user=1,
             ))
 
         self.assertEquals(Snippet.objects.count(), 3)
@@ -43,6 +43,7 @@ class SnippetTestCase(FlaskTest):
     
         for n, sn in enumerate(Snippet.objects.all()):
             self.assertEquals(res[n], sn)
+            self.assertEquals(res[n], Snippet.objects.get(sn.pk))
 
 class SnippetFrontendTestCase(FlaskTest):
     def test_snippet_creation(self):

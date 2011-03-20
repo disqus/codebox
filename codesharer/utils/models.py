@@ -36,6 +36,9 @@ class ModelDescriptor(type):
 class Model(object):
     __metaclass__ = ModelDescriptor
 
+    class DoesNotExist(Exception):
+        pass
+
     def __init__(self, pk, **kwargs):
         self.pk = pk
         self._storage = RedisHashMap(g.redis, '%s:items:%s' % (self._meta.db_name, self.pk))
@@ -99,10 +102,14 @@ class Options(object):
                 fields.append((obj_name, obj))
 
         self.fields = dict(fields)
-        self.indexes = list(meta.__dict__.get('indexes', []))
-        self.app_label = meta.__dict__['__module__'].split('.', 3)[1]
+        self.app_label = cls.__module__.split('.', 3)[1]
         self.module_name = cls.__name__
-        self.db_name = meta.__dict__.get('db_name', '%s_%s' % (self.app_label, self.module_name))
+        if meta:
+            self.indexes = list(meta.__dict__.get('indexes', []))
+            self.db_name = meta.__dict__.get('db_name', '%s_%s' % (self.app_label, self.module_name))
+        else:
+            self.indexes = ()
+            self.db_name = '%s_%s' % (self.app_label, self.module_name)
 
 class Manager(object):
     def __init__(self, model):
@@ -110,6 +117,9 @@ class Manager(object):
         self.name = encode_key(self.model._meta.db_name)
 
     def get(self, key):
+        # XXX: ugly missing abstraction for key name
+        if not g.redis.hlen('%s:items:%s' % (self.name, key)):
+            raise self.model.DoesNotExist
         return self.model(pk=key)
 
     def all(self, start=0, end=-1):
@@ -119,9 +129,7 @@ class Manager(object):
             yield self.get(key)
 
     def count(self):
-        index = RedisOrderedDict(g.redis, self._get_default_index_key())
-
-        return len(index)
+        return int(g.redis.get(self._get_default_count_key()) or 0)
 
     def for_index(self, index, key, start, end):
         for id_ in RedisOrderedDict(g.redis, self._get_index_key(index, key)).keys(start, end):
@@ -130,7 +138,11 @@ class Manager(object):
     def add_to_index(self, index, key, id_, score=None):
         index = RedisOrderedDict(g.redis, self._get_index_key(index, key))
         index[id_] = score or time.time()
-
+        g.redis.incr(self._get_index_count_key(index, key))
+    
+    def index_exists(self, index, key, id_):
+        return g.redis.zscore(self._get_index_key(index, key), id_) != 0
+        
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():
             if name not in kwargs and not field.default:
@@ -145,6 +157,8 @@ class Manager(object):
         # Default index
         index = RedisOrderedDict(g.redis, self._get_default_index_key())
         index[pk] = inst.created_at
+        
+        g.redis.incr(self._get_default_count_key())
 
         # Store additional predefined indexes
         for field in self.model._meta.indexes:
@@ -156,12 +170,18 @@ class Manager(object):
     @cached_property
     def storage(self):
         return RedisHashMap(g.redis, self._meta.db_name)
-    
+
     def _get_index_key(self, index, key):
         return '%s:index:%s:%s' % (self.name, encode_key(index), encode_key(key))
 
+    def _get_index_count_key(self, index, key):
+        return '%s:count:%s:%s' % (self.name, encode_key(index), encode_key(key))
+
     def _get_default_index_key(self):
-        return '%s:index:default' % self.name
+        return '%s:index:default' % (self.name,)
+
+    def _get_default_count_key(self):
+        return '%s:count:default' % (self.name,)
 
 class Field(object):
     def __init__(self, default=None, **kwargs):
