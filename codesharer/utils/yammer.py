@@ -125,11 +125,11 @@ class UserEndpoint(Endpoint):
 
 class RelationshipsEndpoint(Endpoint):
 
-    def get(self, id):
-        return self._get('relationships/%s' % id)
+    def get(self, user_id):
+        return self._get('relationships?user_id=%s' % user_id)
 
-    def post(self, id, subordinate=None, superior=None, colleague=None):
-        return self._post('relationships', user_id=id, subordinate=subordinate, superior=superior,colleague=colleage)
+    def post(self, user_id, subordinate=None, superior=None, colleague=None):
+        return self._post('relationships', user_id=user_id, subordinate=subordinate, superior=superior,colleague=colleage)
 
 class Yammer(object):
     request_token_url = 'https://www.yammer.com/oauth/request_token'
