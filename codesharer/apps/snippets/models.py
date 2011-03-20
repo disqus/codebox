@@ -34,15 +34,45 @@ class Snippets(object):
     def _get_org_key(self, org):
         return 'snippets:orgs:%s' % (encode_key(org),)
 
+    def _get_user_key(self, user):
+        return 'snippets:users:%s' % (encode_key(user),)
+
+    def for_org(self, org, start, end):
+        for key in RedisOrderedDict(r, self._get_org_key(org)).keys(start, end):
+            yield self[key]
+
+    def for_user(self, user, start, end):
+        for key in RedisOrderedDict(r, self._get_user_key(user)).keys(start, end):
+            yield self[key]
+
     def create(self, org, text, author, **kwargs):
+        assert type(author) == int
+
         id_ = uuid.uuid4().hex
+
         inst = Snippet(self._r, self._get_item_key(id_))
+
         kwargs.update({
             'id': id_,
             'org': org,
             'text': text,
             'author': author,
+            'created_at': time.time()
         })
         inst.update(**kwargs)
-        self.main[inst.id] = time.time()
+
+        # Store it in our primary index
+        self.main[inst.id] = inst.created_at
+
+        # Store it by organization
+        # TODO: this is really fat, slim that shit up
+        org = RedisOrderedDict(self._r, self._get_org_key(org))
+        org[inst.id] = inst.created_at
+
+        # Store it by user
+        user = RedisOrderedDict(self._r, self._get_user_key(author))
+        user[inst.id] = inst.created_at
+
+        # XXX: Also need to store it for all members in organization
+
         return inst

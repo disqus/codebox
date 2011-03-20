@@ -8,7 +8,7 @@ class SnippetTestCase(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
         self.db = self.app.db.connect()
-        self.db.flush()
+        self.db.flushdb()
         self.client = self.app.test_client()
     
     def test_snippets(self):
@@ -25,7 +25,7 @@ class SnippetTestCase(unittest2.TestCase):
             res.append(snippets.create(
                 org='disqus',
                 text='test %d' % i,
-                author='disqus',
+                author=1,
             ))
 
         self.assertEquals(len(snippets), 3)
@@ -39,7 +39,7 @@ class SnippetFrontendTestCase(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
         self.db = self.app.db.connect()
-        self.db.flush()
+        self.db.flushdb()
         self.client = self.app.test_client()
     
     def test_snippet_creation(self):

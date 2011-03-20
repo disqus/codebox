@@ -37,8 +37,7 @@ class RedisOrderedDict(collections.MutableMapping):
         return self._r.zcard(self._name)
     
     def __getitem__(self, key):
-        values = self._r.hgetall(self.get_key(key))
-        return values
+        return self._r.zscore(self._name, encode_key(key))
     
     def __setitem__(self, key, score):
         self._r.zadd(self._name, encode_key(key), score)
