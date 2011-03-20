@@ -50,7 +50,8 @@ def new_snippet(org):
         snippet = Snippet.objects.create(
             org=org,
             text=form.text.data,
-            user=request.user.id,
+            lang=1,
+            user=1,
         )
 
         if request.is_xhr:
@@ -58,7 +59,7 @@ def new_snippet(org):
 
         flash("Success")
 
-        return redirect(url_for('snippet_details', org=org, id=snippet.id))
+        return redirect(url_for('snippet_detail', org=org, id=snippet.pk))
 
     return render_template('snippets/new_snippet.html', **{
         'org': org,
