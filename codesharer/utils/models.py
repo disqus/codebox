@@ -145,7 +145,7 @@ class Manager(object):
         
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():
-            if name not in kwargs and not field.default:
+            if name not in kwargs and not field.default and field.required:
                 raise ValueError('Missing required field: %s' % name)
 
         pk = kwargs.get('pk')
@@ -186,8 +186,9 @@ class Manager(object):
         return '%s:count:default' % (self.name,)
 
 class Field(object):
-    def __init__(self, default=None, **kwargs):
+    def __init__(self, default=None, required=True, **kwargs):
         self.default = default
+        self.required = required
 
     def get_default(self):
         if not self.default:
