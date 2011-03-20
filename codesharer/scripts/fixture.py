@@ -6,7 +6,6 @@ from codesharer.apps.snippets.models import Snippet
 from flask import g, Response
 
 app = create_app()
-app.config.from_object('codesharer.conf.TestingConfig')
 client = app.test_client()
 _ctx = app.test_request_context()
 _ctx.push()
