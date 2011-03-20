@@ -1,22 +1,22 @@
-<html>
-    <head>
-        <title>Enter appliction code here</title>
-    </head>
-    <body>
-        <div>
-            <p>
-                Click here to grant Yammer access to this application. Copy the
-                code and paste it back here.
-                <a href="{{ url }}" target="_blank">Grant Access</a>
-            </p>
-        </div>
-        <h2>Enter application code to complete oauth verification</h2>
-        <form method="POST" action="/{{ org }}/verify/confirm">
-            <label for="code">
-                Enter verification code
-                <input type="text" name="code" />
-                <input type="submit" value="Grant" />
-            </label>
-        </form>
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block main %}
+<div>
+    <p>
+        Click here to grant Yammer access to this application. Copy the
+        code and paste it back here.
+        <a href="{{ url }}" target="_blank">Grant Access</a>
+    </p>
+</div>
+<div>
+    <form method="POST" action="/{{ org }}/verify/confirm">
+            {{ form.csrf }}
+            <div class="form-row">
+                <label for="code">
+                    Enter Code Here
+                    <input type="text" name="code" />
+                </label>
+                <input type="submit" value="Confirm Code">
+            </div>
+    </form>
+</div>
+{% endblock %}
