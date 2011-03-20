@@ -34,26 +34,7 @@
 
         <div id="main">
             <div class="wrapper">
-                <!-- Fuck you, tables are awesome! -->
-                <table id="main-wrapper">
-                    <tr>
-                        <td id="sidebar">
-                            {% block sidebar_actions %}
-                            <ul>
-                                <li><a href="{{ url_for('create_environment') }}">New Environment</a></li>
-                                <li><a href="#">Deploy History</a></li>
-                            </ul>
-                            {% endblock %}
-
-                            {% block sidebar_queue %}
-                            {% endblock %}
-                        </td>
-                        <td id="content">
-                            {% block content %}
-                            {% endblock %}
-                        </td>
-                    </tr>
-                </table>
+                main
             </div>
         </div>
 
