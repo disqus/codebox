@@ -19,6 +19,12 @@ class CodeBoxYammer(object):
         yammer_api = yammer.Yammer(YAMMER_KEY, YAMMER_SECRET)
         return yammer_api.get_authorize_url()
 
+    def get_oauth_tokens(self):
+        return {
+            'oauth_token': self.org['oauth_token'],
+            'oauth_token_secret': self.org['oauth_token_secret'],
+        }
+
     def save(oauth_token, oauth_token_secret):
         """
         trade the code for a permanent oauth token and secret
@@ -26,3 +32,4 @@ class CodeBoxYammer(object):
         # figure out how to write to redis
         self.org[oauth_token] = oauth_token
         self.org[oauth_token_secret] = oauth_token_secret
+        return True
