@@ -56,6 +56,7 @@ def new_snippet(org):
 
     return render_template('snippets/new_snippet.html', **{
         'org': org,
+        'form': form,
     })
 
 @frontend.route('/<org>')
