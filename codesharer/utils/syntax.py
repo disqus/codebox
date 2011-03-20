@@ -1,5 +1,6 @@
 import pygments
 
+
 def colorize(code):
     """
     Takes in code and returns pygmentized code.

@@ -17,7 +17,7 @@
                 <span class="author">{{ snippet.author }}</span>
                 <span class="org">{{ snippet.org }}</span>
                 <span class="link">
-                    <a href="{{ url_for('snippet_detail', id=snippet.id) }}">View</a>
+                    <a href="{{ url_for('snippet_detail', id=snippet.pk) }}">View</a>
                 </span>
             </p>
         </div>
