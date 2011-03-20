@@ -44,7 +44,7 @@ def new_snippet(org):
         snippet = Snippet.objects.create(
             org=org,
             text=form.text.data,
-            author=request.user.id,
+            user=request.user.id,
         )
 
         if request.is_xhr:
