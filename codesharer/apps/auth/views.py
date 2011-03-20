@@ -9,7 +9,8 @@ auth = Module(__name__)
 def verify_begin(org):
     yammer_oauth = CodeBoxYammer(request, org)
     return render_template('auth/verify.html', **{
-        'url': yammer_oauth.get_auth_url()
+        'url': yammer_oauth.get_auth_url(),
+        'org': org,
     })
 
 @auth.route('/<org>/verify/confirm', methods=['GET', 'POST'])
