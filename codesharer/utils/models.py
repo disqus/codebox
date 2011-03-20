@@ -139,6 +139,9 @@ class Manager(object):
         index = RedisOrderedDict(g.redis, self._get_index_key(index, key))
         index[id_] = score or time.time()
         g.redis.incr(self._get_index_count_key(index, key))
+    
+    def index_exists(self, index, key, id_):
+        return g.redis.zscore(self._get_index_key(index, key), id_) != 0
         
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():

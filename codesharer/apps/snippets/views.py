@@ -2,6 +2,7 @@ from flask import request, Module, flash, render_template, \
                   redirect, url_for, abort
 
 from codesharer.apps.auth.decorators import login_required
+from codesharer.apps.organizations.decorators import can_view_org
 from codesharer.apps.organizations.models import Organization
 from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.snippets.forms import NewSnippetForm
@@ -24,6 +25,7 @@ def dashboard():
 
 @frontend.route('/<org>')
 #@login_required
+@can_view_org
 def org_detail(org):
     org = get_object_or_404(Organization, org)
 
@@ -33,6 +35,7 @@ def org_detail(org):
 
 @frontend.route('/<org>/view/<id>')
 #@login_required
+#@can_view_org
 def snippet_detail(org, id):
     snippet = get_object_or_404(Snippet, id)
     if snippet.org != org:
