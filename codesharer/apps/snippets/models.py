@@ -34,13 +34,14 @@ class Snippets(object):
     def _get_org_key(self, org):
         return 'snippets:orgs:%s' % (encode_key(org),)
 
-    def create(self, org, text, **kwargs):
+    def create(self, org, text, author, **kwargs):
         id_ = uuid.uuid4().hex
         inst = Snippet(self._r, self._get_item_key(id_))
         kwargs.update({
             'id': id_,
             'org': org,
             'text': text,
+            'author': author,
         })
         inst.update(**kwargs)
         self.main[inst.id] = time.time()
