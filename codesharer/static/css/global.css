@@ -137,3 +137,8 @@ h2 {
     font-weight: bold;
     text-decoration: none;
 }
+
+.new-snippet textarea {
+    display: block;
+    width: 100%;
+}

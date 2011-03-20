@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 
-{% block content %}
-    <form method="POST" action="">
-        {{ form.csrf }}
-        <div class="form-row">
-            {{ form.name.label }}
-            {{ form.name(size=20) }}
-            <input type="submit" value="Go">
-        </div>
-    </form>
+{% block main %}
+    <div class="module">
+        <h2>New Snippet</h2>
+        <form method="POST" action="" class="new-snippet">
+            {{ form.csrf }}
+            <div class="form-row">
+                <p>{{ form.text(rows=20) }}</p>
+                <p><input type="submit" value="Submit"></p>
+            </div>
+        </form>
+    </div>
 {% endblock %}

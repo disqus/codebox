@@ -1,4 +1,4 @@
-from flaskext.wtf import Form, TextField, Required
+from flaskext.wtf import Form, TextAreaField, Required
 
 class NewSnippetForm(Form):
-    text = TextField('Snippet', validators=[Required()])
+    text = TextAreaField('Snippet', validators=[Required()])
