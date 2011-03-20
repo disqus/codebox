@@ -164,7 +164,7 @@ class Yammer(object):
         self.client = oauth.Client(self.consumer, token)
 
         # parse response
-        resp, content = yammer.client.request(self.access_token_url, "POST")
+        resp, content = self.client.request(self.access_token_url, "POST")
         access_token = dict(urlparse.parse_qsl(content))
         return access_token
 
