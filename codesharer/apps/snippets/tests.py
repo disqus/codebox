@@ -8,6 +8,7 @@ from flask import g, Response
 class SnippetTestCase(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
+        self.app.config.from_object('codesharer.conf.TestingConfig')
         self.client = self.app.test_client()
         
         self._ctx = self.app.test_request_context()
@@ -42,20 +43,20 @@ class SnippetTestCase(unittest2.TestCase):
         for n, sn in enumerate(Snippet.objects.all()):
             self.assertEquals(res[n], sn)
 
-# class SnippetFrontendTestCase(unittest2.TestCase):
-#     def setUp(self):
-#         self.app = create_app()
-#         self.db = self.app.db.connect()
-#         self.db.flushdb()
-#         self.client = self.app.test_client()
-#     
-#     def test_snippet_creation(self):
-#         """
-#         Simplest test we can do. Train using ours and train using the built-in.
-#         """
-#         snippets = Snippets(self.db)
-#         
-#         rv = self.client.post('/disqus/new', data={
-#             'text': 'foo',
-#         })
-#         self.assertEquals(len(snippets), 1)
+class SnippetFrontendTestCase(unittest2.TestCase):
+    def setUp(self):
+        self.app = create_app()
+        self.db = self.app.db.connect()
+        self.db.flushdb()
+        self.client = self.app.test_client()
+
+    def test_snippet_creation(self):
+        """
+        test snippet creation via post to url
+        """
+        snippets = Snippets(self.db)
+
+        rv = self.client.post('/disqus/new', data={
+            'text': 'foo',
+        })
+        self.assertEquals(len(snippets), 1)

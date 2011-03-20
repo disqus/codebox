@@ -36,7 +36,26 @@ table { border-collapse: collapse; border-spacing: 0; }
     width: 990px;
 }
 
-#heading h1 {
+#footer .wrapper {
+    float: right;
+    padding: 20px 0 20px;
+    display: inline;
+    font-size: 11px;
+    font-family: 'helvetica', 'arial', sans-serif;
+    color: #666;
+}
+
+#footer .wrapper a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#footer .wrapper a:hover {
+    text-decoration: underline;
+}
+
+h1, h2 {
   font-family: 'Josefin Sans', serif;
   font-size: 36px;
   font-style: normal;
@@ -67,4 +86,39 @@ table { border-collapse: collapse; border-spacing: 0; }
         margin-top: 30px;
     }
 
+h2 {
+    font-size: 26px;
+}
 
+.module {
+    margin: 20px 0 20px 0;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 14px;
+    line-height:18px;
+}
+
+.notice {
+    margin: 15px 0 15px 0;
+    padding: 15px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #333;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    background-color: #fff;
+    position: relative;
+}
+
+.snippet {
+    margin: 15px 0 15px 0;
+    padding: 15px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #333;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    background-color: #fff;
+    position: relative;
+}

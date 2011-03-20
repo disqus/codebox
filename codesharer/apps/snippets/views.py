@@ -8,18 +8,30 @@ from codesharer.apps.snippets.forms import NewSnippetForm
 frontend = Module(__name__)
 
 @frontend.route('/')
-@login_required
+#@login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
     """
 
-    return render_template('snippets/dashboard.html', **{
+    snippets = Snippets(g.redis)
 
-    })
+
+    return render_template('snippets/dashboard.html', **{
+            'snippets': snippets,
+            })
+
+@frontend.route('/<id>')
+def snippet_detail(id):
+    snippets = Snippets(g.redis)
+    snippet = snippets[id]
+
+    return render_template('snippets/detail.html', **{
+            'snippet': snippet,
+            })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def new_snippet(org):
     """
     Creates a new snippet for an organization.

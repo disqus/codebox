@@ -2,5 +2,33 @@
 
 {% block title %}Dashboard &mdash; {{ super() }}{% endblock %}
 
+{% block main %}
 
+<div class="module">
+<h2>Recent Snippets</h2>
 
+{% if snippets %}
+<ul>
+    {% for snippet in snippets %}
+    <li>
+        <div class="snippet snippet-short">
+            <p class="text">{{ snippet.text | truncate(length=50) }}</p>
+            <p class="info">
+                <span class="author">{{ snippet.author }}</span>
+                <span class="org">{{ snippet.org }}</span>
+                <span class="link">
+                    <a href="{{ url_for('snippet_detail', id=snippet.id) }}">View</a>
+                </span>
+            </p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="notice">
+    No recent snippets
+</p>
+{% endif %}
+</div>
+
+{% endblock %}
