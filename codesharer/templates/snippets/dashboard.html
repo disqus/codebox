@@ -10,7 +10,15 @@
 {% if snippets %}
 <ul>
     {% for snippet in snippets %}
-    <li>{{snippet}}</li>
+    <li>
+        <div class="snippet snippet-short">
+            <p class="text">{{ snippet.text | truncate(length=50) }}</p>
+            <p class="info">
+                <span class="author">{{ snippet.author }}</span>
+                <span class="org">{{ snippet.org }}</span>
+            </p>
+        </div>
+    </li>
     {% endfor %}
 </ul>
 {% else %}
