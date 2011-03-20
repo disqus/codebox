@@ -14,8 +14,7 @@ def dashboard():
     Shows organizations/recent pastes/etc
     """
 
-    snippets = Snippets(g.redis)
-
+    snippets = list(Snippet.objects.all())[:10]
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
