@@ -4,11 +4,19 @@
 
 {% block main %}
 
-<div class="module">
-    <h2>{{ org.name }}</h2>
-    <div class="snippet">
-
+    <div class="module sidebar">
+        <h2>Members</h2>
+        <ul class="faces">
+            <li><a href="/disqus">zeeg</a></li>
+            <li><a href="/disqus">zeeg</a></li>
+            <li><a href="/disqus">zeeg</a></li>
+            <li><a href="/disqus">zeeg</a></li>
+            <li><a href="/disqus">zeeg</a></li>
+        </ul>
     </div>
-</div>
+    <div class="module main">
+        <h2>{{ org.name }}</h2>
+        {% include "partials/snippet_list.html" %}
+    </div>
 
 {% endblock %}

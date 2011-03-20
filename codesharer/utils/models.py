@@ -122,6 +122,15 @@ class Manager(object):
             raise self.model.DoesNotExist
         return self.model(pk=key)
 
+    def get_many(self, keys):
+        # XXX: ugly missing abstraction for key name
+        results = []
+        for key in keys:
+            if not g.redis.hlen('%s:items:%s' % (self.name, key)):
+                continue
+            results.append(self.model(pk=key))
+        return results
+
     def all(self, start=0, end=-1):
         index = RedisOrderedDict(g.redis, self._get_default_index_key())
         
@@ -131,7 +140,7 @@ class Manager(object):
     def count(self):
         return int(g.redis.get(self._get_default_count_key()) or 0)
 
-    def for_index(self, index, key, start, end):
+    def for_index(self, index, key, start=0, end=-1):
         for id_ in RedisOrderedDict(g.redis, self._get_index_key(index, key)).keys(start, end):
             yield self.get(id_)
 

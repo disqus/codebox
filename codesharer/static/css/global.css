@@ -55,7 +55,7 @@ table { border-collapse: collapse; border-spacing: 0; }
     text-decoration: underline;
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: 'Josefin Sans', serif;
   font-size: 36px;
   font-style: normal;
@@ -87,8 +87,9 @@ h1, h2 {
     }
 
 h2 {
-    font-size: 26px;
+    font-size: 22px;
 }
+
 
 .module {
     margin: 20px 0 20px 0;
@@ -145,4 +146,37 @@ h2 {
 .new-snippet textarea {
     display: block;
     width: 100%;
+}
+
+
+.sidebar { 
+    float: left;
+    width: 200px;
+}
+.sidebar .nav a {
+    display: block;
+    
+}
+.sidebar .faces li {
+    float: left;
+}
+.sidebar .faces li a {
+    float: left;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    line-height: 32px;
+    margin-right: 5px;
+    color: #333;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+}
+.main {
+    padding-top: 20px;
+    margin-top: 0;
+    margin-left: 250px;
 }

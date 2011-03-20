@@ -3,7 +3,6 @@ import time
 from codesharer.utils.models import Model, String, Float
 
 class Organization(Model):
-    slug = String()
     name = String()
     created_at = Float(default=time.time)
 
@@ -16,4 +15,4 @@ class OrganizationMember(Model):
     created_at = Float(default=time.time)
     
     class Meta:
-        indexes = ('org',)
+        indexes = ('org', 'user')

@@ -4,31 +4,18 @@
 
 {% block main %}
 
-<div class="module">
-<h2>Recent Snippets</h2>
+    <div class="module sidebar">
+        <h2>Organizations</h2>
+        <ul class="nav">
+            {% for org in my_organizations %}
+                <li><a href="/{{ org.pk }}">{{ org.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 
-{% if snippets %}
-<ul>
-    {% for snippet in snippets %}
-    <li>
-        <div class="snippet snippet-short clearfix">
-            <p class="text">{{ snippet.text|truncate(length=50)|colorize|safe }}</p>
-            <p class="info">
-                <span class="link">
-                    <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}">View</a>
-                </span>
-                &mdash;
-                <span class="org">{{ snippet.org }}</span>
-            </p>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p class="notice">
-    No recent snippets
-</p>
-{% endif %}
-</div>
+    <div class="module main">
+        <h2>Recent Snippets</h2>
+        {% include "partials/snippet_list.html" %}
+    </div>
 
 {% endblock %}
