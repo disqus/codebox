@@ -12,7 +12,7 @@
     {% for snippet in snippets %}
     <li>
         <div class="snippet snippet-short">
-            <p class="text">{{ snippet.text | truncate(length=50) }}</p>
+            <p class="text">{{ snippet.text|truncate(length=50)|colorize|safe }}</p>
             <p class="info">
                 <span class="author">{{ snippet.author }}</span>
                 <span class="org">{{ snippet.org }}</span>

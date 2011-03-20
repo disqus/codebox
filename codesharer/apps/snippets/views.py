@@ -22,11 +22,9 @@ def dashboard():
 
 @frontend.route('/<id>')
 def snippet_detail(id):
-    snippets = Snippets(g.redis)
-    snippet = snippets[id]
 
     return render_template('snippets/detail.html', **{
-            'snippet': snippet,
+            'snippet': Snippet.objects.get(id)
             })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])

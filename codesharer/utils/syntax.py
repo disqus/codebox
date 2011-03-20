@@ -1,5 +1,7 @@
-import pygments
-
+from pygments import highlight
+from pygments.lexers import guess_lexer, get_lexer_by_name
+from pygments.formatters import HtmlFormatter
+from pygments.styles import get_style_by_name
 
 def colorize(code):
     """
@@ -8,4 +10,4 @@ def colorize(code):
     """
 
     # TODO: actually colorize
-    return code
+    return highlight(code, get_lexer_by_name('python'), HtmlFormatter(linenos='table'))
