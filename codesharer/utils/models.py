@@ -40,8 +40,8 @@ class Model(object):
         pass
 
     def __init__(self, pk, **kwargs):
+        self._storage = RedisHashMap(g.redis, '%s:items:%s' % (self._meta.db_name, pk))
         self.pk = pk
-        self._storage = RedisHashMap(g.redis, '%s:items:%s' % (self._meta.db_name, self.pk))
         for attname, field in self._meta.fields.iteritems():
             try:
                 val = field.to_python(kwargs.pop(attname))
@@ -57,14 +57,14 @@ class Model(object):
             raise ValueError('%s are not part of the schema for %s' % (', '.join(kwargs.keys()), self.__class__.__name__))
 
     def __getattribute__(self, key):
-        if key in ('_meta', '_storage', 'pk', 'update') or key.startswith('__'):
-            return object.__getattribute__(self, key)
-        return self[key]
+        if key in object.__getattribute__(self, '_meta').fields:
+            return self[key]
+        return object.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        if key in ('_meta', '_storage', 'pk', 'update') or key.startswith('__'):
-            return object.__setattr__(self, key, value)
-        self[key] = value
+        if key in object.__getattribute__(self, '_meta').fields:
+            self[key] = value
+        return object.__setattr__(self, key, value)
 
     def __getitem__(self, key):
         return self._storage[key]

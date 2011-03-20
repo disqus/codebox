@@ -16,12 +16,12 @@ g.redis.flushdb()
 
 # Create sample snippets
 # plaintext
-Snippet.objects.create(org='disqus', user=1, text = "Hello World!")
+Snippet.objects.create(org='disqus', user=1, lang=1, text = "Hello World!")
 # python
-Snippet.objects.create(org='disqus', user=1, text = "print 'cramer sucks'")
+Snippet.objects.create(org='disqus', user=1, lang=1, text = "print 'cramer sucks'")
 # html
-Snippet.objects.create(org='disqus', user=1, text = '<h1>Cramer sucks</h1>')
+Snippet.objects.create(org='disqus', user=1, lang=1, text = '<h1>Cramer sucks</h1>')
 # javascript
-Snippet.objects.create(org='disqus', user=1, text = "document.write('cramer sucks')")
+Snippet.objects.create(org='disqus', user=1, lang=1, text = "document.write('cramer sucks')")
 
 
