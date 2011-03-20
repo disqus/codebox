@@ -2,7 +2,7 @@ from flask import current_app as app, g, request, Module, flash, render_template
                   redirect, url_for
 
 from codesharer.apps.auth.decorators import login_required
-from codesharer.apps.snippets.models import Snippets
+from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.snippets.forms import NewSnippetForm
 
 frontend = Module(__name__)
@@ -25,12 +25,12 @@ def new_snippet(org):
     Creates a new snippet for an organization.
     """
 
-    snippets = Snippets(g.redis)
+    snippets = Snippet.objects.all()
 
     form = NewSnippetForm()
     if form.validate_on_submit():
         # Generate a unique slug from name
-        snippet = snippets.create(
+        snippet = Snippet.objects.create(
             org=org,
             text=form.text.data,
             author=request.user.id,
@@ -54,7 +54,7 @@ def list_snippets(org):
     Displays a list of all snippets for an organization
     """
 
-    snippets = Snippets(g.redis)
+    snippets = Snippet.objects.all()
 
     return render_template('snippets/list_snippets.html', **{
         'snippet_list': snippets[:10],
