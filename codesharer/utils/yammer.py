@@ -123,6 +123,14 @@ class UserEndpoint(Endpoint):
         return self._get('users/by_email', email=email)
 
 
+class RelationshipsEndpoint(Endpoint):
+
+    def get(self, id):
+        return self._get('relationships/%s' % id)
+
+    def post(self, id, subordinate=None, superior=None, colleague=None):
+        return self._post('relationships', user_id=id, subordinate=subordinate, superior=superior,colleague=colleage)
+
 class Yammer(object):
     request_token_url = 'https://www.yammer.com/oauth/request_token'
     access_token_url = 'https://www.yammer.com/oauth/access_token'
@@ -141,6 +149,7 @@ class Yammer(object):
         self.messages = MessageEndpoint(self)
         self.groups = GroupEndpoint(self)
         self.users = UserEndpoint(self)
+        self.relationships = RelationshipEndpoint(self)
 
     # authorization
     @property
@@ -192,5 +201,3 @@ class Yammer(object):
             return json_obj
         except ValueError:
             print resp, content
-
-
