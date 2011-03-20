@@ -46,6 +46,7 @@ class SnippetTestCase(unittest2.TestCase):
 class SnippetFrontendTestCase(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
+        self.app.config.from_object('codesharer.conf.TestingConfig')
         self.db = self.app.db.connect()
         self.db.flushdb()
         self.client = self.app.test_client()
@@ -54,9 +55,7 @@ class SnippetFrontendTestCase(unittest2.TestCase):
         """
         test snippet creation via post to url
         """
-        snippets = Snippets(self.db)
-
         rv = self.client.post('/disqus/new', data={
             'text': 'foo',
         })
-        self.assertEquals(len(snippets), 1)
+        self.assertEquals(Snippet.objects.count(), 1)
