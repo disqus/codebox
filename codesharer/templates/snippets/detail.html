@@ -5,6 +5,7 @@
 {% block main %}
 
 <div class="module">
+    <h2>{{ snippet.pk }} <strong>{{ snippet.org }}</strong></h2>
     <div class="snippet">
         {{ snippet.text | colorize | safe }}
     </div>
