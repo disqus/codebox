@@ -36,7 +36,7 @@ table { border-collapse: collapse; border-spacing: 0; }
     width: 990px;
 }
 
-#heading h1 {
+h1, h2 {
   font-family: 'Josefin Sans', serif;
   font-size: 36px;
   font-style: normal;
@@ -67,4 +67,20 @@ table { border-collapse: collapse; border-spacing: 0; }
         margin-top: 30px;
     }
 
+h2 {
+    font-size: 26px;
+}
 
+.module {
+    margin: 20px 0 20px 0;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 14px;
+    line-height:18px;
+}
+
+.notice {
+    padding: 15px;
+    margin: 0;
+    background-color: #e5e5e5;
+    color: #666;
+}

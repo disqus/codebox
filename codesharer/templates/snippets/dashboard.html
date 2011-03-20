@@ -2,5 +2,22 @@
 
 {% block title %}Dashboard &mdash; {{ super() }}{% endblock %}
 
+{% block main %}
 
+<div class="module">
+<h2>Recent Snippets</h2>
 
+{% if snippets %}
+<ul>
+    {% for snippet in snippets %}
+    <li>{{snippet}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="notice">
+    No recent snippets
+</p>
+{% endif %}
+</div>
+
+{% endblock %}

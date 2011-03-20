@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>{% block title %}Code Box{% endblock %}</title>
+    <title>{% block title %}CodeBox{% endblock %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -38,7 +38,9 @@
 
         <div id="main">
             <div class="wrapper">
+                {% block main %}
                 main
+                {% endblock %}
             </div>
         </div>
 
