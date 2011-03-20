@@ -36,6 +36,9 @@ class ModelDescriptor(type):
 class Model(object):
     __metaclass__ = ModelDescriptor
 
+    class DoesNotExist(Exception):
+        pass
+
     def __init__(self, pk, **kwargs):
         self.pk = pk
         self._storage = RedisHashMap(g.redis, '%s:items:%s' % (self._meta.db_name, self.pk))
@@ -114,6 +117,9 @@ class Manager(object):
         self.name = encode_key(self.model._meta.db_name)
 
     def get(self, key):
+        # XXX: ugly missing abstraction for key name
+        if not g.redis.hlen('%s:items:%s' % (self.name, key)):
+            raise self.model.DoesNotExist
         return self.model(pk=key)
 
     def all(self, start=0, end=-1):
