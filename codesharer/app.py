@@ -1,10 +1,11 @@
 from flask import Flask
 from flaskext.redis import Redis
 
+
 def create_app():
     from codesharer.apps.snippets.views import frontend
     from codesharer.apps.auth.views import auth
-
+    
     app = Flask(__name__)
     app.config.from_object('codesharer.conf.Config')
 
@@ -16,4 +17,7 @@ def create_app():
     
     app.db = db
 
+    from codesharer.utils.syntax import colorize
+    app.jinja_env.filters['colorize'] = colorize
+    
     return app

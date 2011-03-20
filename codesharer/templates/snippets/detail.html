@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ snippet.key }} &mdash; {{ super() }}{% endblock %}
+{% block title %}{{ snippet.pk }} &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
 
 <div class="module">
-<h2>Snippet</h2>
+<h2>Snippet: {{ snippet.pk }}</h2>
 <div class="snippet">
-
+{{ snippet.text | colorize | safe }}
 </div>
 </div>
 {% endblock %}
