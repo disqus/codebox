@@ -1,6 +1,6 @@
+import time
 import unittest2
 
-from flask import url_for
 from codesharer.app import create_app
 from codesharer.apps.snippets.models import Snippets
 
@@ -19,9 +19,17 @@ class SnippetTestCase(unittest2.TestCase):
         
         self.assertEquals(len(snippets), 0)
         
-        snippets.create(text='test')
+        res = []
+        for i in xrange(3):
+            time.sleep(0.01)
+            res.append(snippets.create(text='test %d' % i))
 
-        self.assertEquals(len(snippets), 1)
+        self.assertEquals(len(snippets), 3)
+        
+        res.reverse()
+        
+        for n, sn in enumerate(snippets):
+            self.assertEquals(res[n], sn)
 
 class SnippetFrontendTestCase(unittest2.TestCase):
     def setUp(self):
