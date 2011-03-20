@@ -1,7 +1,8 @@
-from flask import current_app as app, g, request, Module, flash, render_template, \
+from flask import request, Module, flash, render_template, \
                   redirect, url_for
 
 from codesharer.apps.auth.decorators import login_required
+from codesharer.apps.organizations.models import Organization
 from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.snippets.forms import NewSnippetForm
 
@@ -20,10 +21,19 @@ def dashboard():
             'snippets': snippets,
             })
 
-@frontend.route('/<id>')
-def snippet_detail(id):
-    snippets = Snippets(g.redis)
-    snippet = snippets[id]
+@frontend.route('/<org>')
+#@login_required
+def org_detail(org):
+    org = Organization.objects.get(org)
+
+    return render_template('organizations/detail.html', **{
+            'org': org,
+            })
+
+@frontend.route('/<org>/view/<id>')
+#@login_required
+def snippet_detail(org, id):
+    snippet = Snippet.objects.get(id)
 
     return render_template('snippets/detail.html', **{
             'snippet': snippet,
