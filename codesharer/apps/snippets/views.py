@@ -41,8 +41,7 @@ def new_snippet(org):
     """
     Creates a new snippet for an organization.
     """
-
-    snippets = Snippet.objects.all()
+    org = get_object_or_404(Organization, org)
 
     form = NewSnippetForm()
     if form.validate_on_submit():
@@ -67,8 +66,8 @@ def new_snippet(org):
     })
 
 @frontend.route('/<org>')
-@login_required
-@can_view_org
+# @login_required
+# @can_view_org
 def list_snippets(org):
     org = get_object_or_404(Organization, org)
     

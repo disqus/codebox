@@ -1,11 +1,9 @@
 # Ghetto Fixtures
 
-import time
-import unittest2
-
 from codesharer.app import create_app
 from codesharer.apps.snippets.models import Snippet
-from flask import g, Response
+from codesharer.apps.organizations.models import Organization, OrganizationMember
+from flask import g
 
 app = create_app()
 client = app.test_client()
@@ -24,4 +22,5 @@ Snippet.objects.create(org='disqus', user=1, lang=1, text = '<h1>Cramer sucks</h
 # javascript
 Snippet.objects.create(org='disqus', user=1, lang=1, text = "document.write('cramer sucks')")
 
-
+Organization.objects.create(pk='disqus', name='DISQUS')
+OrganizationMember.objects.create(org='disqus', user=1)
