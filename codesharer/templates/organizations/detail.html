@@ -7,11 +7,9 @@
     <div class="module sidebar">
         <h2>Members</h2>
         <ul class="faces">
-            <li><a href="/disqus">zeeg</a></li>
-            <li><a href="/disqus">zeeg</a></li>
-            <li><a href="/disqus">zeeg</a></li>
-            <li><a href="/disqus">zeeg</a></li>
-            <li><a href="/disqus">zeeg</a></li>
+            {% for member in org_members %}
+                <li><a href="#">{{ member.name }}</a></li>
+            {% endfor %}
         </ul>
     </div>
     <div class="module main">

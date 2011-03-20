@@ -1,6 +1,7 @@
 # Ghetto Fixtures
 
 from codesharer.app import create_app
+from codesharer.apps.auth.models import User
 from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.organizations.models import Organization, OrganizationMember
 from flask import g
@@ -24,3 +25,5 @@ Snippet.objects.create(org='disqus', user=1, lang=1, text = "document.write('cra
 
 Organization.objects.create(pk='disqus', name='DISQUS')
 OrganizationMember.objects.create(org='disqus', user=1)
+
+User.objects.create(pk=1, name='zeeg')

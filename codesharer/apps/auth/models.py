@@ -1,9 +1,19 @@
-import uuid
 from codesharer.utils import yammer
-from codesharer.utils.redis import RedisOrderedDict, RedisHashMap, encode_key
+from codesharer.utils.models import Model, String
+from codesharer.utils.redis import RedisOrderedDict
 
 YAMMER_KEY = 'kZO991WvBUdApnD6f7g'
 YAMMER_SECRET = 'lNLCt5bCQDEXikioA2nhgbIyHln1C6qgON7TdyZA'
+
+class User(Model):
+    name = String()
+    avatar = String(required=False)
+    
+    def get_all_organizations(self, user):
+        from codesharer.apps.organizations.models import OrganizationMember, Organization
+
+        memberships = list(OrganizationMember.objects.for_index('user', user))
+        return Organization.objects.get_many([m.org for m in memberships])
 
 class CodeBoxYammer(object):
 

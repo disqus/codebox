@@ -1,6 +1,7 @@
 from flask import request, Module, flash, render_template, \
                   redirect, url_for, abort
 
+from codesharer.apps.auth.models import User
 from codesharer.apps.auth.decorators import login_required
 from codesharer.apps.organizations.decorators import can_view_org
 from codesharer.apps.organizations.models import Organization, OrganizationMember
@@ -19,8 +20,8 @@ def dashboard():
 
     snippets = list(Snippet.objects.all(0, 10))
 
-    memberships = list(OrganizationMember.objects.for_index('user', 1))
-    my_organizations = Organization.objects.get_many([m.org for m in memberships])
+    user = User.objects.get(1)
+    my_organizations = user.get_all_organizations(1)
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
@@ -77,10 +78,12 @@ def new_snippet(org):
 # @can_view_org
 def list_snippets(org):
     org = get_object_or_404(Organization, org)
+    org_members = org.get_all_members()
     
     snippets = list(Snippet.objects.for_index('org', org, 0, 10))
 
     return render_template('organizations/detail.html', **{
             'org': org,
+            'org_members': org_members,
             'snippets': snippets,
             })
