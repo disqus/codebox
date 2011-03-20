@@ -14,7 +14,7 @@ class SnippetTestCase(unittest2.TestCase):
 
     def test_snippets(self):
         """
-        Simplest test we can do. Train using ours and train using the built-in.
+	test snippet creation
         """
         snippets = Snippets(self.db)
 
@@ -45,7 +45,7 @@ class SnippetFrontendTestCase(unittest2.TestCase):
 
     def test_snippet_creation(self):
         """
-        Simplest test we can do. Train using ours and train using the built-in.
+	test snippet creation via post to url
         """
         snippets = Snippets(self.db)
 
