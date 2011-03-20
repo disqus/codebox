@@ -39,10 +39,13 @@ def snippet_detail(org, id):
     snippet = get_object_or_404(Snippet, id)
     if snippet.org != org.pk:
         abort(404)
-    
+
+    user = User.objects.get(snippet.user)
+        
     return render_template('snippets/detail.html', **{
             'snippet': snippet,
             'org': org,
+            'user': user,
             })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])

@@ -6,7 +6,7 @@
 
     <div class="module sidebar">
         <h2>Organizations</h2>
-        <ul class="nav">
+        <ul class="nav bubble-list">
             {% for org in my_organizations %}
                 <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
             {% endfor %}
