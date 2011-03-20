@@ -15,29 +15,7 @@
 
     <div class="module main">
         <h2>Recent Snippets</h2>
-
-        {% if snippets %}
-            <ul>
-                {% for snippet in snippets %}
-                <li>
-                    <div class="snippet snippet-short clearfix">
-                        <p class="text">{{ snippet.text|truncate(length=50)|colorize|safe }}</p>
-                        <p class="info">
-                            <span class="link">
-                                <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}">View</a>
-                            </span>
-                            &mdash;
-                            <span class="org">{{ snippet.org }}</span>
-                        </p>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="notice">
-                No recent snippets
-            </p>
-        {% endif %}
+        {% include "partials/snippet_list.html" %}
     </div>
 
 {% endblock %}
