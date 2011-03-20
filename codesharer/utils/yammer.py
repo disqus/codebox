@@ -149,7 +149,7 @@ class Yammer(object):
         self.messages = MessageEndpoint(self)
         self.groups = GroupEndpoint(self)
         self.users = UserEndpoint(self)
-        self.relationships = RelationshipEndpoint(self)
+        self.relationships = RelationshipsEndpoint(self)
 
     # authorization
     @property
