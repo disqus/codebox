@@ -17,20 +17,10 @@ def dashboard():
     Shows organizations/recent pastes/etc
     """
 
-    snippets = list(Snippet.objects.all())[:10]
+    snippets = list(Snippet.objects.all(0, 10))
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
-            })
-
-@frontend.route('/<org>')
-#@login_required
-@can_view_org
-def org_detail(org):
-    org = get_object_or_404(Organization, org)
-
-    return render_template('organizations/detail.html', **{
-            'org': org,
             })
 
 @frontend.route('/<org>/view/<id>')
@@ -77,13 +67,13 @@ def new_snippet(org):
 
 @frontend.route('/<org>')
 @login_required
+@can_view_org
 def list_snippets(org):
-    """
-    Displays a list of all snippets for an organization
-    """
+    org = get_object_or_404(Organization, org)
+    
+    snippets = list(Snippet.objects.for_index('org', org, 0, 10))
 
-    snippets = Snippet.objects.all()
-
-    return render_template('snippets/list_snippets.html', **{
-        'snippet_list': snippets[:10],
-    })
+    return render_template('organizations/detail.html', **{
+            'org': org,
+            'snippets': snippets,
+            })
