@@ -1,6 +1,6 @@
-from flask import current_app as app, g, request, Module, render_template, redirect, url_for
+from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session
 
-from codesharer.apps.auth.models import CodeBoxYammer
+from codesharer.apps.auth.models import YammerOAuth
 from codesharer.apps.auth.forms import NewAuthForm
 
 auth = Module(__name__)
@@ -8,12 +8,15 @@ auth = Module(__name__)
 @auth.route('/<org>/verify')
 def verify_begin(org):
 
-    yammer_oauth = CodeBoxYammer(request, org)
+    yammer_oauth = YammerOAuth.objects.create(pk=org, org=org)
+    url = yammer_oauth.get_auth_url()
+
+    print 'url', url
 
     form = NewAuthForm()
 
     return render_template('auth/verify.html', **{
-        'url': yammer_oauth.get_auth_url(),
+        'url': url,
         'form': form,
         'org': org,
     })
@@ -23,9 +26,10 @@ def verify_complete(org):
     """
     Creates a new snippet for an organization.
     """
-    import pdb; pdb.set_trace()
+    yammer_oauth = YammerOAuth.objects.get(org)
     code = request.form['code']
-    resp = yammer_oauth.get_access_token(code)
-    if resp.get('oauth_token') is not None:
-        # save to database
-        yammer_oauth.save(oauth_token, oauth_token_secret)
+    yammer_api = session['yammer_api']
+    resp = yammer_api.get_access_token(code)
+    if 'oauth_token' in resp:
+        yammer_oauth.save(resp['oauth_token'], resp['oauth_token_secret'])
+        return redirect(url_for('dashboard'))
