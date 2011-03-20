@@ -22,7 +22,7 @@ class SnippetTestCase(unittest2.TestCase):
         res = []
         for i in xrange(3):
             time.sleep(0.01)
-            res.append(snippets.create(text='test %d' % i))
+            res.append(snippets.create(org='disqus', text='test %d' % i))
 
         self.assertEquals(len(snippets), 3)
         
