@@ -43,6 +43,7 @@ class SnippetTestCase(FlaskTest):
     
         for n, sn in enumerate(Snippet.objects.all()):
             self.assertEquals(res[n], sn)
+            self.assertEquals(res[n], Snippet.objects.get(sn.pk))
 
 class SnippetFrontendTestCase(FlaskTest):
     def test_snippet_creation(self):
