@@ -1,4 +1,4 @@
-from flask import current_app as app, g, request, Module, render_template, redirect
+from flask import current_app as app, g, request, Module, render_template, redirect, url_for
 
 from codesharer.apps.snippets.models import Snippets
 from codesharer.apps.snippets.forms import NewSnippetForm
