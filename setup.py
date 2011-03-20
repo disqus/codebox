@@ -8,7 +8,7 @@ setup(name='Code Sharing Thing',
     install_requires=[
         # 'python-yammer',
         # https://github.com/sunlightlabs/python-yammer
-        'python-oauth2',
+        'oauth2',
         'Flask-Actions',
         'Flask-Redis',
         'simplejson',
