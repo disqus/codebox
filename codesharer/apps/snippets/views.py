@@ -1,11 +1,14 @@
-from flask import current_app as app, g, request, Module, render_template, redirect, url_for
+from flask import current_app as app, g, request, Module, flash, render_template, \
+                  redirect, url_for
 
+from codesharer.apps.auth.decorators import login_required
 from codesharer.apps.snippets.models import Snippets
 from codesharer.apps.snippets.forms import NewSnippetForm
 
 frontend = Module(__name__)
 
 @frontend.route('/')
+@login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
@@ -16,6 +19,7 @@ def dashboard():
     })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])
+@login_required
 def new_snippet(org):
     """
     Creates a new snippet for an organization.
@@ -26,7 +30,14 @@ def new_snippet(org):
     form = NewSnippetForm()
     if form.validate_on_submit():
         # Generate a unique slug from name
-        snippet = snippets.create(text=form.text.data)
+        snippet = snippets.create(
+            org=org,
+            text=form.text.data,
+            author=request.user.id,
+        )
+
+        if request.is_xhr:
+            return 'Success'
 
         flash("Success")
 
@@ -37,6 +48,7 @@ def new_snippet(org):
     })
 
 @frontend.route('/<org>')
+@login_required
 def list_snippets(org):
     """
     Displays a list of all snippets for an organization
@@ -45,5 +57,5 @@ def list_snippets(org):
     snippets = Snippets(g.redis)
     
     return render_template('snippets/list_snippets.html', **{
-        'snippet_list': snippet_list[:10],
+        'snippet_list': snippets[:10],
     })
