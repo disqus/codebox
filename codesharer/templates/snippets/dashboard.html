@@ -7,7 +7,9 @@
     <div class="module sidebar">
         <h2>Organizations</h2>
         <ul class="nav">
-            <li><a href="/disqus">Disqus</a></li>
+            {% for org in my_organizations %}
+                <li><a href="/{{ org.pk }}">{{ org.name }}</a></li>
+            {% endfor %}
         </ul>
     </div>
 

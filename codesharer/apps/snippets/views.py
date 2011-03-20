@@ -3,7 +3,7 @@ from flask import request, Module, flash, render_template, \
 
 from codesharer.apps.auth.decorators import login_required
 from codesharer.apps.organizations.decorators import can_view_org
-from codesharer.apps.organizations.models import Organization
+from codesharer.apps.organizations.models import Organization, OrganizationMember
 from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.snippets.forms import NewSnippetForm
 from codesharer.utils.shortcuts import get_object_or_404
@@ -19,20 +19,27 @@ def dashboard():
 
     snippets = list(Snippet.objects.all(0, 10))
 
+    memberships = list(OrganizationMember.objects.for_index('user', 1))
+    my_organizations = Organization.objects.get_many([m.org for m in memberships])
+
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
+            'my_organizations': my_organizations,
             })
 
 @frontend.route('/<org>/view/<id>')
 #@login_required
 #@can_view_org
 def snippet_detail(org, id):
+    org = get_object_or_404(Organization, org)
+
     snippet = get_object_or_404(Snippet, id)
-    if snippet.org != org:
+    if snippet.org != org.pk:
         abort(404)
-        
+    
     return render_template('snippets/detail.html', **{
-            'snippet': Snippet.objects.get(id)
+            'snippet': snippet,
+            'org': org,
             })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])

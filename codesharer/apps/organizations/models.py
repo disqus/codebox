@@ -15,4 +15,4 @@ class OrganizationMember(Model):
     created_at = Float(default=time.time)
     
     class Meta:
-        indexes = ('org',)
+        indexes = ('org', 'user')
