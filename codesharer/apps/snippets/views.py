@@ -1,5 +1,5 @@
 from flask import request, Module, flash, render_template, \
-                  redirect, url_for, abort
+                  redirect, url_for, abort, g
 
 from codesharer.apps.auth.models import User
 from codesharer.apps.auth.decorators import login_required
@@ -17,9 +17,8 @@ def dashboard():
     """
     Shows organizations/recent pastes/etc
     """
-    user = User.objects.get(1)
 
-    snippets = list(Snippet.objects.for_index('dashboard', user.pk, 0, 10))
+    snippets = list(Snippet.objects.for_index('dashboard', g.user.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
     my_organizations = user.get_all_organizations(user.pk)
@@ -62,8 +61,8 @@ def new_snippet(org):
         snippet = Snippet.objects.create(
             org=org,
             text=form.text.data,
-            lang=1,
-            user=1,
+            lang=form.lang.data,
+            user=g.user.pk,
         )
 
         if request.is_xhr:
@@ -71,7 +70,7 @@ def new_snippet(org):
 
         flash("Success")
 
-        return redirect(url_for('snippet_detail', org=org, id=snippet.pk))
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('snippets/new_snippet.html', **{
         'org': org,

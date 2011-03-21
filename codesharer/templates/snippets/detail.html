@@ -3,7 +3,6 @@
 {% block title %}{{ snippet.pk }} &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-
 <div class="module sidebar">
 <h2><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ snippet.org }}</a></h2>
 <div class="snippet-info">
@@ -40,6 +39,10 @@
     <h2>{{ snippet.pk }}</h2>
     <div class="snippet">
         {{ snippet.text | colorize | safe }}
+    <div class="module">
+        <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
+        <div class="snippet">
+            {{ snippet.text | colorize(snippet.lang) | safe }}
+        </div>
     </div>
-</div>
 {% endblock %}

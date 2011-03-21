@@ -33,7 +33,7 @@ class SnippetTestCase(FlaskTest):
                 org='disqus',
                 text='test %d' % i,
                 user=1,
-                lang=1,
+                lang='python',
             ))
 
         self.assertEquals(Snippet.objects.count(), 3)

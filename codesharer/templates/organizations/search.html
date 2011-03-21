@@ -4,7 +4,16 @@
 
 {% block main %}
 
+    <div class="module main">
+        <h2>{{ org.name }}</h2>
+        <h3>Results for {{ query }}</h3>
+        {% include "partials/snippet_list.html" %}
+    </div>
+
     <div class="sidebar">
+        <div class="module">
+            <a href="/{{ org.pk }}/new" class="new-snippet-link">New Snippet</a>
+        </div>
         <div class="module">
             <h2>Search</h2>
             <form method="get" action="/{{ org.pk }}/search">
@@ -19,10 +28,6 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>    <div class="module main">
-        <h2>{{ org.name }}</h2>
-        <h3>Results for {{ query }}</h3>
-        {% include "partials/snippet_list.html" %}
     </div>
 
 {% endblock %}
