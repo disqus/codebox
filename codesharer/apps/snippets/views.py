@@ -86,9 +86,11 @@ def list_snippets(org):
     org_members = org.get_all_members()
     
     snippets = list(Snippet.objects.for_index('org', org, 0, 10))
-
+    snippets_users = User.objects.get_many([s.user for s in snippets])
+    
     return render_template('organizations/detail.html', **{
             'org': org,
             'org_members': org_members,
             'snippets': snippets,
+            'snippets_users': dict([(u.pk, u) for u in snippets_users]),
             })
