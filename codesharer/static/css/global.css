@@ -153,10 +153,7 @@ h2 {
     float: left;
     width: 200px;
 }
-.sidebar .nav a {
-    display: block;
-    
-}
+
 .sidebar .faces li {
     float: left;
 }
@@ -179,4 +176,17 @@ h2 {
     padding-top: 20px;
     margin-top: 0;
     margin-left: 250px;
+}
+
+.bubble {
+    display: inline-block;
+    padding: 5px;
+    background: #efefef;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+}
+
+.bubble:hover {
+    background-color: #ccc;
 }

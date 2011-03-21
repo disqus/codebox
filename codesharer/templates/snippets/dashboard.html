@@ -8,7 +8,7 @@
         <h2>Organizations</h2>
         <ul class="nav">
             {% for org in my_organizations %}
-                <li><a href="/{{ org.pk }}">{{ org.name }}</a></li>
+                <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
             {% endfor %}
         </ul>
     </div>

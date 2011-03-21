@@ -20,11 +20,13 @@ def dashboard():
     user = User.objects.get(1)
 
     snippets = list(Snippet.objects.for_index('user', user.pk, 0, 10))
-
+    snippets_users = User.objects.get_many([s.user for s in snippets])
+    
     my_organizations = user.get_all_organizations(user.pk)
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
+            'snippets_users': dict([(u.pk, u) for u in snippets_users]),
             'my_organizations': my_organizations,
             })
 

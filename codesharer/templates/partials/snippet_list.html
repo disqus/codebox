@@ -9,7 +9,9 @@
                     <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}">View</a>
                 </span>
                 &mdash;
-                <span class="org">{{ snippet.org }}</span>
+                <span class="user">{{ snippets_users[snippet.user].name }}</span>
+                from
+                <span class="org"><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ snippet.org }}</a></span>
             </p>
         </div>
     </li>

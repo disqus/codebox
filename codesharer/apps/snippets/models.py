@@ -1,6 +1,7 @@
 import time
 
 from codesharer.utils.models import Model, String, Float
+from codesharer.apps.auth.models import User
 
 LANGUAGES = {
     'py': 'python',
