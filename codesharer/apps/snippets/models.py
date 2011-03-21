@@ -16,4 +16,4 @@ class Snippet(Model):
     created_at = Float(default=time.time)
 
     class Meta:
-        indexes = ('org', 'author')
+        indexes = ('org', 'user')

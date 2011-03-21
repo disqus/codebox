@@ -80,7 +80,7 @@ def list_snippets(org):
     org = get_object_or_404(Organization, org)
     org_members = org.get_all_members()
     
-    snippets = list(Snippet.objects.for_index('org', org, 0, 10))
+    snippets = list(Snippet.objects.for_index('org', org.pk, 0, 10))
 
     return render_template('organizations/detail.html', **{
             'org': org,
