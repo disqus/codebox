@@ -4,6 +4,13 @@
 
 {% block main %}
 
+    <div class="main">
+        <div class="module">
+            <h2>{{ org.name }}</h2>
+            {% include "partials/snippet_list.html" %}
+        </div>
+    </div>
+
     <div class="sidebar">
         <div class="module">
             <a href="/{{ org.pk }}/new" class="new-snippet-link">New Snippet</a>
@@ -22,11 +29,6 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
-
-    <div class="main module">
-        <h2>{{ org.name }}</h2>
-        {% include "partials/snippet_list.html" %}
     </div>
 
 {% endblock %}
