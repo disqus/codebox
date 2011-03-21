@@ -13,7 +13,14 @@ _ctx.push()
 app.preprocess_request()
 g.redis.flushdb()
 
+User.objects.create(pk=1, name='zeeg')
+
+Organization.objects.create(pk='disqus', name='DISQUS')
+
+OrganizationMember.objects.create(org='disqus', user=1)
+
 # Create sample snippets
+
 # plaintext
 Snippet.objects.create(org='disqus', user=1, lang=1, text = "Hello World!")
 # python
@@ -23,7 +30,3 @@ Snippet.objects.create(org='disqus', user=1, lang=1, text = '<h1>Cramer sucks</h
 # javascript
 Snippet.objects.create(org='disqus', user=1, lang=1, text = "document.write('cramer sucks')")
 
-Organization.objects.create(pk='disqus', name='DISQUS')
-OrganizationMember.objects.create(org='disqus', user=1)
-
-User.objects.create(pk=1, name='zeeg')

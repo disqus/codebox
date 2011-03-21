@@ -5,7 +5,7 @@ import uuid
 
 from flask import g
 from codesharer.utils.cache import cached_property
-from codesharer.utils.redis import RedisOrderedDict, RedisHashMap, encode_key
+from codesharer.utils.redis import RedisHashMap, encode_key
 
 class ModelDescriptor(type):
     def __new__(cls, name, bases, attrs):
@@ -132,21 +132,18 @@ class Manager(object):
         return results
 
     def all(self, start=0, end=-1):
-        index = RedisOrderedDict(g.redis, self._get_default_index_key())
-        
-        for key in index.keys(start, end):
+        for key in g.redis.zrevrange(self._get_default_index_key(), start, end):
             yield self.get(key)
 
     def count(self):
         return int(g.redis.get(self._get_default_count_key()) or 0)
 
     def for_index(self, index, key, start=0, end=-1):
-        for id_ in RedisOrderedDict(g.redis, self._get_index_key(index, key)).keys(start, end):
+        for id_ in g.redis.zrevrange(self._get_index_key(index, key), start, end):
             yield self.get(id_)
 
     def add_to_index(self, index, key, id_, score=None):
-        index = RedisOrderedDict(g.redis, self._get_index_key(index, key))
-        index[id_] = score or time.time()
+        g.redis.zadd(self._get_index_key(index, key), id_, score or time.time())
         g.redis.incr(self._get_index_count_key(index, key))
     
     def index_exists(self, index, key, id_):
@@ -166,9 +163,7 @@ class Manager(object):
         inst.update(**kwargs)
         
         # Default index
-        index = RedisOrderedDict(g.redis, self._get_default_index_key())
-        index[pk] = time.time()
-        
+        g.redis.zadd(self._get_default_index_key(), pk, time.time())        
         g.redis.incr(self._get_default_count_key())
 
         # Store additional predefined indexes
