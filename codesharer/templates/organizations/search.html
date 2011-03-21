@@ -4,6 +4,12 @@
 
 {% block main %}
 
+    <div class="module main">
+        <h2>{{ org.name }}</h2>
+        <h3>Results for {{ query }}</h3>
+        {% include "partials/snippet_list.html" %}
+    </div>
+
     <div class="sidebar">
         <div class="module">
             <h2>Search</h2>
@@ -19,10 +25,6 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>    <div class="module main">
-        <h2>{{ org.name }}</h2>
-        <h3>Results for {{ query }}</h3>
-        {% include "partials/snippet_list.html" %}
     </div>
 
 {% endblock %}

@@ -3,19 +3,19 @@
 {% block title %}Dashboard &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-
-    <div class="module sidebar">
-        <h2>Organizations</h2>
-        <ul class="nav">
-            {% for org in my_organizations %}
-                <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-
     <div class="module main">
         <h2>Your Recent Snippets</h2>
         {% include "partials/snippet_list.html" %}
     </div>
 
+    <div class="sidebar">
+        <div class="module">
+            <h2>Organizations</h2>
+            <ul class="nav">
+                {% for org in my_organizations %}
+                    <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

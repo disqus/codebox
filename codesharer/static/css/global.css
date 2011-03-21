@@ -149,9 +149,17 @@ h2 {
 }
 
 
-.sidebar { 
+.main, .sidebar {
     float: left;
-    width: 200px;
+    position: relative;
+}
+.main {
+    width: 800px;
+    margin-left: 190px;
+}
+.sidebar { 
+    margin-left: -990px;
+    width: 190px;
 }
 
 .sidebar .faces li {
