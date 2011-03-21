@@ -17,11 +17,11 @@ def dashboard():
     """
     Shows organizations/recent pastes/etc
     """
-
-    snippets = list(Snippet.objects.all(0, 10))
-
     user = User.objects.get(1)
-    my_organizations = user.get_all_organizations(1)
+
+    snippets = list(Snippet.objects.for_index('user', user.pk, 0, 10))
+
+    my_organizations = user.get_all_organizations(user.pk)
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
