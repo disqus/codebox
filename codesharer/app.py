@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask, session, g
 from flaskext.redis import Redis
 
 def create_app():

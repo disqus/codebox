@@ -3,46 +3,11 @@
 {% block title %}{{ snippet.pk }} &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-<div class="module sidebar">
-<h2><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ snippet.org }}</a></h2>
-<div class="snippet-info">
-    <table>
-        <tr class="user">
-            <td class="label">
-                by
-            </td>
-            <td>
-                {{ user.name }}
-            </td>
-        </tr>
-        <tr class="date">
-            <td class="label">
-                at
-            </td>
-            <td>
-                {{ snippet.created_at }}
-            </td>
-        </tr>
-        <tr class="lang">
-            <td class="label">
-                lang
-            </td>
-            <td>
-                {{ snippet.lang }}
-            </td>
-        </tr>
-    </table>
-</div>
-</div>
 
-<div class="module main">
-    <h2>{{ snippet.pk }}</h2>
+<div class="module">
+    <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
     <div class="snippet">
-        {{ snippet.text | colorize | safe }}
-    <div class="module">
-        <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
-        <div class="snippet">
-            {{ snippet.text | colorize(snippet.lang) | safe }}
-        </div>
+        {{ snippet.text|colorize(snippet.lang) | safe }}
     </div>
+</div>
 {% endblock %}

@@ -9,8 +9,8 @@ from codesharer.utils import pypodio
 
 auth = Module(__name__)
 
-@auth.route('/<org>/login', methods=['GET', 'POST'])
-def org_login(org):
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
 
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -42,7 +42,7 @@ def org_login(org):
             m2m = OrganizationMember.objects.create(pk=podio_org+str(podio_id), org=podio_org, user = podio_id)
         
         g.user = user
-        session.userid = user.pk
+        session['userid'] = user.pk
 
         flash('Welcome to CodeBox')
 
@@ -53,7 +53,6 @@ def org_login(org):
         profile = None
         
     return render_template('auth/login.html', **{
-            'org': org,
             'form': form,
             })
 

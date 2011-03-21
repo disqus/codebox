@@ -12,7 +12,7 @@ from codesharer.utils.shortcuts import get_object_or_404
 frontend = Module(__name__)
 
 @frontend.route('/')
-@login_required
+# @login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
@@ -21,7 +21,7 @@ def dashboard():
     snippets = list(Snippet.objects.for_index('dashboard', g.user.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
-    my_organizations = user.get_all_organizations(user.pk)
+    my_organizations = g.user.get_all_organizations(g.user.pk)
 
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
@@ -30,7 +30,7 @@ def dashboard():
             })
 
 @frontend.route('/<org>/view/<id>')
-@login_required
+# @login_required
 #@can_view_org
 def snippet_detail(org, id):
     org = get_object_or_404(Organization, org)
@@ -48,7 +48,7 @@ def snippet_detail(org, id):
             })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])
-#@login_required
+## @login_required
 def new_snippet(org):
     """
     Creates a new snippet for an organization.
@@ -78,13 +78,13 @@ def new_snippet(org):
     })
 
 @frontend.route('/<org>')
-@login_required
+# @login_required
 # @can_view_org
 def list_snippets(org):
     org = get_object_or_404(Organization, org)
     org_members = org.get_all_members()
     
-    snippets = list(Snippet.objects.for_index('org', org, 0, 10))
+    snippets = list(Snippet.objects.for_index('org', org.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
 
     return render_template('organizations/detail.html', **{
@@ -95,7 +95,7 @@ def list_snippets(org):
             })
 
 @frontend.route('/<org>/search')
-@login_required
+# @login_required
 # @can_view_org
 def search_snippets(org):
     query = request.args.get('q')
