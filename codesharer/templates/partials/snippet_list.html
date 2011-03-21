@@ -3,7 +3,7 @@
     {% for snippet in snippets %}
     <li>
         <div class="snippet snippet-short clearfix">
-            <p class="text">{{ snippet.text|truncate(length=150)|colorize|safe }}</p>
+            <p class="text">{{ snippet.text|truncate(length=150)|colorize(snippet.lang)|safe }}</p>
             <p class="info">
                 <span class="link">
                     <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}">View</a>

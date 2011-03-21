@@ -4,9 +4,9 @@
 
 {% block main %}
     <div class="module">
-        <h2>{{ snippet.pk }} <strong>{{ snippet.org }}</strong></h2>
+        <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
         <div class="snippet">
-            {{ snippet.text | colorize | safe }}
+            {{ snippet.text | colorize(snippet.lang) | safe }}
         </div>
     </div>
 {% endblock %}

@@ -6,7 +6,12 @@
         <form method="POST" action="" class="new-snippet">
             {{ form.csrf }}
             <div class="form-row">
+                <p>{{ form.lang() }}</p>
+            </div>
+            <div class="form-row">
                 <p>{{ form.text(rows=20) }}</p>
+            </div>
+            <div class="form-row">
                 <p><input type="submit" value="Submit"></p>
             </div>
         </form>
