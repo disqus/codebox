@@ -68,7 +68,7 @@ def new_snippet(org):
 
         flash("Success")
 
-        return redirect(url_for('snippet_detail', org=org, id=snippet.pk))
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('snippets/new_snippet.html', **{
         'org': org,
