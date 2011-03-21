@@ -12,7 +12,7 @@ from codesharer.utils.shortcuts import get_object_or_404
 frontend = Module(__name__)
 
 @frontend.route('/')
-#@login_required
+@login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
@@ -30,7 +30,7 @@ def dashboard():
             })
 
 @frontend.route('/<org>/view/<id>')
-#@login_required
+@login_required
 #@can_view_org
 def snippet_detail(org, id):
     org = get_object_or_404(Organization, org)
@@ -78,7 +78,7 @@ def new_snippet(org):
     })
 
 @frontend.route('/<org>')
-# @login_required
+@login_required
 # @can_view_org
 def list_snippets(org):
     org = get_object_or_404(Organization, org)
@@ -95,7 +95,7 @@ def list_snippets(org):
             })
 
 @frontend.route('/<org>/search')
-# @login_required
+@login_required
 # @can_view_org
 def search_snippets(org):
     query = request.args.get('q')
