@@ -93,6 +93,9 @@ class Model(object):
         for k, v in kwargs.iteritems():
             self[k] = v
 
+    def post_create(self):
+        pass
+
 class Options(object):
     def __init__(self, cls, meta, attrs):
         # Grab fields
@@ -170,6 +173,8 @@ class Manager(object):
         for field in self.model._meta.indexes:
             if field in inst:
                 self.add_to_index(field, getattr(inst, field), pk)
+
+        inst.post_create()
 
         return inst
 

@@ -4,7 +4,7 @@ from flask import request, Module, flash, render_template, \
 from codesharer.apps.auth.models import User
 from codesharer.apps.auth.decorators import login_required
 from codesharer.apps.organizations.decorators import can_view_org
-from codesharer.apps.organizations.models import Organization, OrganizationMember
+from codesharer.apps.organizations.models import Organization
 from codesharer.apps.snippets.models import Snippet
 from codesharer.apps.snippets.forms import NewSnippetForm
 from codesharer.utils.shortcuts import get_object_or_404
@@ -19,7 +19,7 @@ def dashboard():
     """
     user = User.objects.get(1)
 
-    snippets = list(Snippet.objects.for_index('user', user.pk, 0, 10))
+    snippets = list(Snippet.objects.for_index('dashboard', user.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
     my_organizations = user.get_all_organizations(user.pk)
