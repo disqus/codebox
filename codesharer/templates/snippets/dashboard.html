@@ -14,7 +14,18 @@
     </div>
 
     <div class="module main">
-        <h2>Recent Snippets</h2>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="snippet">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        
+        <h2>Your Recent Snippets</h2>
         {% include "partials/snippet_list.html" %}
     </div>
 

@@ -31,7 +31,11 @@
                     <h1 class="clearfix">
                     <img height="60" src="{{ url_for('static', filename="images/box.png") }}" />
                     <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
-                    <small>(All Your Code Belong to Us)</small>
+                    <small>(All Your Code Belong to Us) |
+                    {% if g.user %}
+                    Hi {{ g.name }}
+                    {% endif %}
+                    </small>
                     </h1>
                 </div>
             </div>

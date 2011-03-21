@@ -17,4 +17,11 @@ class Snippet(Model):
     created_at = Float(default=time.time)
 
     class Meta:
-        indexes = ('org', 'author')
+        indexes = ('org', 'user')
+
+    def post_create(self):
+        from codesharer.apps.organizations.models import Organization
+        # Fill our dashboard index
+        for user in Organization.objects.get(self.org).get_all_members():
+            Snippet.objects.add_to_index('dashboard', user.pk, self.pk)
+            

@@ -1,7 +1,9 @@
-from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session
+from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session, flash
 
-from codesharer.apps.auth.models import YammerOAuth
+from codesharer.apps.auth.models import YammerOAuth, User
 from codesharer.apps.auth.forms import NewAuthForm, LoginForm
+
+from codesharer.apps.organizations.models import Organization, OrganizationMember
 
 from codesharer.utils import pypodio
 
@@ -23,6 +25,30 @@ def org_login(org):
         podio.request_oauth_token(user, password)
 
         profile = podio.users_get_active_profile()
+        podio_org = str(profile['organization']).lower()
+        podio_id = profile['user_id']
+        podio_name = profile['name']
+        try:
+            user = User.objects.get(podio_id)
+        except User.DoesNotExist:
+            user = User.objects.create(pk=podio_id, name=podio_name)
+        try:
+            org = Organization.objects.get(podio_org)
+        except Organization.DoesNotExist:
+            org = Organization.objects.create(pk=podio_org, name="DISQUS")
+        try:
+            m2m = OrganizationMember.objects.get(podio_org+str(podio_id))
+        except OrganizationMember.DoesNotExist:
+            m2m = OrganizationMember.objects.create(pk=podio_org+str(podio_id), org=podio_org, user = podio_id)
+        
+        g.user = user
+        session.userid = user.pk
+
+        flash('Welcome to CodeBox')
+
+        return redirect(url_for('dashboard'))
+        
+        
     else:
         profile = None
         

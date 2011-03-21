@@ -4,15 +4,6 @@
 
 {% block main %}
 
-<<<<<<< HEAD
-    <div class="module sidebar">
-        <h2>Members</h2>
-        <ul class="bubble-list">
-            {% for member in org_members %}
-                <li><a class="bubble" href="#">{{ member.name }}</a></li>
-            {% endfor %}
-        </ul>
-=======
     <div class="sidebar">
         <div class="module">
             <h2>Search</h2>
@@ -28,10 +19,9 @@
                 {% endfor %}
             </ul>
         </div>
->>>>>>> af72d63ee883807b3cc25d5169f6b7b774540fb9
-    </div>
-    <div class="module main">
+    </div>    <div class="module main">
         <h2>{{ org.name }}</h2>
+        <h3>Results for {{ query }}</h3>
         {% include "partials/snippet_list.html" %}
     </div>
 

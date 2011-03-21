@@ -30,13 +30,15 @@ class SnippetTestCase(FlaskTest):
         for i in xrange(3):
             time.sleep(0.01)
             res.append(Snippet.objects.create(
-                org=1,
+                org='disqus',
                 text='test %d' % i,
                 user=1,
                 lang=1,
             ))
 
         self.assertEquals(Snippet.objects.count(), 3)
+    
+        self.assertEquals(len(list(Snippet.objects.for_index('org', 'disqus'))), 3)
     
         res.reverse()
     
