@@ -154,12 +154,12 @@ h2 {
     position: relative;
 }
 .main {
-    width: 800px;
-    margin-left: 190px;
+    width: 780px;
+    margin-left: 210px;
 }
 .sidebar { 
     margin-left: -990px;
-    width: 190px;
+    width: 200px;
 }
 
 .sidebar .faces li {
