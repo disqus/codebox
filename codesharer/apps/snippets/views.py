@@ -17,9 +17,8 @@ def dashboard():
     """
     Shows organizations/recent pastes/etc
     """
-    user = User.objects.get(1)
 
-    snippets = list(Snippet.objects.for_index('dashboard', user.pk, 0, 10))
+    snippets = list(Snippet.objects.for_index('dashboard', g.user.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
     my_organizations = user.get_all_organizations(user.pk)
@@ -60,7 +59,7 @@ def new_snippet(org):
             org=org,
             text=form.text.data,
             lang=form.lang.data,
-            user=request.user.pk,
+            user=g.user.pk,
         )
 
         if request.is_xhr:
