@@ -1,5 +1,5 @@
 from flask import request, Module, flash, render_template, \
-                  redirect, url_for, abort
+                  redirect, url_for, abort, g
 
 from codesharer.apps.auth.models import User
 from codesharer.apps.auth.decorators import login_required
