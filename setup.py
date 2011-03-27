@@ -1,13 +1,10 @@
-import os
 from setuptools import setup, find_packages
 
-setup(name='Code Sharing Thing',
+setup(name='Codebox',
     version='0.1',
     description='',
     user='DISQUS',
     install_requires=[
-        # 'python-yammer',
-        # https://github.com/sunlightlabs/python-yammer
         'oauth2',
         'Flask-Actions',
         'Flask-Redis',
