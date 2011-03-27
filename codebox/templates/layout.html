@@ -64,15 +64,18 @@
                             {% if g.user %}
                                 <div class="module">
                                     <h2>Organizations</h2>
-                                    {% if g.user.get_all_organizations() %}
-                                        <ul class="nav">
-                                            {% for org in my_organizations %}
-                                                <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% else %}
-                                        <p>Start by <a href="#">creating an organization</a>.</p>
-                                    {% endif %}
+                                    {% with my_organizations=g.user.get_all_organizations() %}
+                                        {% if my_organizations %}
+                                            <ul class="nav">
+                                                {% for org in my_organizations %}
+                                                    <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                            <p><a href="/new" class="new-org-link">New Organization</a></p>
+                                        {% else %}
+                                            <p>Start by <a href="#">creating an organization</a>.</p>
+                                        {% endif %}
+                                    {% endwith %}
                                 </div>
                             {% endif %}
                         {% endblock %}
