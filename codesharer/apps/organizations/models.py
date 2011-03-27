@@ -4,6 +4,7 @@ from codesharer.utils.models import Model, String, Float
 
 class Organization(Model):
     name = String()
+    email = String()
     created_at = Float(default=time.time)
 
     def get_all_members(self):
