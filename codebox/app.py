@@ -20,6 +20,8 @@ def create_app():
 
     @app.before_request
     def before_request():
+        g.user = None
+        
         if 'userid' in session:
             try:
                 g.user = User.objects.get(session['userid'])
