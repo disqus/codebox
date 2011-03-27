@@ -2,32 +2,9 @@
 
 {% block title %}Dashboard &mdash; {{ super() }}{% endblock %}
 
-{% block main %}
-    <div class="main">
-        <div class="module">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class="snippet">
-                {% for message in messages %}
-                <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% endwith %}
-        
-            <h2>Your Recent Snippets</h2>
-            {% include "partials/snippet_list.html" %}
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <div class="module">
-            <h2>Organizations</h2>
-            <ul class="nav">
-                {% for org in my_organizations %}
-                    <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+{% block content %}
+    <div class="module">
+        <h2>Your Recent Snippets</h2>
+        {% include "partials/snippet_list.html" %}
     </div>
 {% endblock %}

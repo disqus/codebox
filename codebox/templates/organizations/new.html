@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}New Organization &mdash; {{ super() }}{% endblock %}
+
+{% block content %}
+    <div class="module">
+        <h2>New Organization</h2>
+        <p>Register a new organization to start sharing code with your team.</p>
+        <form method="POST" action="" class="new-organization">
+            {{ form.csrf }}
+            <div class="form-row">
+                {{ form.name.label }}
+                <span class="field">{{ form.name(placeholder='Your organization name', size=50) }}</span>
+                {% if form.name.errors %}
+                    <ul class="errors">{% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                {{ form.lang.label }}
+                <span class="field">{{ form.lang() }}</span>
+                {% if form.lang.errors %}
+                    <ul class="errors">{% for error in form.lang.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                {{ form.domain.label }}
+                <span class="field">{{ form.domain(placeholder='mycompany.com', size=50) }}</span>
+                <div class="helptext">By associating a domain with your company, all members who register from this domain will automatically join your organization. You will need to confirm ownership of this domain after completing this step.</div>
+                {% if form.domain.errors %}
+                    <ul class="errors">{% for error in form.domain.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                <p><input type="submit" value="Submit"></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

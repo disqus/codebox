@@ -31,11 +31,7 @@
                     <h1 class="clearfix">
                     <img height="60" src="{{ url_for('static', filename="images/box.png") }}" />
                     <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
-                    <small>(All Your Code Belong to Us) |
-                    {% if g.user %}
-                    Hi {{ g.name }}
-                    {% endif %}
-                    </small>
+                    <small>(All Your Code Belong to Us)</small>
                     </h1>
                 </div>
             </div>
@@ -43,8 +39,44 @@
 
         <div id="main">
             <div class="wrapper">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul id="messages".>
+                        {% for message in messages %}
+                            <li class="message">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+                
                 {% block main %}
-                main
+                    <div class="main">
+                        {% block content %}
+                            <div class="module">
+                                <h2>Body</h2>
+                                <p>Blah blah blah</p>
+                            </div>
+                        {% endblock %}
+                    </div>
+
+                    <div class="sidebar">
+                        {% block sidebar %}
+                            {% if g.user %}
+                                <div class="module">
+                                    <h2>Organizations</h2>
+                                    {% if g.user.get_all_organizations() %}
+                                        <ul class="nav">
+                                            {% for org in my_organizations %}
+                                                <li><a class="bubble" href="/{{ org.pk }}">{{ org.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>Start by <a href="#">creating an organization</a>.</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    </div>
                 {% endblock %}
             </div>
         </div>

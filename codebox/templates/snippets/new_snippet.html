@@ -1,15 +1,21 @@
 {% extends "layout.html" %}
 
-{% block main %}
+{% block content %}
     <div class="module">
         <h2>New Snippet</h2>
         <form method="POST" action="" class="new-snippet">
             {{ form.csrf }}
             <div class="form-row">
                 <p>{{ form.lang() }}</p>
+                {% if form.lang.errors %}
+                    <ul class="errors">{% for error in form.lang.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
             </div>
             <div class="form-row">
                 <p>{{ form.text(rows=20) }}</p>
+                {% if form.text.errors %}
+                    <ul class="errors">{% for error in form.text.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
             </div>
             <div class="form-row">
                 <p><input type="submit" value="Submit"></p>

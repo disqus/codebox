@@ -31,8 +31,12 @@ table { border-collapse: collapse; border-spacing: 0; }
 * html .clearfix {height: 1%;}
 /* end hide from IE-mac */
 
-footer {
-    clear: both;
+body {
+    font-family: 'helvetica', 'arial', sans-serif;
+    font-size: 13px;
+}
+p, form, table, ul, ol, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 15px;
 }
 
 #container {
@@ -40,22 +44,24 @@ footer {
     width: 990px;
 }
 
-#footer .wrapper {
+footer {
+    font-size: 11px;
+    clear: both;
+}
+
+footer .wrapper {
     text-align: right;
     padding: 20px 0 20px;
-    display: inline;
-    font-size: 11px;
-    font-family: 'helvetica', 'arial', sans-serif;
     color: #666;
 }
 
-#footer .wrapper a {
+footer .wrapper a {
     color: #000;
     font-weight: bold;
     text-decoration: none;
 }
 
-#footer .wrapper a:hover {
+footer .wrapper a:hover {
     text-decoration: underline;
 }
 
@@ -107,8 +113,6 @@ h2 {
 
 .module {
     margin: 20px 0 20px 0;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 14px;
     line-height:18px;
 }
 
@@ -255,4 +259,22 @@ h2 {
      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4da2e5', endColorstr='#3079d0'); /* for IE */
      background: -webkit-gradient(linear, left top, left bottom, from(#4da2e5), to(#3079d0)); /* for webkit browsers */
      background: -moz-linear-gradient(top,  #4da2e5,  #3079d0); /* for firefox 3.6+ */
+}
+
+
+/** forms **/
+
+.form-row {
+    margin-bottom: 10px;
+}
+.form-row label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-row .field {
+    display: block;
+}
+.form-row .helptext {
+    color: #999;
 }

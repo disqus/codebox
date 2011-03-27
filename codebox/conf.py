@@ -8,6 +8,7 @@ class Config(object):
     JANRAIN_API_KEY = '288a1ca2fedb4e1d1780c320fa4082ae69640a52'
     PODIO_CLIENT_ID = "dcramer@gmail.com"
     PODIO_KEY = "f7qFIBcPTfTBLOd8ondkO9UGqU6uN1iG"
+    DOMAIN_BLACKLIST = ['gmail.com', 'hotmail.com', 'live.com', 'msn.com', 'yahoo.com', 'googlemail.com', 'facebookmail.com']
 
 class TestingConfig(Config):
     REDIS_DB = 9

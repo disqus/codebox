@@ -4,9 +4,10 @@ from jinja2 import Markup
 from urllib import quote
 
 def create_app():
-    from codebox.apps.snippets.views import frontend
     from codebox.apps.auth.views import auth
     from codebox.apps.auth.models import User
+    from codebox.apps.organizations.views import orgs
+    from codebox.apps.snippets.views import frontend
     from codebox.utils.syntax import colorize
 
     app = Flask(__name__)
@@ -14,6 +15,7 @@ def create_app():
 
     app.register_module(frontend)
     app.register_module(auth)
+    app.register_module(orgs)
 
     db = Redis(app)
     db.init_app(app)

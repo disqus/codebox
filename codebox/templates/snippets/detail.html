@@ -3,11 +3,10 @@
 {% block title %}{{ snippet.pk }} &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-
-<div class="module">
-    <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
-    <div class="snippet">
-        {{ snippet.text|colorize(snippet.lang) | safe }}
+    <div class="module">
+        <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
+        <div class="snippet">
+            {{ snippet.text|colorize(snippet.lang) | safe }}
+        </div>
     </div>
-</div>
 {% endblock %}

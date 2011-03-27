@@ -2,7 +2,8 @@ import simplejson as json
 import urllib
 import urllib2
 
-from codebox.apps.auth.models import User, Profile
+from codebox.apps.auth.decorators import login_required
+from codebox.apps.auth.models import User, Profile, Email
 from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session, flash
 
 # from codebox.apps.organizations.models import Organization, OrganizationMember

@@ -16,6 +16,17 @@ class Snippet(Model):
     lang = String()
     created_at = Float(default=time.time)
 
+    languages = [
+        ('Plaintext', 'text'),
+        ('javascript', 'JavaScript'),
+        ('html', 'HTML'),
+        ('python', 'Python'),
+        ('ruby', 'Ruby'),
+        ('c', 'C'),
+        ('java', 'Java'),
+        ('xml', 'XML'),
+    ]
+
     class Meta:
         indexes = ('org', 'user')
 

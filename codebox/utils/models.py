@@ -7,6 +7,8 @@ from flask import g
 from codebox.utils.cache import cached_property
 from codebox.utils.redis import RedisHashMap, encode_key
 
+NotDefined = object()
+
 class ModelDescriptor(type):
     def __new__(cls, name, bases, attrs):
         super_new = super(ModelDescriptor, cls).__new__
@@ -119,9 +121,13 @@ class Manager(object):
         self.model = model
         self.name = encode_key(self.model._meta.db_name)
 
+    def exists(self, key):
+        # XXX: ugly missing abstraction for key name
+        return g.redis.hlen('%s:items:%s' % (self.name, key))
+
     def get(self, key):
         # XXX: ugly missing abstraction for key name
-        if not g.redis.hlen('%s:items:%s' % (self.name, key)):
+        if not self.exists(key):
             raise self.model.DoesNotExist
         return self.model(pk=key)
 
@@ -149,12 +155,16 @@ class Manager(object):
         g.redis.zadd(self._get_index_key(index, key), id_, score or time.time())
         g.redis.incr(self._get_index_count_key(index, key))
     
-    def index_exists(self, index, key, id_):
-        return g.redis.zscore(self._get_index_key(index, key), id_) != 0
+    def index_exists(self, index, key, id_=None):
+        idx_key = self._get_index_key(index, key)
+        if id_ is None:
+            return bool(len(g.redis.zrange(idx_key, 0, 1)))
+        print idx_key, id_
+        return g.redis.zscore(idx_key, id_) is not None
         
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():
-            if name not in kwargs and not field.default and field.required:
+            if name not in kwargs and field.default is NotDefined and field.required:
                 raise ValueError('Missing required field: %s' % name)
 
         pk = kwargs.get('pk')
@@ -166,13 +176,13 @@ class Manager(object):
         inst.update(**kwargs)
         
         # Default index
-        g.redis.zadd(self._get_default_index_key(), pk, time.time())        
+        g.redis.zadd(self._get_default_index_key(), inst.pk, time.time())        
         g.redis.incr(self._get_default_count_key())
 
         # Store additional predefined indexes
         for field in self.model._meta.indexes:
             if field in inst:
-                self.add_to_index(field, getattr(inst, field), pk)
+                self.add_to_index(field, getattr(inst, field), inst.pk)
 
         inst.post_create()
 
@@ -195,12 +205,12 @@ class Manager(object):
         return '%s:count:default' % (self.name,)
 
 class Field(object):
-    def __init__(self, default=None, required=True, **kwargs):
+    def __init__(self, default=NotDefined, required=True, **kwargs):
         self.default = default
         self.required = required
 
     def get_default(self):
-        if not self.default:
+        if self.default is NotDefined:
             value = None
         elif callable(self.default):
             value = self.default()
@@ -261,3 +271,14 @@ class List(Field):
         if isinstance(value, basestring):
             value = pickle.loads(value)
         return value
+
+class Boolean(Field):
+    def to_db(self, value=None):
+        if not value:
+            value = False
+        return int(bool(value))
+    
+    def to_python(self, value=None):
+        if not value:
+            value = False
+        return bool(int(value))
