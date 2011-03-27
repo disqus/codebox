@@ -31,13 +31,17 @@ table { border-collapse: collapse; border-spacing: 0; }
 * html .clearfix {height: 1%;}
 /* end hide from IE-mac */
 
+footer {
+    clear: both;
+}
+
 #container {
     margin: auto;
     width: 990px;
 }
 
 #footer .wrapper {
-    float: right;
+    text-align: right;
     padding: 20px 0 20px;
     display: inline;
     font-size: 11px;
@@ -165,7 +169,7 @@ h2 {
 }
 .main {
     width: 780px;
-    margin-left: 210px;
+    margin-left: 250px;
 }
 .sidebar { 
     margin-left: -990px;
@@ -190,12 +194,6 @@ h2 {
     width: 32px;
     height: 32px;
 }
-.main {
-    padding-top: 20px;
-    margin-top: 0;
-    margin-left: 250px;
-}
-
 .bubble {
     display: inline-block;
     padding: 5px;

@@ -3,20 +3,21 @@
 {% block title %}Dashboard &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-    <div class="module main">
-
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div class="snippet">
-            {% for message in messages %}
-            <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
+    <div class="main">
+        <div class="module">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="snippet">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
         
-        <h2>Your Recent Snippets</h2>
-        {% include "partials/snippet_list.html" %}
+            <h2>Your Recent Snippets</h2>
+            {% include "partials/snippet_list.html" %}
+        </div>
     </div>
 
     <div class="sidebar">
