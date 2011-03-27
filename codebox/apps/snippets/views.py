@@ -21,12 +21,9 @@ def dashboard():
     snippets = list(Snippet.objects.for_index('dashboard', g.user.pk, 0, 10))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
-    my_organizations = g.user.get_all_organizations()
-
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
             'snippets_users': dict([(u.pk, u) for u in snippets_users]),
-            'my_organizations': my_organizations,
             })
 
 @frontend.route('/<org>/view/<id>')
