@@ -2,12 +2,12 @@ from flask import Flask, session, g
 from flaskext.redis import Redis
 
 def create_app():
-    from codesharer.apps.snippets.views import frontend
-    from codesharer.apps.auth.views import auth
-    from codesharer.apps.auth.models import User
+    from codebox.apps.snippets.views import frontend
+    from codebox.apps.auth.views import auth
+    from codebox.apps.auth.models import User
 
     app = Flask(__name__)
-    app.config.from_object('codesharer.conf.Config')
+    app.config.from_object('codebox.conf.Config')
 
     app.register_module(frontend)
     app.register_module(auth)
@@ -27,7 +27,7 @@ def create_app():
                 pass
 
     
-    from codesharer.utils.syntax import colorize
+    from codebox.utils.syntax import colorize
     app.jinja_env.filters['colorize'] = colorize
 
     return app

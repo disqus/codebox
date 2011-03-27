@@ -1,7 +1,7 @@
 from flask import abort, request
 from functools import wraps
 
-from codesharer.apps.organizations.models import OrganizationMember
+from codebox.apps.organizations.models import OrganizationMember
 
 def can_view_org(f):
     @wraps(f)

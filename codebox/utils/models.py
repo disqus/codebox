@@ -4,8 +4,8 @@ import time
 import uuid
 
 from flask import g
-from codesharer.utils.cache import cached_property
-from codesharer.utils.redis import RedisHashMap, encode_key
+from codebox.utils.cache import cached_property
+from codebox.utils.redis import RedisHashMap, encode_key
 
 class ModelDescriptor(type):
     def __new__(cls, name, bases, attrs):

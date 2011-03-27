@@ -2,10 +2,10 @@ import simplejson as json
 import urllib
 import urllib2
 
-from codesharer.apps.auth.models import User, Profile
+from codebox.apps.auth.models import User, Profile
 from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session, flash
 
-# from codesharer.apps.organizations.models import Organization, OrganizationMember
+# from codebox.apps.organizations.models import Organization, OrganizationMember
 
 auth = Module(__name__)
 

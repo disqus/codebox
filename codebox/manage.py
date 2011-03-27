@@ -4,7 +4,7 @@
 
 from flaskext.actions import Manager
 
-from codesharer.app import create_app
+from codebox.app import create_app
 
 app = create_app()
 manager = Manager(app)

@@ -1,14 +1,14 @@
 import time
 import unittest2
 
-from codesharer.app import create_app
-from codesharer.apps.snippets.models import Snippet
+from codebox.app import create_app
+from codebox.apps.snippets.models import Snippet
 from flask import g, Response, request
 
 class FlaskTest(unittest2.TestCase):
     def setUp(self):
         self.app = create_app()
-        self.app.config.from_object('codesharer.conf.TestingConfig')
+        self.app.config.from_object('codebox.conf.TestingConfig')
         self.client = self.app.test_client()
         
         self._ctx = self.app.test_request_context()

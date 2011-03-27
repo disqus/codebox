@@ -1,6 +1,6 @@
 import time
 
-from codesharer.utils.models import Model, String, Float
+from codebox.utils.models import Model, String, Float
 
 class Organization(Model):
     name = String()
@@ -9,7 +9,7 @@ class Organization(Model):
     created_at = Float(default=time.time)
 
     def get_all_members(self):
-        from codesharer.apps.auth.models import User
+        from codebox.apps.auth.models import User
         
         memberships = list(OrganizationMember.objects.for_index('org', self.pk))
         return User.objects.get_many([m.user for m in memberships])

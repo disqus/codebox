@@ -1,9 +1,9 @@
 # Ghetto Fixtures
 
-from codesharer.app import create_app
-from codesharer.apps.auth.models import User
-from codesharer.apps.snippets.models import Snippet
-from codesharer.apps.organizations.models import Organization, OrganizationMember
+from codebox.app import create_app
+from codebox.apps.auth.models import User
+from codebox.apps.snippets.models import Snippet
+from codebox.apps.organizations.models import Organization, OrganizationMember
 from flask import g
 
 app = create_app()

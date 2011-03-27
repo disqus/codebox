@@ -1,13 +1,13 @@
 from flask import request, Module, flash, render_template, \
                   redirect, url_for, abort, g
 
-from codesharer.apps.auth.models import User
-from codesharer.apps.auth.decorators import login_required
-from codesharer.apps.organizations.decorators import can_view_org
-from codesharer.apps.organizations.models import Organization
-from codesharer.apps.snippets.models import Snippet
-from codesharer.apps.snippets.forms import NewSnippetForm
-from codesharer.utils.shortcuts import get_object_or_404
+from codebox.apps.auth.models import User
+from codebox.apps.auth.decorators import login_required
+from codebox.apps.organizations.decorators import can_view_org
+from codebox.apps.organizations.models import Organization
+from codebox.apps.snippets.models import Snippet
+from codebox.apps.snippets.forms import NewSnippetForm
+from codebox.utils.shortcuts import get_object_or_404
 
 frontend = Module(__name__)
 
