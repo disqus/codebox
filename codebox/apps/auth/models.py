@@ -7,6 +7,7 @@ from flask import session
 
 class User(Model):
     name = String()
+    email = String(required=False)
     avatar = String(required=False)
     created_at = Float(default=time.time)
     
