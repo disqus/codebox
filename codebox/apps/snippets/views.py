@@ -12,7 +12,7 @@ from codebox.utils.shortcuts import get_object_or_404
 frontend = Module(__name__)
 
 @frontend.route('/')
-# @login_required
+@login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
@@ -30,8 +30,8 @@ def dashboard():
             })
 
 @frontend.route('/<org>/view/<id>')
-# @login_required
-#@can_view_org
+@login_required
+@can_view_org
 def snippet_detail(org, id):
     org = get_object_or_404(Organization, org)
 
@@ -48,7 +48,8 @@ def snippet_detail(org, id):
             })
 
 @frontend.route('/<org>/new', methods=['GET', 'POST'])
-## @login_required
+@login_required
+@can_view_org
 def new_snippet(org):
     """
     Creates a new snippet for an organization.
@@ -78,8 +79,8 @@ def new_snippet(org):
     })
 
 @frontend.route('/<org>')
-# @login_required
-# @can_view_org
+@login_required
+@can_view_org
 def list_snippets(org):
     org = get_object_or_404(Organization, org)
     org_members = org.get_all_members()
@@ -95,8 +96,8 @@ def list_snippets(org):
             })
 
 @frontend.route('/<org>/search')
-# @login_required
-# @can_view_org
+@login_required
+@can_view_org
 def search_snippets(org):
     query = request.args.get('q')
     
