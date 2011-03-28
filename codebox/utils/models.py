@@ -36,11 +36,18 @@ class ModelDescriptor(type):
 
         return new_class
 
+
+class DoesNotExist(Exception):
+    pass
+
+class DuplicateKeyError(Exception):
+    pass
+
 class Model(object):
     __metaclass__ = ModelDescriptor
 
-    class DoesNotExist(Exception):
-        pass
+    DoesNotExist = DoesNotExist
+    DuplicateKeyError = DuplicateKeyError
 
     def __init__(self, pk, **kwargs):
         self._storage = RedisHashMap(g.redis, '%s:items:%s' % (self._meta.db_name, pk))
@@ -197,6 +204,11 @@ class Manager(object):
         for name, field in self.model._meta.fields.iteritems():
             if name not in kwargs and field.default is NotDefined and field.required:
                 raise ValueError('Missing required field: %s' % name)
+
+        for fieldset in self.model._meta.unique:
+            constraint = dict((k, kwargs.get(k)) for k in fieldset)
+            if self.exists(None, **constraint):
+                raise self.model.DuplicateKeyError('Constraint found for %s' % constraint)
 
         pk = kwargs.get('pk')
         if not pk:
