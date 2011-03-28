@@ -163,7 +163,7 @@ class Manager(object):
         self.model = model
         self.name = encode_key(self.model._meta.db_name)
 
-    def exists(self, key, **kwargs):
+    def exists(self, key=None, **kwargs):
         if kwargs:
             idx_key = self._get_index_key(**kwargs)
             # Index lookup
@@ -207,7 +207,7 @@ class Manager(object):
 
         for fieldset in self.model._meta.unique:
             constraint = dict((k, kwargs.get(k)) for k in fieldset)
-            if self.exists(None, **constraint):
+            if all(constraint.itervalues()) and self.exists(None, **constraint):
                 raise self.model.DuplicateKeyError('Constraint found for %s' % constraint)
 
         pk = kwargs.get('pk')

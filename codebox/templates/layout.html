@@ -27,13 +27,13 @@
     <div id="container">
         <header>
             <div class="wrapper">
-                <div id="heading">
-                    <h1 class="clearfix">
+                <h1 class="clearfix">
                     <img height="60" src="{{ url_for('static', filename="images/box.png") }}" />
                     <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
-                    <small>(All Your Code Belong to Us)</small>
-                    </h1>
-                </div>
+                </h1>
+                {% if g.user %}
+                    <small>Logged in as {{ g.user.name }} | <a href="{{ url_for('logout') }}">Logout</a></small>
+                {% endif %}
             </div>
         </header>
 
@@ -73,7 +73,7 @@
                                             </ul>
                                             <p><a href="/new" class="new-org-link">New Organization</a></p>
                                         {% else %}
-                                            <p>Start by <a href="#">creating an organization</a>.</p>
+                                            <p>Start by <a href="{{ url_for('new_org') }}">creating an organization</a>.</p>
                                         {% endif %}
                                     {% endwith %}
                                 </div>

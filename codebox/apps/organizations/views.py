@@ -1,7 +1,11 @@
-from codebox.apps.auth.decorators import login_required
-from flask import g, request, Module, render_template, redirect, url_for, flash
+import hashlib
 
-from codebox.apps.organizations.forms import NewOrganizationForm
+from flask import current_app as app, g, request, Module, render_template, redirect, url_for, flash
+from flaskext.mail import Message
+from urllib import quote
+
+from codebox.apps.auth.decorators import login_required
+from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainForm
 from codebox.apps.organizations.models import Organization, OrganizationMember, PendingOrganization
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
@@ -53,7 +57,7 @@ def new_org():
         'form': form,
     })
 
-@orgs.route('/verify/<org>')
+@orgs.route('/verify/<org>', methods=['POST', 'GET'])
 def verify_domain(org):
     porg = get_object_or_404(PendingOrganization, org)
     
@@ -72,6 +76,7 @@ def verify_domain(org):
             pk=slug,
             name=porg.name,
             lang=porg.lang,
+            domain=porg.domain,
             owned_by=porg.created_by,
         )
         
@@ -82,5 +87,29 @@ def verify_domain(org):
         
         flash("Your organization was created successfully!")
         
-        return redirect(url_for('list_snippets', org=org))
+        return redirect(url_for('list_snippets', org=org.pk))
+    
+    form = VerifyDomainForm()
+    if form.validate_on_submit():
+        email = '%s@%s' % (form.email_username.data, porg.domain)
+        sig = hashlib.md5(email)
+        sig.update(app.config['SECRET_KEY'])
+        sig = sig.hexdigest()
+
+        body = render_template('organizations/mail/verify_domain.txt', **{
+            'verify_url': '%s?e=%s&s=%s' % (url_for('verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
+        })
+        
+        msg = Message("Codebox Domain Verification",
+                      sender="verify@codebox.cc",
+                      recipients=[email],
+                      body=body)
+        app.mail.send(msg)
+        
+        flash("An email has been sent to %s to validate domain ownership." % email)
+
+    return render_template('organizations/verify_domain.html', **{
+        'porg': porg,
+        'form': form,
+    })
     return redirect('/')

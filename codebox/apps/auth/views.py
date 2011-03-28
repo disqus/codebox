@@ -1,12 +1,12 @@
 import simplejson as json
 import urllib
 import urllib2
+import urlparse
 
-from codebox.apps.auth.decorators import login_required
-from codebox.apps.auth.models import User, Profile, Email
+from codebox.apps.auth.models import User, Profile
 from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session, flash
 
-# from codebox.apps.organizations.models import Organization, OrganizationMember
+from codebox.apps.organizations.models import Organization, OrganizationMember
 
 auth = Module(__name__)
 
@@ -48,15 +48,19 @@ def rpx():
                     pk=identifier,
                     user=user.pk,
                 )
-
-            # try:
-            #     org = Organization.objects.get(podio_org)
-            # except Organization.DoesNotExist:
-            #     org = Organization.objects.create(pk=podio_org, name="DISQUS")
-            # try:
-            #     m2m = OrganizationMember.objects.get(podio_org+str(podio_id))
-            # except OrganizationMember.DoesNotExist:
-            #     m2m = OrganizationMember.objects.create(pk=podio_org+str(podio_id), org=podio_org, user = podio_id)
+            
+            if email:
+                domain = urlparse.urlparse(email).hostname
+                try:
+                    org = Organization.objects.filter(domain=domain)[0]
+                except IndexError:
+                    pass
+                else:
+                    if not OrganizationMember.objects.exists(org=org, user=user.pk):
+                        OrganizationMember.objects.create(
+                            org=org,
+                            user=user.pk,
+                        )
 
             g.user = user
             session['userid'] = user.pk
@@ -72,3 +76,9 @@ def login():
     return render_template('auth/login.html', **{
         'callback_url': url_for('rpx', _external=True),
     })
+
+@auth.route('/logout')
+def logout():
+    del session['userid']
+    
+    return redirect('/')

@@ -1,5 +1,6 @@
 from flask import Flask, session, g
 from flaskext.redis import Redis
+from flaskext.mail import Mail
 from jinja2 import Markup
 from urllib import quote
 
@@ -17,8 +18,13 @@ def create_app():
     app.register_module(auth)
     app.register_module(orgs)
 
-    db = Redis(app)
-    db.init_app(app)
+    redis = Redis(app)
+    redis.init_app(app)
+    app.redis = redis
+    
+    mail = Mail()
+    mail.init_app(app)
+    app.mail = mail
     
     @app.before_request
     def before_request():

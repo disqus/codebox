@@ -43,25 +43,57 @@ p, form, table, ul, ol, h1, h2, h3, h4, h5, h6 {
     margin: auto;
     width: 990px;
 }
+.wrapper {
+    position: relative;
+}
+
+header h1 img {
+    display: inline;
+    float: left;
+}
+
+header h1 a {
+    float: left;
+    display: inline;
+    margin: 20px 0 0 7px;
+    text-decoration: none;
+    color: #333;
+}
+
+header small {
+    color: #666;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    font-size: 12px;
+}
+header small a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+header a:hover {
+    text-decoration: underline;
+}
 
 footer {
     font-size: 11px;
     clear: both;
+    color: #666;
 }
 
 footer .wrapper {
     text-align: right;
     padding: 20px 0 20px;
-    color: #666;
 }
 
-footer .wrapper a {
+footer a {
     color: #000;
     font-weight: bold;
     text-decoration: none;
 }
 
-footer .wrapper a:hover {
+footer a:hover {
     text-decoration: underline;
 }
 
@@ -85,26 +117,6 @@ h2 a {
 h2 a:hover {
     text-decoration: underline;
 }
-
-    #heading h1 img {
-        display: inline;
-        float: left;
-    }
-
-    #heading h1 a {
-        float: left;
-        display: inline;
-        margin: 20px 0 0 7px;
-        text-decoration: none;
-        color: #333;
-    }
-
-    #heading h1 small {
-        font-size: 12px;
-        float: right;
-        display: inline;
-        margin-top: 30px;
-    }
 
 h2 {
     font-size: 22px;
@@ -176,7 +188,7 @@ h2 {
     margin-left: 250px;
 }
 .sidebar { 
-    margin-left: -990px;
+    margin-left: -1030px;
     width: 200px;
 }
 

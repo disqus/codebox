@@ -1,0 +1,5 @@
+You are receiving this email because you, or someone identifying themselves with your email address, asked to verify domain ownership on Codebox. To continue with this verification, please visit the following link:
+
+{{ verify_url }}
+
+If you do not wish to continue with validation, or you did not make this request, feel free to ignore this email.

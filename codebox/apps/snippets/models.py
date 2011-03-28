@@ -17,7 +17,7 @@ class Snippet(Model):
     created_at = Float(default=time.time)
 
     languages = [
-        ('Plaintext', 'text'),
+        ('text', 'Plaintext'),
         ('javascript', 'JavaScript'),
         ('html', 'HTML'),
         ('python', 'Python'),

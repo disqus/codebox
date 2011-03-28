@@ -9,8 +9,7 @@ class User(Model):
     created_at = Float(default=time.time)
 
     class Meta:
-        index = (('user',),)
-        unique = (('email',))
+        unique = (('email',),)
 
     def get_all_organizations(self):
         from codebox.apps.organizations.models import OrganizationMember, Organization
@@ -28,7 +27,7 @@ class Email(Model):
     
     class Meta:
         index = (('user',),)
-        unique = (('email',))
+        unique = (('email',),)
 
 class Profile(Model):
     user = String()
