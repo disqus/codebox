@@ -1,4 +1,4 @@
-from flask import request, Module, flash, render_template, \
+from flask import request, Module, render_template, \
                   redirect, url_for, abort, g
 
 from codebox.apps.auth.models import User
@@ -65,8 +65,6 @@ def new_snippet(org):
 
         if request.is_xhr:
             return 'Success'
-
-        flash("Success")
 
         return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
 

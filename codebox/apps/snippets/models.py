@@ -35,4 +35,6 @@ class Snippet(Model):
         # Fill our dashboard index
         for user in Organization.objects.get(self.org).get_all_members():
             Snippet.objects.add_to_index(self.pk, dashboard=user.pk)
-            
+    
+    def get_user(self):
+        return User.objects.get(self.user)

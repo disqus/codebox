@@ -7,6 +7,10 @@
         <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
         <div class="snippet">
             {{ snippet.text|colorize(snippet.lang) | safe }}
+            <p class="info">
+                Posted by 
+                <span class="user">{{ snippet.get_user().name }}</span>
+            </p>
         </div>
     </div>
 {% endblock %}
