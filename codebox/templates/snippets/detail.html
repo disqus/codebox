@@ -5,8 +5,10 @@
 {% block main %}
     <div class="module">
         <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
-        <div class="snippet">
-            {{ snippet.text|colorize(snippet.lang) | safe }}
+        <div class="snippet clearfix">
+            <div class="text">
+                {{ snippet.text|colorize(snippet.lang) | safe }}
+            </div>
             <p class="info">
                 Posted by
                 <span class="user">{{ snippet.get_user().name }}</span>

@@ -143,11 +143,12 @@ h2 {
 
 .snippet {
     margin: 15px 0 15px 0;
-    padding: 15px;
+    padding: 15px 15px 25px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     color: #333;
+    border: #eee 1px solid;
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0, .2);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
     background-color: #fff;
@@ -155,12 +156,16 @@ h2 {
 }
 
 .snippet .info {
-    float: right;
-    display: inline;
-    margin: 10px 0 0px 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0;
     font-size: 11px;
     background-color: #efefef;
     padding: 5px 10px 5px 10px;
+    -webkit-border-radius: 0 0 4px 0;
+    -moz-border-radius: 0 0 4px 0;
+    
 }
 
 .snippet .info a {

@@ -3,7 +3,7 @@
     {% for snippet in snippets %}
     <li>
         <div class="snippet snippet-short clearfix">
-            <p class="text">{{ snippet.text|truncate(length=150)|colorize(snippet.lang)|safe }}</p>
+            <div class="text">{{ snippet.text|truncate(length=150)|colorize(snippet.lang)|safe }}</div>
             <p class="info">
                 Posted by
                 <span class="user">{{ snippets_users[snippet.user].name }}</span>
