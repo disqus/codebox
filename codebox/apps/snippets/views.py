@@ -20,10 +20,12 @@ def dashboard():
 
     snippets = list(Snippet.objects.filter(dashboard=g.user.pk))
     snippets_users = User.objects.get_many([s.user for s in snippets])
+    snippets_orgs = Organization.objects.get_many([s.org for s in snippets])
     
     return render_template('snippets/dashboard.html', **{
             'snippets': snippets,
             'snippets_users': dict([(u.pk, u) for u in snippets_users]),
+            'snippets_orgs': dict([(u.pk, u) for u in snippets_orgs])
             })
 
 @frontend.route('/<org>/view/<id>')
@@ -84,11 +86,12 @@ def list_snippets(org):
     snippets_users = User.objects.get_many([s.user for s in snippets])
 
     return render_template('organizations/detail.html', **{
-            'org': org,
-            'org_members': org_members,
-            'snippets': snippets,
-            'snippets_users': dict([(u.pk, u) for u in snippets_users]),
-            })
+        'org': org,
+        'org_members': org_members,
+        'snippets': snippets,
+        'snippets_users': dict([(u.pk, u) for u in snippets_users]),
+        'snippets_orgs': {org.pk: org},
+    })
 
 @frontend.route('/<org>/search')
 @login_required
@@ -122,9 +125,9 @@ def search_snippets(org):
         snippets_users = []
 
     return render_template('organizations/search.html', **{
-            'query': query,
-            'org': org,
-            'org_members': org_members,
-            'snippets': results,
-            'snippets_users': dict([(u.pk, u) for u in snippets_users]),
-            })
+        'query': query,
+        'org': org,
+        'org_members': org_members,
+        'snippets': results,
+        'snippets_users': dict([(u.pk, u) for u in snippets_users]),
+    })

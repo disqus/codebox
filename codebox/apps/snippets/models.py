@@ -25,6 +25,7 @@ class Snippet(Model):
         ('c', 'C'),
         ('java', 'Java'),
         ('xml', 'XML'),
+        ('css', 'CSS'),
     ]
 
     class Meta:
