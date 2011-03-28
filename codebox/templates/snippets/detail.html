@@ -8,8 +8,10 @@
         <div class="snippet">
             {{ snippet.text|colorize(snippet.lang) | safe }}
             <p class="info">
-                Posted by 
+                Posted by
                 <span class="user">{{ snippet.get_user().name }}</span>
+                from
+                <span class="org"><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ org.name }}</a></span>
             </p>
         </div>
     </div>
