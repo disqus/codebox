@@ -223,7 +223,7 @@ class Manager(object):
         g.redis.incr(self._get_default_count_key())
 
         # Store additional predefined index
-        for fields in itertools.chain([(i,) for i in self.model._meta.index], self.model._meta.unique):
+        for fields in itertools.chain(self.model._meta.index, self.model._meta.unique):
             idx_kwargs = dict((f, getattr(inst, f)) for f in fields)
             self.add_to_index(inst.pk, **idx_kwargs)
 

@@ -9,7 +9,7 @@ class User(Model):
     created_at = Float(default=time.time)
 
     class Meta:
-        index = ('user',)
+        index = (('user',),)
         unique = (('email',))
 
     def get_all_organizations(self):
@@ -27,7 +27,7 @@ class Email(Model):
     verified = Boolean(default=False)
     
     class Meta:
-        index = ('user',)
+        index = (('user',),)
         unique = (('email',))
 
 class Profile(Model):
@@ -35,4 +35,4 @@ class Profile(Model):
     created_at = Float(default=time.time)
     
     class Meta:
-        index = ('user',)
+        index = (('user',),)

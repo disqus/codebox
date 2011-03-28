@@ -25,7 +25,7 @@ class OrganizationMember(Model):
     created_at = Float(default=time.time)
     
     class Meta:
-        index = ('org', 'user')
+        index = (('org',), ('user',))
         unique = (('org', 'user'),)
 
 class PendingOrganization(Model):

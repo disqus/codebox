@@ -28,7 +28,7 @@ class Snippet(Model):
     ]
 
     class Meta:
-        index = ('org', 'user')
+        index = (('org',), ('user',))
 
     def post_create(self):
         from codebox.apps.organizations.models import Organization
