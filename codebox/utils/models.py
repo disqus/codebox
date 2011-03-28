@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import pickle
 import time
 import uuid
@@ -110,57 +111,87 @@ class Options(object):
         self.app_label = cls.__module__.split('.', 3)[1]
         self.module_name = cls.__name__
         if meta:
-            self.indexes = list(meta.__dict__.get('indexes', []))
+            self.index = list(meta.__dict__.get('index', []))
+            self.unique = list(meta.__dict__.get('unique', []))
             self.db_name = meta.__dict__.get('db_name', '%s_%s' % (self.app_label, self.module_name))
         else:
-            self.indexes = ()
+            self.index = ()
+            self.unique = ()
             self.db_name = '%s_%s' % (self.app_label, self.module_name)
+
+class QuerySet(object):
+    """
+    Iterates over ``func`` using start/end kwargs.
+    """
+    def __init__(self, model, key, func, is_keymap=False):
+        self.model = model
+        self.func = func
+        self.key = key
+        self.is_keymap = is_keymap
+    
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            assert key.step == 1 or key.step is None
+            start = key.start
+            stop = key.stop
+        else:
+            start = key
+            stop = key + 1
+        if stop == -1:
+            num = stop
+        else:
+            num = start - stop
+        for r in self.func(self.key, start=start, num=num):
+            if self.is_keymap:
+                yield self.model(pk=r)
+            else:
+                yield r
+
+    def __iter__(self):
+        for r in self[0:-1]:
+            yield r
 
 class Manager(object):
     def __init__(self, model):
         self.model = model
         self.name = encode_key(self.model._meta.db_name)
 
-    def exists(self, key):
-        # XXX: ugly missing abstraction for key name
+    def exists(self, key, **kwargs):
+        if kwargs:
+            idx_key = self._get_index_key(**kwargs)
+            # Index lookup
+            if key is None:
+                return bool(len(g.redis.zrange(idx_key, 0, 1)))
+            return g.redis.zscore(idx_key, key) is not None
+        # XXX: missing abstraction for key name
         return g.redis.hlen('%s:items:%s' % (self.name, key))
 
     def get(self, key):
-        # XXX: ugly missing abstraction for key name
         if not self.exists(key):
             raise self.model.DoesNotExist
         return self.model(pk=key)
 
     def get_many(self, keys):
-        # XXX: ugly missing abstraction for key name
         results = []
         for key in keys:
-            if not g.redis.hlen('%s:items:%s' % (self.name, key)):
+            if not self.exists(key):
                 continue
             results.append(self.model(pk=key))
         return results
 
-    def all(self, start=0, end=-1):
-        for key in g.redis.zrevrange(self._get_default_index_key(), start, end):
-            yield self.get(key)
+    def all(self):
+        return QuerySet(self.model, self._get_default_index_key(), g.redis.zrevrange, True)
 
     def count(self):
         return int(g.redis.get(self._get_default_count_key()) or 0)
 
-    def for_index(self, index, key, start=0, end=-1):
-        for id_ in g.redis.zrevrange(self._get_index_key(index, key), start, end):
-            yield self.get(id_)
+    def filter(self, **kwargs):
+        # XXX: we should have some logic to ensure the indexes requested exist
+        return QuerySet(self.model, self._get_index_key(**kwargs), g.redis.zrevrange, True)
 
-    def add_to_index(self, index, key, id_, score=None):
-        g.redis.zadd(self._get_index_key(index, key), id_, score or time.time())
-        g.redis.incr(self._get_index_count_key(index, key))
-    
-    def index_exists(self, index, key, id_=None):
-        idx_key = self._get_index_key(index, key)
-        if id_ is None:
-            return bool(len(g.redis.zrange(idx_key, 0, 1)))
-        print idx_key, id_
-        return g.redis.zscore(idx_key, id_) is not None
+    def add_to_index(self, key, score=None, **kwargs):
+        g.redis.zadd(self._get_index_key(**kwargs), key, score or time.time())
+        g.redis.incr(self._get_index_count_key(**kwargs))
         
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():
@@ -179,10 +210,10 @@ class Manager(object):
         g.redis.zadd(self._get_default_index_key(), inst.pk, time.time())        
         g.redis.incr(self._get_default_count_key())
 
-        # Store additional predefined indexes
-        for field in self.model._meta.indexes:
-            if field in inst:
-                self.add_to_index(field, getattr(inst, field), inst.pk)
+        # Store additional predefined index
+        for fields in itertools.chain([(i,) for i in self.model._meta.index], self.model._meta.unique):
+            idx_kwargs = dict((f, getattr(inst, f)) for f in fields)
+            self.add_to_index(inst.pk, **idx_kwargs)
 
         inst.post_create()
 
@@ -192,11 +223,13 @@ class Manager(object):
     def storage(self):
         return RedisHashMap(g.redis, self._meta.db_name)
 
-    def _get_index_key(self, index, key):
-        return '%s:index:%s:%s' % (self.name, encode_key(index), encode_key(key))
+    def _get_index_key(self, **kwargs):
+        idx_key = ':'.join('%s=%s' % (encode_key(k), encode_key(v)) for k, v in sorted(kwargs.items(), key=lambda x: x[0]))
+        return '%s:index:%s' % (self.name, idx_key)
 
-    def _get_index_count_key(self, index, key):
-        return '%s:count:%s:%s' % (self.name, encode_key(index), encode_key(key))
+    def _get_index_count_key(self, **kwargs):
+        idx_key = ':'.join('%s=%s' % (encode_key(k), encode_key(v)) for k, v in sorted(kwargs.items(), key=lambda x: x[0]))
+        return '%s:count:%s' % (self.name, idx_key)
 
     def _get_default_index_key(self):
         return '%s:index:default' % (self.name,)

@@ -28,11 +28,11 @@ class Snippet(Model):
     ]
 
     class Meta:
-        indexes = ('org', 'user')
+        index = ('org', 'user')
 
     def post_create(self):
         from codebox.apps.organizations.models import Organization
         # Fill our dashboard index
         for user in Organization.objects.get(self.org).get_all_members():
-            Snippet.objects.add_to_index('dashboard', user.pk, self.pk)
+            Snippet.objects.add_to_index(self.pk, dashboard=user.pk)
             

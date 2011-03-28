@@ -9,10 +9,13 @@ class Organization(Model):
     owned_by = String(required=False) # fkey to User
     created_at = Float(default=time.time)
 
+    class Meta:
+        unique = (('domain',),)
+
     def get_all_members(self):
         from codebox.apps.auth.models import User
         
-        memberships = list(OrganizationMember.objects.for_index('org', self.pk))
+        memberships = list(OrganizationMember.objects.filter(org=self.pk))
         return User.objects.get_many([m.user for m in memberships])
 
 class OrganizationMember(Model):
@@ -22,7 +25,8 @@ class OrganizationMember(Model):
     created_at = Float(default=time.time)
     
     class Meta:
-        indexes = ('org', 'user')
+        index = ('org', 'user')
+        unique = (('org', 'user'),)
 
 class PendingOrganization(Model):
     """

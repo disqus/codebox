@@ -18,7 +18,7 @@ def dashboard():
     Shows organizations/recent pastes/etc
     """
 
-    snippets = list(Snippet.objects.for_index('dashboard', g.user.pk, 0, 10))
+    snippets = list(Snippet.objects.filter(dashboard=g.user.pk))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     
     return render_template('snippets/dashboard.html', **{
@@ -53,7 +53,7 @@ def new_snippet(org):
     """
     org = get_object_or_404(Organization, org)
 
-    form = NewSnippetForm()
+    form = NewSnippetForm(obj=org)
     if form.validate_on_submit():
         # Generate a unique slug from name
         snippet = Snippet.objects.create(
@@ -82,7 +82,7 @@ def list_snippets(org):
     org = get_object_or_404(Organization, org)
     org_members = org.get_all_members()
     
-    snippets = list(Snippet.objects.for_index('org', org.pk, 0, 10))
+    snippets = list(Snippet.objects.filter(org=org.pk))
     snippets_users = User.objects.get_many([s.user for s in snippets])
 
     return render_template('organizations/detail.html', **{

@@ -9,16 +9,17 @@ class User(Model):
     created_at = Float(default=time.time)
 
     class Meta:
-        indexes = ('user',)
+        index = ('user',)
+        unique = (('email',))
 
     def get_all_organizations(self):
         from codebox.apps.organizations.models import OrganizationMember, Organization
 
-        memberships = list(OrganizationMember.objects.for_index('user', self.pk))
+        memberships = list(OrganizationMember.objects.filter(user=self.pk))
         return Organization.objects.get_many([m.org for m in memberships])
 
     def get_relation(self, relation):
-        return list(relation.objects.for_index('user', self.pk))
+        return list(relation.objects.filter(user=self.pk))
 
 class Email(Model):
     user = String()
@@ -26,11 +27,12 @@ class Email(Model):
     verified = Boolean(default=False)
     
     class Meta:
-        indexes = ('user',)
+        index = ('user',)
+        unique = (('email',))
 
 class Profile(Model):
     user = String()
     created_at = Float(default=time.time)
     
     class Meta:
-        indexes = ('user',)
+        index = ('user',)
