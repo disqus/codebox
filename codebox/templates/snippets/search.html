@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}Search &mdash; {{ super() }}{% endblock %}
+
+{% block main %}
+    <div class="module">
+        <h2>Results for {{ query }}</h2>
+        {% include "partials/snippet_list.html" %}
+    </div>
+{% endblock %}

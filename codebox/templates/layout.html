@@ -61,6 +61,12 @@
 
                     <div class="sidebar">
                         {% block sidebar %}
+                            <div class="module">
+                                <h2>Search</h2>
+                                <form method="get" action="{{ url_for('search_snippets') }}">
+                                    <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
+                                </form>
+                            </div>
                             {% if g.user %}
                                 <div class="module">
                                     <h2>Organizations</h2>

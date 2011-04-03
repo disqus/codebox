@@ -14,9 +14,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('codebox.conf.Config')
 
-    app.register_module(frontend)
     app.register_module(auth)
     app.register_module(orgs)
+    app.register_module(frontend)
 
     redis = Redis(app)
     redis.init_app(app)

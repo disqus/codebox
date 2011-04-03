@@ -13,6 +13,7 @@ class Snippet(Model):
     org = String()
     user = String()
     text = String()
+    keywords = String(required=False)
     lang = String()
     created_at = Float(default=time.time)
 
