@@ -193,6 +193,7 @@ def new_snippet(org):
             org=org,
             text=form.text.data,
             lang=form.lang.data,
+            keywords=form.keywords.data,
             user=g.user.pk,
         )
 
