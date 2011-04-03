@@ -103,6 +103,20 @@ class Model(object):
         for k, v in kwargs.iteritems():
             self[k] = v
 
+    def delete(self):
+        # Clear all indexes first
+        #  Default index
+        g.redis.zrem(self.objects._get_default_index_key(), self.pk)
+        g.redis.decr(self.objects._get_default_count_key())
+
+        #  Store additional predefined index
+        for fields in itertools.chain(self._meta.index, self._meta.unique):
+            idx_kwargs = dict((f, getattr(self, f)) for f in fields)
+            self.objects.remove_from_index(self.pk, **idx_kwargs)
+
+        # Clear out the hash table for object
+        self._storage.clear()
+
     def post_create(self):
         pass
 
@@ -137,22 +151,26 @@ class QuerySet(object):
         self.is_keymap = is_keymap
     
     def __getitem__(self, key):
-        if isinstance(key, slice):
+        is_slice = isinstance(key, slice)
+        if is_slice:
             assert key.step == 1 or key.step is None
             start = key.start
             stop = key.stop
         else:
             start = key
             stop = key + 1
+
         if stop == -1:
             num = stop
         else:
             num = start - stop
-        for r in self.func(self.key, start=start, num=num):
-            if self.is_keymap:
-                yield self.model(pk=r)
-            else:
-                yield r
+        results = list(self.func(self.key, start=start, num=num))
+        if self.is_keymap:
+            results = [self.model(pk=r) for r in results]
+        
+        if is_slice:
+            return results
+        return results[0]
 
     def __iter__(self):
         for r in self[0:-1]:
@@ -199,7 +217,22 @@ class Manager(object):
     def add_to_index(self, key, score=None, **kwargs):
         g.redis.zadd(self._get_index_key(**kwargs), key, score or time.time())
         g.redis.incr(self._get_index_count_key(**kwargs))
-        
+
+    def remove_from_index(self, key, score=None, **kwargs):
+        g.redis.zrem(self._get_index_key(**kwargs), key)
+        g.redis.decr(self._get_index_count_key(**kwargs))
+    
+    def get_or_create(self, defaults={}, **kwargs):
+        try:
+            result = self.filter(**kwargs)[0]
+            created = False
+        except IndexError:
+            kwargs = kwargs.copy()
+            kwargs.update(defaults)
+            result = self.create(**kwargs)
+            created = True
+        return result, created
+    
     def create(self, **kwargs):
         for name, field in self.model._meta.fields.iteritems():
             if name not in kwargs and field.default is NotDefined and field.required:

@@ -1,12 +1,13 @@
 import re
 
 from flask import current_app as app
-from flaskext.wtf import Form, TextField, Required, SelectField
+from flaskext.wtf import Form, TextField, TextAreaField, Required, SelectField
 from codebox.apps.organizations.models import Organization
 from codebox.apps.snippets.models import Snippet
 from wtforms.validators import ValidationError
 
 domain_re = re.compile(r'^([a-z0-9]([\-a-z0-9]*[a-z0-9])?\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$', re.I)
+email_re = re.compile(r'^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,}$', re.I)
 
 class IsValidDomain(object):
     def __call__(self, form, field):
@@ -22,6 +23,16 @@ class IsValidDomain(object):
         if Organization.objects.exists(domain=field.data):
             raise ValidationError('That domain has already been registered.')
 
+class IsValidEmailList(object):
+    def __call__(self, form, field):
+        if not field.data:
+            return
+        
+        email_list = field.data.split('\n')
+        for email in email_list:
+            if not email_re.match(field.data):
+                raise ValidationError('The email you entered, \'%s\' is not valid.' % email)
+
 class NewOrganizationForm(Form):
     name = TextField('Organization Name', validators=[Required()])
     lang = SelectField('Default Language', choices=Snippet.languages, validators=[Required()])
@@ -29,3 +40,6 @@ class NewOrganizationForm(Form):
 
 class VerifyDomainForm(Form):
     email_username = TextField('Email', validators=[Required()])
+
+class InviteUserForm(Form):
+    email_list = TextAreaField('Email', validators=[IsValidEmailList()])

@@ -4,7 +4,7 @@
 
 {% block main %}
     <div class="module">
-        <h2>{{ snippet.lang }} Snippet <strong>{{ snippet.org }}</strong></h2>
+        <h2>{{ snippet.lang }} Snippet <strong><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></strong></h2>
         <div class="snippet clearfix">
             <div class="text">
                 {{ snippet.text|colorize(snippet.lang) | safe }}

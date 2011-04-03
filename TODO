@@ -2,8 +2,6 @@ Code Sharing Thingy
 
 - Steal 90% of paste2
 - API + CLI script to paste (use curl)
-- Use Yammer relationships for permissions
-- Post to Yammer stream (messages resource)
-- JS syntax highlighting
 - Optional labels
-- Searchable
+- Implement a better search
+- Allow organization owners to invite via email.

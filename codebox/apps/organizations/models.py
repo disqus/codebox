@@ -1,4 +1,7 @@
+import hashlib
 import time
+
+from flask import current_app as app
 
 from codebox.utils.models import Model, String, Float, Boolean
 
@@ -37,3 +40,24 @@ class PendingOrganization(Model):
     domain = String()
     created_by = String(required=False) # fkey to User
     created_at = Float(default=time.time)
+
+class PendingMember(Model):
+    """
+    A member which has been invited and not yet joined,
+    or who has applied to join an organization.
+    """
+    org = String()
+    user = String(required=False)
+    email = String()
+    created_by = String(required=False)
+    created_at = Float(default=time.time)
+    
+    class Meta:
+        unique = (('org', 'email'),)
+    
+    def get_signature(self):
+        sig = hashlib.md5(self.email)
+        sig.update(app.config['SECRET_KEY'])
+        sig = sig.hexdigest()
+        
+        return sig

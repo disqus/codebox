@@ -130,4 +130,5 @@ def search_snippets(org):
         'org_members': org_members,
         'snippets': results,
         'snippets_users': dict([(u.pk, u) for u in snippets_users]),
+        'snippets_orgs': {org.pk: org},
     })

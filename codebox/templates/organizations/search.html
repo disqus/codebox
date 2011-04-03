@@ -1,33 +1,11 @@
-{% extends "layout.html" %}
+{% extends "organizations/detail.html" %}
 
 {% block title %}{{ org.name }} &mdash; {{ super() }}{% endblock %}
 
-{% block main %}
-
-    <div class="module main">
-        <h2>{{ org.name }}</h2>
+{% block main_inner %}
+    <div class="module">
+        <h2><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></h2>
         <h3>Results for {{ query }}</h3>
         {% include "partials/snippet_list.html" %}
     </div>
-
-    <div class="sidebar">
-        <div class="module">
-            <a href="/{{ org.pk }}/new" class="new-snippet-link">New Snippet</a>
-        </div>
-        <div class="module">
-            <h2>Search</h2>
-            <form method="get" action="/{{ org.pk }}/search">
-                <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
-            </form>
-        </div>
-        <div class="module">
-            <h2>Members</h2>
-            <ul>
-                {% for member in org_members %}
-                    <li><a class="bubble" href="#">{{ member.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
 {% endblock %}

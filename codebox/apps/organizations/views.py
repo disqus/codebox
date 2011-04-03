@@ -5,8 +5,10 @@ from flaskext.mail import Message
 from urllib import quote
 
 from codebox.apps.auth.decorators import login_required
-from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainForm
-from codebox.apps.organizations.models import Organization, OrganizationMember, PendingOrganization
+from codebox.apps.organizations.decorators import can_admin_org
+from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainForm, InviteUserForm
+from codebox.apps.organizations.models import Organization, OrganizationMember, PendingOrganization, \
+                                              PendingMember
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
 
@@ -113,3 +115,61 @@ def verify_domain(org):
         'form': form,
     })
     return redirect('/')
+
+@orgs.route('/<org>/invite/confirm/<pmem>/<sig>', methods=['POST', 'GET'])
+@login_required
+def invite_confirm(org, pmem, sig):
+    org = get_object_or_404(Organization, org)
+    pmem = get_object_or_404(PendingMember, pmem)
+
+    if pmem.org == org.pk:
+        if OrganizationMember.objects.get_or_create(
+                user=g.user.pk,
+                org=org.pk,
+            )[1]:
+            
+            flash("Your have been added to '%s'" % org.name)
+        pmem.delete()
+        
+    return redirect(url_for('list_snippets', org=org.pk))
+
+@orgs.route('/<org>/invite', methods=['POST', 'GET'])
+@login_required
+@can_admin_org
+def invite_members(org):
+    org = get_object_or_404(Organization, org)
+    
+    form = InviteUserForm()
+    if form.validate_on_submit():
+        for email in form.email_list.data.split('\n'):
+            pmem = PendingMember.objects.get_or_create(
+                email=email,
+                org=org.pk,
+                defaults={
+                    'created_by': g.user.pk,
+                }
+            )[0]
+            
+            sig = pmem.get_signature()
+
+            body = render_template('organizations/mail/invite.txt', **{
+                'confirm_url': url_for('invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
+                'org': org,
+            })
+        
+            print body
+        
+            msg = Message("Codebox Organization Invite",
+                          sender="verify@codebox.cc",
+                          recipients=[email],
+                          body=body)
+            app.mail.send(msg)
+        
+        flash("Your invitation(s) have been sent.")
+
+    return render_template('organizations/invite_members.html', **{
+        'org': org,
+        'form': form,
+    })
+    return redirect('/')
+

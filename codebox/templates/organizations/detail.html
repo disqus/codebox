@@ -5,26 +5,31 @@
 {% block main %}
 
     <div class="main">
-        <div class="module">
-            <h2>{{ org.name }}</h2>
-            {% include "partials/snippet_list.html" %}
-        </div>
+        {% block main_inner %}
+            <div class="module">
+                <h2>{{ org.name }}</h2>
+                {% include "partials/snippet_list.html" %}
+            </div>
+        {% endblock %}
     </div>
 
     <div class="sidebar">
         <div class="module">
-            <a href="/{{ org.pk }}/new" class="new-snippet-link">New Snippet</a>
+            <a href="{{ url_for('new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a>
+            {% if g.user.can_admin_org(org) %}
+                <a href="{{ url_for('invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a>
+            {% endif %}
         </div>
         <div class="module">
             <h2>Search</h2>
-            <form method="get" action="/{{ org.pk }}/search">
+            <form method="get" action="{{ url_for('search_snippets', org=org.pk) }}">
                 <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
             </form>
         </div>
         <div class="module">
             <h2>Members</h2>
             <ul>
-                {% for member in org_members %}
+                {% for member in org.get_all_members() %}
                     <li><a class="bubble" href="#">{{ member.name }}</a></li>
                 {% endfor %}
             </ul>

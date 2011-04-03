@@ -11,11 +11,17 @@ class User(Model):
     class Meta:
         unique = (('email',),)
 
-    def get_all_organizations(self):
+    def get_all_organizations(self, admin=False):
         from codebox.apps.organizations.models import OrganizationMember, Organization
 
         memberships = list(OrganizationMember.objects.filter(user=self.pk))
-        return Organization.objects.get_many([m.org for m in memberships])
+        orgs = Organization.objects.get_many([m.org for m in memberships])
+        if admin:
+            orgs = filter(lambda x: x.owned_by == self.pk, orgs)
+        return orgs
+
+    def can_admin_org(self, org):
+        return org.owned_by == self.pk
 
     def get_relation(self, relation):
         return list(relation.objects.filter(user=self.pk))
