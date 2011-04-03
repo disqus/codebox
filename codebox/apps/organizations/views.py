@@ -247,12 +247,12 @@ def search_snippets(org):
                         n += 1
             if i > 1000 or n > 25:
                 break
-        if results:        
-            snippets_users = User.objects.get_many([s.user for s in results])
-        else:
-            snippets_users = []
     else:
         results = []
+
+    if results:        
+        snippets_users = User.objects.get_many([s.user for s in results])
+    else:
         snippets_users = []
 
     return render_template('organizations/search.html', **{
