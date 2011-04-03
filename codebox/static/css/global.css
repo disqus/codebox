@@ -188,9 +188,12 @@ h2 {
     text-decoration: underline;
 }
 
-.new-snippet textarea {
+.new-snippet textarea,
+.new-snippet input[type=text] {
     display: block;
     width: 100%;
+    border: 1px solid #aaa;
+    padding: 2px;
 }
 
 

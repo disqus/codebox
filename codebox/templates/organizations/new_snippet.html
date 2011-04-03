@@ -18,6 +18,12 @@
                 {% endif %}
             </div>
             <div class="form-row">
+                <p>{{ form.keywords(placeholder='keywords (for searching)', size=70) }}</p>
+                {% if form.keywords.errors %}
+                    <ul class="errors">{% for error in form.keywords.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            <div class="form-row">
                 <p><input type="submit" value="Submit"></p>
             </div>
         </form>
