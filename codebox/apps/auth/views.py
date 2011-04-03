@@ -58,7 +58,7 @@ def rpx():
                 else:
                     if not OrganizationMember.objects.exists(org=org, user=user.pk):
                         OrganizationMember.objects.create(
-                            org=org,
+                            org=org.pk,
                             user=user.pk,
                         )
 
