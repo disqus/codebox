@@ -33,7 +33,7 @@ class IsValidEmailList(object):
         
         email_list = [e.strip() for e in field.data.split('\n')]
         for email in email_list:
-            if not email_re.match(field.data):
+            if not email_re.match(email):
                 raise ValidationError('The email you entered, \'%s\' is not valid.' % email)
 
 class NewOrganizationForm(Form):
