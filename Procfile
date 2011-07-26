@@ -1,1 +1,1 @@
-web: bin/python codebox/manage.py runserver
+web: bin/python codebox/manage.py run_gunicorn --bind="$HOST:$PORT"

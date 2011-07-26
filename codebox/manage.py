@@ -17,7 +17,7 @@ from flaskext.actions import Manager
 from codebox.app import create_app
 
 app = create_app()
-manager = Manager(app)
+manager = Manager(app, default_server_actions=True)
 
 if __name__ == "__main__":
     manager.run()
