@@ -1,1 +1,1 @@
-web: bin/python manage.py runserver
+web: bin/python codebox/manage.py runserver
