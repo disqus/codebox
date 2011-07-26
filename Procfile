@@ -1,1 +1,1 @@
-web: bin/python codebox/manage.py run_gunicorn --bind="$HOST:$PORT" --pid=tmp/flask.pid
+web: bin/python codebox/manage.py run_gunicorn --bind="0.0.0.0:$PORT" --pid=tmp/flask.pid
