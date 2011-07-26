@@ -23,7 +23,7 @@ class Config(object):
     MAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
     MAIL_USE_TLS = True
     MAIL_DOMAIN = os.environ.get('SENDGRID_DOMAIN', 'codebox.cc')
-    DEFAULT_MAIL_SENDER = 'verify@codebox.cc'
+    DEFAULT_MAIL_SENDER = 'verify@email.codebox.cc'
 
 if os.environ.has_key('REDISTOGO_URL'):
     # 'redis://username:password@my.host:6789' 
