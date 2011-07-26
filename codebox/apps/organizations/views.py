@@ -146,6 +146,8 @@ def invite_members(org):
     form = InviteUserForm()
     if form.validate_on_submit():
         for email in form.email_list.data.split('\n'):
+            email = email.strip()
+
             pmem = PendingMember.objects.get_or_create(
                 email=email,
                 org=org.pk,
@@ -160,8 +162,6 @@ def invite_members(org):
                 'confirm_url': url_for('.invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
                 'org': org,
             })
-        
-            print body
         
             msg = Message("Codebox Organization Invite",
                           recipients=[email],
