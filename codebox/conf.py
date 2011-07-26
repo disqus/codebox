@@ -18,11 +18,12 @@ class Config(object):
     JANRAIN_API_KEY = os.environ.get('JANRAIN_API_KEY')
     DOMAIN_BLACKLIST = ['gmail.com', 'hotmail.com', 'live.com', 'msn.com', 'yahoo.com', 'googlemail.com', 'facebookmail.com']
     MAIL_SERVER = 'smtp.sendgrid.net'
-    MAIL_PORT = 587
+    MAIL_PORT = 25
     MAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
     MAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
     MAIL_USE_TLS = True
     MAIL_DOMAIN = os.environ.get('SENDGRID_DOMAIN', 'codebox.cc')
+    MAIL_DEFAULT_FROM = 'disqus@%s' % MAIL_DOMAIN
 
 if os.environ.has_key('REDISTOGO_URL'):
     # 'redis://username:password@my.host:6789' 
