@@ -56,7 +56,7 @@ def rpx():
                 except IndexError:
                     pass
                 else:
-                    if not OrganizationMember.objects.exists(org=org, user=user.pk):
+                    if not OrganizationMember.objects.exists(org=org.pk, user=user.pk):
                         OrganizationMember.objects.create(
                             org=org.pk,
                             user=user.pk,
