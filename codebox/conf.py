@@ -7,6 +7,7 @@ codebox.conf
 """
 
 import os, os.path
+import urlparse
 
 class Config(object):
     DEBUG = True
@@ -17,6 +18,15 @@ class Config(object):
     PODIO_CLIENT_ID = "dcramer@gmail.com"
     PODIO_KEY = "f7qFIBcPTfTBLOd8ondkO9UGqU6uN1iG"
     DOMAIN_BLACKLIST = ['gmail.com', 'hotmail.com', 'live.com', 'msn.com', 'yahoo.com', 'googlemail.com', 'facebookmail.com']
+
+if os.environ.has_key('REDISTOGO_URL'):
+    # 'redis://username:password@my.host:6789' 
+    urlparse.uses_netloc.append('redis')
+    url = urlparse.urlparse(os.environ['REDISTOGO_URL'])
+    Config.REDIS_USER = url.username
+    Config.REDIS_PASSWORD = url.password
+    Config.REDIS_HOST = url.hostname
+    Config.REDIS_PORT = url.port
 
 class TestingConfig(Config):
     REDIS_DB = 9
