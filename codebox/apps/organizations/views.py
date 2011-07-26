@@ -106,7 +106,6 @@ def verify_domain(org):
         })
         
         msg = Message("Codebox Domain Verification",
-                      sender=app.config['MAIL_DEFAULT_FROM'],
                       recipients=[email],
                       body=body)
         app.mail.send(msg)
@@ -163,7 +162,6 @@ def invite_members(org):
             print body
         
             msg = Message("Codebox Organization Invite",
-                          sender=app.config['MAIL_DEFAULT_FROM'],
                           recipients=[email],
                           body=body)
             app.mail.send(msg)
