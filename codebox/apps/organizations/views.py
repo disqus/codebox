@@ -200,7 +200,7 @@ def new_snippet(org):
         if request.is_xhr:
             return 'Success'
 
-        return redirect(url_for('.snippet_detail', org=org.pk, id=snippet.pk))
+        return redirect(url_for('snippets.snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('organizations/new_snippet.html', **{
         'org': org,

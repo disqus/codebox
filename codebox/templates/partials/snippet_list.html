@@ -10,7 +10,7 @@
                 from
                 <span class="org"><a href="{{ url_for('organizations.list_snippets', org=snippet.org) }}">{{ snippets_orgs[snippet.org].name }}</a></span>
             </p>
-            <a href="{{ url_for('organizations.snippet_detail', id=snippet.pk, org=snippet.org) }}" class="row-link"></a>
+            <a href="{{ url_for('snippets.snippet_detail', id=snippet.pk, org=snippet.org) }}" class="row-link"></a>
         </div>
     </li>
     {% endfor %}
