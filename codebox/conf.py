@@ -17,6 +17,11 @@ class Config(object):
     REDIS_DB = 0
     JANRAIN_API_KEY = os.environ.get('JANRAIN_API_KEY')
     DOMAIN_BLACKLIST = ['gmail.com', 'hotmail.com', 'live.com', 'msn.com', 'yahoo.com', 'googlemail.com', 'facebookmail.com']
+    MAIL_SERVER = 'smtp.sendgrid.net'
+    MAIL_PORT = 25
+    MAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
+    MAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+    MAIL_USE_TLS = True
 
 if os.environ.has_key('REDISTOGO_URL'):
     # 'redis://username:password@my.host:6789' 
