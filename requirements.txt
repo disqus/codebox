@@ -1,9 +1,10 @@
+-e git+git://github.com/dcramer/flask-redis.git#egg=Flask-Redis
+
 oauth2
 Dolt==0.5.1
 Flask==0.7.2
 Flask-Actions==0.6.4
 Flask-Mail==0.6.1
-Flask-Redis==0.1
 Flask-WTF==0.5.2
 gunicorn==0.12.2
 httplib2==0.7.1
