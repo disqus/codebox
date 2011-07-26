@@ -21,7 +21,7 @@ class Config(object):
     MAIL_PORT = 25
     MAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
     MAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
-    MAIL_USE_TLS = True
+    MAIL_USE_TLS = False
     MAIL_DOMAIN = os.environ.get('SENDGRID_DOMAIN', 'codebox.cc')
     DEFAULT_MAIL_SENDER = 'verify@codebox.cc'
 
