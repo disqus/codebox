@@ -1,3 +1,11 @@
+"""
+codebox.app
+~~~~~~~~~~~
+
+:copyright: (c) 2011 DISQUS.
+:license: Apache License 2.0, see LICENSE for more details.
+"""
+
 from flask import Flask, session, g
 from flaskext.redis import Redis
 from flaskext.mail import Mail

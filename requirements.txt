@@ -1,0 +1,10 @@
+oauth2
+dolt
+Flask-Actions
+Flask-Mail
+Flask-Redis
+Flask-WTF
+httplib2
+pygments
+simplejson
+unittest2

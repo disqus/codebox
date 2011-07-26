@@ -1,7 +1,14 @@
+"""
+codebox.utils.syntax
+~~~~~~~~~~~~~~~~~~~~
+
+:copyright: (c) 2011 DISQUS.
+:license: Apache License 2.0, see LICENSE for more details.
+"""
+
 from pygments import highlight
-from pygments.lexers import guess_lexer, get_lexer_by_name
+from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
-from pygments.styles import get_style_by_name
 
 def colorize(code, lang):
     """

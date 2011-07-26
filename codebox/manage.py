@@ -1,6 +1,12 @@
 #!/usr/bin/env python
-# manage.py
 # -*- encoding:utf-8 -*-
+"""
+codebox.manage
+~~~~~~~~~~~~~~
+
+:copyright: (c) 2011 DISQUS.
+:license: Apache License 2.0, see LICENSE for more details.
+"""
 
 from flaskext.actions import Manager
 

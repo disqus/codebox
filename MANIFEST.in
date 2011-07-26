@@ -1,0 +1,4 @@
+include setup.py README.rst MANIFEST.in LICENSE
+recursive-include codebox/templates *
+recursive-include codebox/static *
+global-exclude *~

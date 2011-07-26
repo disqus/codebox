@@ -1,3 +1,11 @@
+"""
+codebox.utils.shortcuts
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:copyright: (c) 2011 DISQUS.
+:license: Apache License 2.0, see LICENSE for more details.
+"""
+
 from flask import abort
 
 def get_object_or_404(model, pk):

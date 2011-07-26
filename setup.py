@@ -1,23 +1,24 @@
 from setuptools import setup, find_packages
 
+import os.path
+
+def parse_reqs_file(filepath):
+    reqs = []
+    with open(filepath, 'r') as fp:
+        for line in fp:
+            if not line.startswith('-'):
+                reqs.append(line)
+    return reqs
+
+root = os.path.dirname(__file__)
+
 setup(name='Codebox',
     version='0.1',
     description='',
-    user='DISQUS',
-    install_requires=[
-        'oauth2',
-        'dolt',
-        'Flask-Actions',
-        'Flask-Mail',
-        'Flask-Redis',
-        'Flask-WTF',
-        'httplib2',
-        'pygments',
-        'simplejson',
-        'unittest2',
-    ],
-    test_suite='unittest2.collector',
+    author='DISQUS',
     url='http://www.disqus.com',
+    install_requires=parse_reqs_file('requirements.txt'),
+    test_suite='unittest2.collector',
     packages=find_packages(),
     include_package_data=True,
 )
