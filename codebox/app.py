@@ -23,6 +23,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('codebox.conf.Config')
 
+    handler = logging.StreamHandler()
+    handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
+    app.logger.addHandler(handler)
+
     app.register_blueprint(auth)
     app.register_blueprint(orgs)
     app.register_blueprint(frontend)
@@ -30,6 +34,8 @@ def create_app():
     redis = Redis(app)
     redis.init_app(app)
     app.redis = redis
+    
+    app.logger.info("Connected to Redis server at %s:%s" % (app.config['REDIS_HOST'], app.config['REDIS_PORT']))
     
     mail = Mail()
     mail.init_app(app)
@@ -52,10 +58,6 @@ def create_app():
     app.jinja_env.filters['linebreaks'] = linebreaks
     
     app.jinja_env.filters['colorize'] = colorize
-
-    handler = logging.StreamHandler()
-    handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
-    app.logger.addHandler(handler)
 
     return app
 

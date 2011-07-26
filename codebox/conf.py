@@ -22,7 +22,6 @@ if os.environ.has_key('REDISTOGO_URL'):
     # 'redis://username:password@my.host:6789' 
     urlparse.uses_netloc.append('redis')
     url = urlparse.urlparse(os.environ['REDISTOGO_URL'])
-    Config.REDIS_USER = url.username
     Config.REDIS_PASSWORD = url.password
     Config.REDIS_HOST = url.hostname
     Config.REDIS_PORT = url.port
