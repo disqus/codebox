@@ -10,7 +10,7 @@ import os, os.path
 import urlparse
 
 class Config(object):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
     LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
     SECRET_KEY = os.environ.get('SECRET_KEY', '\x89\x1d\xec\x8eJ\xda=C`\xf3<X\x81\xff\x1e\r{+\x1b\xe1\xd1@ku')

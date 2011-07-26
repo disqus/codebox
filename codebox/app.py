@@ -32,8 +32,6 @@ def create_app():
     app.register_blueprint(frontend)
 
     redis = Redis(app)
-    redis.init_app(app)
-    app.redis = redis
     
     app.logger.info("Connected to Redis server at %s:%s" % (app.config['REDIS_HOST'], app.config['REDIS_PORT']))
     
