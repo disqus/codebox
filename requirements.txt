@@ -1,4 +1,4 @@
--e git+git://github.com/dcramer/flask-redis.git#egg=Flask-Redis
+git+git://github.com/dcramer/flask-redis.git#egg=Flask-Redis
 
 oauth2
 Dolt==0.5.1
