@@ -1,6 +1,6 @@
 oauth2
 Dolt==0.5.1
-Flask==0.8
+Flask==0.7.2
 Flask-Actions==0.6.4
 Flask-Mail==0.6.1
 Flask-Redis==0.1
