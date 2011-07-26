@@ -28,7 +28,7 @@ class IsValidEmailList(object):
         if not field.data:
             return
         
-        email_list = field.data.split('\n')
+        email_list = [e.strip() for e in field.data.split('\n')]
         for email in email_list:
             if not email_re.match(field.data):
                 raise ValidationError('The email you entered, \'%s\' is not valid.' % email)
