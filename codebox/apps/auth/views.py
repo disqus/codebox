@@ -4,11 +4,11 @@ import urllib2
 import urlparse
 
 from codebox.apps.auth.models import User, Profile
-from flask import current_app as app, g, request, Module, render_template, redirect, url_for, session
+from flask import current_app as app, g, request, Blueprint, render_template, redirect, url_for, session
 
 from codebox.apps.organizations.models import Organization, OrganizationMember
 
-auth = Module(__name__)
+auth = Blueprint('auth', __name__)
 
 @auth.route('/rpx', methods=['POST'])
 def rpx():
@@ -65,14 +65,14 @@ def rpx():
             g.user = user
             session['userid'] = user.pk
 
-            return redirect(session.get('next') or url_for('dashboard'))
+            return redirect(session.get('next') or url_for('snippets.dashboard'))
 
     return redirect('/')
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('auth/login.html', **{
-        'callback_url': url_for('rpx', _external=True),
+        'callback_url': url_for('.rpx', _external=True),
     })
 
 @auth.route('/logout')

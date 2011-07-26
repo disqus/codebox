@@ -1,6 +1,6 @@
 import hashlib
 
-from flask import current_app as app, g, request, Module, render_template, redirect, url_for, flash
+from flask import current_app as app, g, request, Blueprint, render_template, redirect, url_for, flash
 from flaskext.mail import Message
 from urllib import quote
 
@@ -15,7 +15,7 @@ from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
 
-orgs = Module(__name__)
+orgs = Blueprint('organizations', __name__)
 
 @orgs.route('/new', methods=['POST', 'GET'])
 @login_required
@@ -32,7 +32,7 @@ def new_org():
                 created_by=g.user.pk,
             )
             
-            return redirect(url_for('verify_domain', org=org.pk))
+            return redirect(url_for('.verify_domain', org=org.pk))
         else:
             # Generate a unique slug from name
             base_slug = slugify(form.name.data)
@@ -56,7 +56,7 @@ def new_org():
 
         flash("Your organization was created successfully!")
 
-        return redirect(url_for('list_snippets', org=org.pk))
+        return redirect(url_for('.list_snippets', org=org.pk))
 
     return render_template('organizations/new.html', **{
         'form': form,
@@ -92,7 +92,7 @@ def verify_domain(org):
         
         flash("Your organization was created successfully!")
         
-        return redirect(url_for('list_snippets', org=org.pk))
+        return redirect(url_for('.list_snippets', org=org.pk))
     
     form = VerifyDomainForm()
     if form.validate_on_submit():
@@ -102,7 +102,7 @@ def verify_domain(org):
         sig = sig.hexdigest()
 
         body = render_template('organizations/mail/verify_domain.txt', **{
-            'verify_url': '%s?e=%s&s=%s' % (url_for('verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
+            'verify_url': '%s?e=%s&s=%s' % (url_for('.verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
         })
         
         msg = Message("Codebox Domain Verification",
@@ -134,7 +134,7 @@ def invite_confirm(org, pmem, sig):
             flash("Your have been added to '%s'" % org.name)
         pmem.delete()
         
-    return redirect(url_for('list_snippets', org=org.pk))
+    return redirect(url_for('.list_snippets', org=org.pk))
 
 @orgs.route('/<org>/invite', methods=['POST', 'GET'])
 @login_required
@@ -156,7 +156,7 @@ def invite_members(org):
             sig = pmem.get_signature()
 
             body = render_template('organizations/mail/invite.txt', **{
-                'confirm_url': url_for('invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
+                'confirm_url': url_for('.invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
                 'org': org,
             })
         
@@ -200,7 +200,7 @@ def new_snippet(org):
         if request.is_xhr:
             return 'Success'
 
-        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
+        return redirect(url_for('.snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('organizations/new_snippet.html', **{
         'org': org,

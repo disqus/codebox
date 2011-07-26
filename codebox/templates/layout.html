@@ -29,10 +29,10 @@
             <div class="wrapper">
                 <h1 class="clearfix">
                     <img src="{{ url_for('static', filename="images/box.png") }}" />
-                    <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
+                    <a href="{{ url_for('snippets.dashboard') }}"><strong>Code</strong>Box</a>
                 </h1>
                 {% if g.user %}
-                    <small>Logged in as {{ g.user.name }} | <a href="{{ url_for('logout') }}">Logout</a></small>
+                    <small>Logged in as {{ g.user.name }} | <a href="{{ url_for('auth.logout') }}">Logout</a></small>
                 {% endif %}
             </div>
         </header>
@@ -63,7 +63,7 @@
                         {% block sidebar %}
                             <div class="module">
                                 <h2>Search</h2>
-                                <form method="get" action="{{ url_for('search_snippets') }}">
+                                <form method="get" action="{{ url_for('snippets.search_snippets') }}">
                                     <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
                                 </form>
                             </div>
@@ -79,7 +79,7 @@
                                             </ul>
                                             <p><a href="/new" class="new-org-link">New Organization</a></p>
                                         {% else %}
-                                            <p>Start by <a href="{{ url_for('new_org') }}">creating an organization</a>.</p>
+                                            <p>Start by <a href="{{ url_for('organizations.new_org') }}">creating an organization</a>.</p>
                                         {% endif %}
                                     {% endwith %}
                                 </div>

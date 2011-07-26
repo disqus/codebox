@@ -8,9 +8,9 @@
                 Posted by
                 <span class="user">{{ snippets_users[snippet.user].name }}</span>
                 from
-                <span class="org"><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ snippets_orgs[snippet.org].name }}</a></span>
+                <span class="org"><a href="{{ url_for('.list_snippets', org=snippet.org) }}">{{ snippets_orgs[snippet.org].name }}</a></span>
             </p>
-            <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}" class="row-link"></a>
+            <a href="{{ url_for('.snippet_detail', id=snippet.pk, org=snippet.org) }}" class="row-link"></a>
         </div>
     </li>
     {% endfor %}

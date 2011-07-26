@@ -15,14 +15,14 @@
 
     <div class="sidebar">
         <div class="module">
-            <a href="{{ url_for('new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a>
+            <a href="{{ url_for('.new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a>
             {% if g.user.can_admin_org(org) %}
-                <a href="{{ url_for('invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a>
+                <a href="{{ url_for('.invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a>
             {% endif %}
         </div>
         <div class="module">
             <h2>Search</h2>
-            <form method="get" action="{{ url_for('search_snippets', org=org.pk) }}">
+            <form method="get" action="{{ url_for('.search_snippets', org=org.pk) }}">
                 <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
             </form>
         </div>

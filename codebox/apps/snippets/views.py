@@ -1,4 +1,4 @@
-from flask import request, Module, render_template, abort, g
+from flask import request, Blueprint, render_template, abort, g
 
 from codebox.apps.auth.models import User
 from codebox.apps.auth.decorators import login_required
@@ -7,7 +7,7 @@ from codebox.apps.organizations.models import Organization
 from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 
-frontend = Module(__name__)
+frontend = Blueprint('snippets', __name__)
 
 @frontend.route('/')
 @login_required
