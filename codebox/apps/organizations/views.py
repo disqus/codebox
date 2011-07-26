@@ -100,6 +100,8 @@ def verify_domain(org):
         sig = hashlib.md5(email)
         sig.update(app.config['SECRET_KEY'])
         sig = sig.hexdigest()
+        
+        app.logger.info("Sending domain verification to %s", email)
 
         body = render_template('organizations/mail/verify_domain.txt', **{
             'verify_url': '%s?e=%s&s=%s' % (url_for('.verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
