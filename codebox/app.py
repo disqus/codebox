@@ -11,6 +11,7 @@ from flaskext.redis import Redis
 from flaskext.mail import Mail
 from jinja2 import Markup
 from urllib import quote
+import logging
 
 def create_app():
     from codebox.apps.auth.views import auth
@@ -51,6 +52,10 @@ def create_app():
     app.jinja_env.filters['linebreaks'] = linebreaks
     
     app.jinja_env.filters['colorize'] = colorize
+
+    handler = logging.StreamHandler()
+    handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
+    app.logger.addHandler(handler)
 
     return app
 
