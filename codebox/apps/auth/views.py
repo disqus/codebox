@@ -3,9 +3,11 @@ import urllib
 import urllib2
 import urlparse
 
-from codebox.apps.auth.models import User, Profile
 from flask import current_app as app, g, request, Blueprint, render_template, redirect, url_for, session
 
+from codebox.apps.auth.forms import EditProfileForm
+from codebox.apps.auth.models import User, Profile
+from codebox.apps.auth.decorators import login_required
 from codebox.apps.organizations.models import Organization, OrganizationMember
 
 auth = Blueprint('auth', __name__)
@@ -82,3 +84,13 @@ def logout():
     del session['userid']
     
     return redirect('/')
+
+@auth.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(name=g.user.name)
+    if form.validate_on_submit():
+        g.user.name = form.name.data
+    return render_template('auth/edit_profile.html', **{
+        'form': form,
+    })
