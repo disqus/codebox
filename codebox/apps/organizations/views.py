@@ -143,7 +143,7 @@ def invite_confirm(org, pmem, sig):
                 org=org.pk,
             )[1]:
             
-            flash("Your have been added to '%s'" % org.name)
+            flash("You have been added to '%s'" % org.name)
         pmem.delete()
         
     return redirect(url_for('.list_snippets', org=org.pk))
