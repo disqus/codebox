@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ org.name }} &mdash; {{ super() }}{% endblock %}
+
+{% block main %}
+
+    <div class="main">
+        {% block main_inner %}
+            <div class="module">
+                <h2>{{ org.name }}</h2>
+                <dl>
+                    <dt>Owner:</dt>
+                    <dd>{{ org.get_owner().name }}</dd>
+                    <dt>Domain:</dt>
+                    <dd>{% if org.domain %}{{ org.domain }}{% else %}<em>none</em>{% endif %}</dd>
+                    <dt>Default Language:</dt>
+                    <dd>{% if org.lang %}{{ org.lang }}{% else %}<em>none</em>{% endif %}</dd>
+                </dl>
+            </div>
+        {% endblock %}
+    </div>
+
+    <div class="sidebar">
+        <div class="module">
+            <a href="{{ url_for('.new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a>
+            {% if g.user.can_admin_org(org) %}
+                <a href="{{ url_for('.invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a>
+            {% endif %}
+        </div>
+        <div class="module">
+            <h2>Search</h2>
+            <form method="get" action="{{ url_for('.search_snippets', org=org.pk) }}">
+                <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
+            </form>
+        </div>
+        <div class="module">
+            <h2>Members</h2>
+            <ul>
+                {% for member in org.get_all_members() %}
+                    <li><a class="bubble" href="#">{{ member.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

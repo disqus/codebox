@@ -21,6 +21,11 @@ class Organization(Model):
         memberships = list(OrganizationMember.objects.filter(org=self.pk))
         return User.objects.get_many([m.user for m in memberships])
 
+    def get_owner(self):
+        from codebox.apps.auth.models import User
+
+        return User.objects.get(self.owned_by)
+
 class OrganizationMember(Model):
     org = String()
     user = String()

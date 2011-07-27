@@ -62,6 +62,17 @@ def new_org():
         'form': form,
     })
 
+
+@orgs.route('/<org>/details')
+@login_required
+@can_view_org
+def org_details(org):
+    org = get_object_or_404(Organization, org)
+
+    return render_template('organizations/details.html', **{
+        'org': org,
+    })
+
 @orgs.route('/verify/<org>', methods=['POST', 'GET'])
 def verify_domain(org):
     porg = get_object_or_404(PendingOrganization, org)
@@ -169,6 +180,7 @@ def invite_members(org):
             app.mail.send(msg)
         
         flash("Your invitation(s) have been sent.")
+        return redirect(url_for('.invite_members', org=org.pk))
 
     return render_template('organizations/invite_members.html', **{
         'org': org,
@@ -207,6 +219,7 @@ def new_snippet(org):
         'form': form,
     })
 
+
 @orgs.route('/<org>')
 @login_required
 @can_view_org
@@ -216,7 +229,7 @@ def list_snippets(org):
     snippets = list(Snippet.objects.filter(org=org.pk))
     snippets_users = User.objects.get_many([s.user for s in snippets])
 
-    return render_template('organizations/detail.html', **{
+    return render_template('organizations/snippets.html', **{
         'org': org,
         'snippets': snippets,
         'snippets_users': dict([(u.pk, u) for u in snippets_users]),

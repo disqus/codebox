@@ -14,60 +14,62 @@ auth = Blueprint('auth', __name__)
 def rpx():
     token = request.form.get('token')
 
-    if token:
-        params = {
-            'token': token,
-            'apiKey': app.config['JANRAIN_API_KEY'],
-            'format': 'json',
-        }
+    if not token:
+        return redirect('/')
 
-        response = urllib2.urlopen('https://rpxnow.com/api/v2/auth_info',
-                                   urllib.urlencode(params))
+    params = {
+        'token': token,
+        'apiKey': app.config['JANRAIN_API_KEY'],
+        'format': 'json',
+    }
 
-        auth_info = json.loads(response.read())
+    response = urllib2.urlopen('https://rpxnow.com/api/v2/auth_info',
+                               urllib.urlencode(params))
 
-        if auth_info['stat'] == 'ok':
-            profile = auth_info['profile']
+    auth_info = json.loads(response.read())
 
-            identifier = profile['identifier']
+    if auth_info['stat'] != 'ok':
+        return redirect('/')
+    
+    profile = auth_info['profile']
 
-            name = profile.get('displayName') or ''
-            email = profile.get('email') or ''
-            avatar = profile.get('photo') or ''
+    identifier = profile['identifier']
 
-            try:
-                profile = Profile.objects.get(identifier)
-                user = User.objects.get(profile.user)
-            except Profile.DoesNotExist:
-                user = User.objects.create(
-                    name=name or identifier,
-                    email=email,
-                    avatar=avatar,
-                )
-                profile = Profile.objects.create(
-                    pk=identifier,
+    name = profile.get('displayName') or ''
+    email = profile.get('email') or ''
+    avatar = profile.get('photo') or ''
+
+    try:
+        profile = Profile.objects.get(identifier)
+        user = User.objects.get(profile.user)
+    except Profile.DoesNotExist:
+        user = User.objects.create(
+            name=name or identifier,
+            email=email,
+            avatar=avatar,
+        )
+        profile = Profile.objects.create(
+            pk=identifier,
+            user=user.pk,
+        )
+    
+    if email:
+        domain = urlparse.urlparse(email).hostname
+        try:
+            org = Organization.objects.filter(domain=domain)[0]
+        except IndexError:
+            pass
+        else:
+            if not OrganizationMember.objects.exists(org=org.pk, user=user.pk):
+                OrganizationMember.objects.create(
+                    org=org.pk,
                     user=user.pk,
                 )
-            
-            if email:
-                domain = urlparse.urlparse(email).hostname
-                try:
-                    org = Organization.objects.filter(domain=domain)[0]
-                except IndexError:
-                    pass
-                else:
-                    if not OrganizationMember.objects.exists(org=org.pk, user=user.pk):
-                        OrganizationMember.objects.create(
-                            org=org.pk,
-                            user=user.pk,
-                        )
 
-            g.user = user
-            session['userid'] = user.pk
+    g.user = user
+    session['userid'] = user.pk
 
-            return redirect(session.get('next') or url_for('snippets.dashboard'))
-
-    return redirect('/')
+    return redirect(session.get('next') or url_for('snippets.dashboard'))
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
