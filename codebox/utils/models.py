@@ -220,6 +220,7 @@ class Manager(object):
 
     def filter(self, **kwargs):
         # XXX: we should have some logic to ensure the indexes requested exist
+        assert kwargs
         return QuerySet(self.model, self._get_index_key(**kwargs), g.redis.zrevrange, True)
 
     def add_to_index(self, key, score=None, **kwargs):
@@ -277,10 +278,12 @@ class Manager(object):
         return RedisHashMap(g.redis, self._meta.db_name)
 
     def _get_index_key(self, **kwargs):
+        assert kwargs
         idx_key = ':'.join('%s=%s' % (encode_key(k), encode_key(v)) for k, v in sorted(kwargs.items(), key=lambda x: x[0]))
         return '%s:index:%s' % (self.name, idx_key)
 
     def _get_index_count_key(self, **kwargs):
+        assert kwargs
         idx_key = ':'.join('%s=%s' % (encode_key(k), encode_key(v)) for k, v in sorted(kwargs.items(), key=lambda x: x[0]))
         return '%s:count:%s' % (self.name, idx_key)
 
