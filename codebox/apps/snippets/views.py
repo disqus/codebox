@@ -1,4 +1,5 @@
-from flask import request, Blueprint, render_template, abort, g
+from flask import request, Blueprint, render_template, abort, g, redirect, \
+                  url_for
 
 from codebox.apps.auth.models import User
 from codebox.apps.auth.decorators import login_required
@@ -19,6 +20,11 @@ def dashboard():
     snippets = list(Snippet.objects.filter(dashboard=g.user.pk))
     snippets_users = User.objects.get_many([s.user for s in snippets])
     snippets_orgs = Organization.objects.get_many([s.org for s in snippets])
+
+    my_orgs = g.user.get_all_organizations()
+    
+    if len(my_orgs) == 1:
+        return redirect(url_for('organizations.list_snippets', org=my_orgs[0].pk))
     
     return render_template('snippets/dashboard.html', **{
         'snippets': snippets,
