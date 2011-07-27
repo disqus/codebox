@@ -57,16 +57,17 @@ def rpx():
     
     if email:
         domain = urlparse.urlparse(email).hostname
-        try:
-            org = Organization.objects.filter(domain=domain)[0]
-        except IndexError:
-            pass
-        else:
-            if not OrganizationMember.objects.exists(org=org.pk, user=user.pk):
-                OrganizationMember.objects.create(
-                    org=org.pk,
-                    user=user.pk,
-                )
+        if domain:
+            try:
+                org = Organization.objects.filter(domain=domain)[0]
+            except IndexError:
+                pass
+            else:
+                if not OrganizationMember.objects.exists(org=org.pk, user=user.pk):
+                    OrganizationMember.objects.create(
+                        org=org.pk,
+                        user=user.pk,
+                    )
 
     g.user = user
     session['userid'] = user.pk
