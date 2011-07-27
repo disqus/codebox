@@ -139,7 +139,7 @@ def invite_confirm(org, pmem, sig):
 
     if pmem.org == org.pk:
         if OrganizationMember.objects.get_or_create(
-                user=g.user.pk,
+                user=pmem.user,
                 org=org.pk,
             )[1]:
             
