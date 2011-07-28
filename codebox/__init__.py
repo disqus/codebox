@@ -55,6 +55,11 @@ def before_request():
             g.user = User.objects.filter(api_token=request.form['api_token'])
         except User.DoesNotExist:
             return abort(403)
+    elif 'api_token' in request.args:
+        try:
+            g.user = User.objects.filter(api_token=request.args['api_token'])
+        except User.DoesNotExist:
+            return abort(403)
 
 app.jinja_env.filters['urlencode'] = quote
 def linebreaks(value):
