@@ -90,13 +90,20 @@ def logout():
 @app.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    def set_api_token(user):
+        while True:
+            token = uuid.uuid4().hex
+            if not User.objects.exists(api_token=token):
+                break
+        user.api_token = token
+    
     if not g.user.api_token:
-        g.user.api_token = uuid.uuid4().hex
+        set_api_token(g.user)
     
     form = EditProfileForm(name=g.user.name)
     if form.validate_on_submit():
         if form.update_token.data:
-            g.user.api_token = uuid.uuid4().hex
+            set_api_token(g.user)
         g.user.name = form.name.data
 
         flash("Your profile was updated successfully!")
