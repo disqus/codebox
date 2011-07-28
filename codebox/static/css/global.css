@@ -175,7 +175,7 @@ navigation li ul {
     background: #fff;
     border: 1px solid #eee;
     margin-top: -1px;
-    width: 120px;
+    min-width: 120px;
     z-index: 1000;
 }
 navigation li:hover ul {
