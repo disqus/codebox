@@ -6,7 +6,7 @@ codebox
 :license: Apache License 2.0, see LICENSE for more details.
 """
 
-from flask import Flask, session, g
+from flask import Flask, session, g, request, abort
 from flaskext.redis import Redis
 from flaskext.mail import Mail
 from jinja2 import Markup
@@ -50,8 +50,11 @@ def before_request():
             g.user = User.objects.get(session['userid'])
         except User.DoesNotExist:
             del session['userid']
-
-
+    elif 'api_token' in request.form:
+        try:
+            g.user = User.objects.filter(api_token=request.form['api_token'])
+        except User.DoesNotExist:
+            return abort(403)
 
 app.jinja_env.filters['urlencode'] = quote
 def linebreaks(value):

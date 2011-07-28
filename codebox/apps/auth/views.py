@@ -2,8 +2,10 @@ import simplejson as json
 import urllib
 import urllib2
 import urlparse
+import uuid
 
-from flask import g, request, render_template, redirect, url_for, session
+from flask import g, request, render_template, redirect, url_for, session, \
+                  flash
 
 from codebox import app
 from codebox.apps.auth.forms import EditProfileForm
@@ -90,7 +92,14 @@ def logout():
 def edit_profile():
     form = EditProfileForm(name=g.user.name)
     if form.validate_on_submit():
+        if form.update_token.data:
+            g.user.api_token = uuid.uuid4().hex
         g.user.name = form.name.data
+
+        flash("Your profile was updated successfully!")
+
+        return redirect(url_for('edit_profile'))
+
     return render_template('auth/edit_profile.html', **{
         'form': form,
     })

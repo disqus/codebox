@@ -7,9 +7,10 @@ class User(Model):
     email = String(required=False)
     avatar = String(required=False)
     created_at = Float(default=time.time)
+    api_token = String(required=False)
 
     class Meta:
-        unique = (('email',),)
+        unique = (('email',), ('api_token',))
 
     def get_all_organizations(self, admin=False):
         from codebox.apps.organizations.models import OrganizationMember, Organization

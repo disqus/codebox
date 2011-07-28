@@ -16,6 +16,14 @@
                 {% endif %}
             </div>
             <div class="form-row">
+                <label>API token</label>
+                <span class="field"><input type="text" size="50" readonly="readonly" onfocus="this.select" value="{{ g.user.api_token }}"></span>
+                <span class="field"><label>{{ form.update_token() }} Regenerate API token</label></span>
+                {% if form.update_token.errors %}
+                    <ul class="errors">{% for error in form.update_token.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            <div class="form-row">
                 <p><input type="submit" value="Submit"></p>
             </div>
         </form>

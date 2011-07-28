@@ -315,7 +315,8 @@ navigation #search {
     font-weight: bold;
     margin-bottom: 5px;
 }
-.form-row .field {
+.form-row input[type=text],
+.form-row input[type=password] {
     display: block;
 }
 .form-row .helptext {
