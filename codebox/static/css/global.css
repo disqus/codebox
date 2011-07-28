@@ -158,7 +158,6 @@ navigation {
 navigation li {
     display: inline-block;
     position: relative;
-    text-transform: lowercase;
 }
 navigation li a {
     padding: 6px;

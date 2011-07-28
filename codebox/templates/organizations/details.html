@@ -26,3 +26,11 @@
         {% endblock %}
     </div>
 {% endblock %}
+
+
+{% block navigation %}
+    <li><a href="{{ url_for('.new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a></li>
+    {% if g.user.can_admin_org(org) %}
+        <li><a href="{{ url_for('.invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a></li>
+    {% endif %}
+{% endblock %}

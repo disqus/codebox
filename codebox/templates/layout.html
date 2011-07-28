@@ -46,7 +46,7 @@
                     <ul>
                         {% with my_organizations=g.user.get_all_organizations() %}
                             {% if my_organizations %}
-                                <li class="has-dropdown"><a>Select Organization</a>
+                                <li class="has-dropdown"><a>{% if org %}Organization: {{ org.name }}{% else %}Select Organization{% endif %}</a>
                                     <ul>
                                         {% for _org in my_organizations %}
                                             <li{% if _org == org %} class="selected"{% endif %}><a href="/{{ _org.pk }}">{{ _org.name }}</a></li>
