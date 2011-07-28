@@ -52,13 +52,13 @@ def before_request():
             del session['userid']
     elif request.form.get('api_token', '').strip():
         try:
-            g.user = User.objects.filter(api_token=request.form['api_token'])
-        except User.DoesNotExist:
+            g.user = User.objects.filter(api_token=request.form['api_token'])[0]
+        except IndexError:
             return abort(403)
     elif request.args.get('api_token', '').strip():
         try:
-            g.user = User.objects.filter(api_token=request.args['api_token'])
-        except User.DoesNotExist:
+            g.user = User.objects.filter(api_token=request.args['api_token'])[0]
+        except IndexError:
             return abort(403)
 
 app.jinja_env.filters['urlencode'] = quote
