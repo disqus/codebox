@@ -90,6 +90,9 @@ def logout():
 @app.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    if not g.user.api_token:
+        g.user.api_token = uuid.uuid4().hex
+    
     form = EditProfileForm(name=g.user.name)
     if form.validate_on_submit():
         if form.update_token.data:
