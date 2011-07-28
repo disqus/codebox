@@ -224,7 +224,7 @@ def new_snippet(org):
     """
     org = get_object_or_404(Organization, org)
 
-    form = NewSnippetForm(obj=org)
+    form = NewSnippetForm(obj=org, csrf_enabled=(not g.is_api))
     if form.validate_on_submit():
         # Generate a unique slug from name
         snippet = Snippet.objects.create(

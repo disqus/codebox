@@ -44,20 +44,19 @@ def before_request():
     from codebox.apps.auth.models import User
 
     g.user = None
+    g.is_api = False
     
     if 'userid' in session:
         try:
             g.user = User.objects.get(session['userid'])
         except User.DoesNotExist:
             del session['userid']
-    elif request.form.get('api_token', '').strip():
+    
+    api_token = request.form.get('api_token', request.args.get('api_token', '')).strip()
+    if api_token:
         try:
-            g.user = User.objects.filter(api_token=request.form['api_token'])[0]
-        except IndexError:
-            return abort(403)
-    elif request.args.get('api_token', '').strip():
-        try:
-            g.user = User.objects.filter(api_token=request.args['api_token'])[0]
+            g.user = User.objects.filter(api_token=api_token)[0]
+            g.is_api = True
         except IndexError:
             return abort(403)
 
