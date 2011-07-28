@@ -119,7 +119,7 @@ class Model(object):
             for fields in itertools.chain(self._meta.index, self._meta.unique):
                 if all([f in kwargs for f in fields]):
                     idx_kwargs = dict((f, getattr(self, f)) for f in fields)
-                    self.add_to_index(self.pk, **idx_kwargs)
+                    self.objects.add_to_index(self.pk, **idx_kwargs)
 
     def delete(self):
         # Clear all indexes first
