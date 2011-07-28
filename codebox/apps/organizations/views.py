@@ -235,12 +235,10 @@ def new_snippet(org):
             user=g.user.pk,
         )
 
-        redirect_to = url_for('snippet_detail', org=org.pk, id=snippet.pk)
-
         if request.is_xhr or request_wants_text():
-            return redirect_to
+            return url_for('snippet_detail', org=org.pk, id=snippet.pk, _external=True)
 
-        return redirect(redirect_to)
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('organizations/new_snippet.html', **{
         'org': org,
