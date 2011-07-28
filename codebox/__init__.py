@@ -50,12 +50,12 @@ def before_request():
             g.user = User.objects.get(session['userid'])
         except User.DoesNotExist:
             del session['userid']
-    elif 'api_token' in request.form:
+    elif request.form.get('api_token', '').strip():
         try:
             g.user = User.objects.filter(api_token=request.form['api_token'])
         except User.DoesNotExist:
             return abort(403)
-    elif 'api_token' in request.args:
+    elif request.args.get('api_token', '').strip():
         try:
             g.user = User.objects.filter(api_token=request.args['api_token'])
         except User.DoesNotExist:
