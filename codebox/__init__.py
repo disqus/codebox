@@ -26,11 +26,17 @@ class UUIDConverter(BaseConverter):
 app = Flask(__name__)
 app.config.from_object('codebox.conf.Config')
 
-handler = logging.StreamHandler()
-handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
-logging.setLevel(logging.WARNING)
-logging.addHandler(handler)
-app.logger.addHandler(handler)
+def configure_logging(app):
+    handler = logging.StreamHandler()
+    handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
+
+    root = logging.getLogger()
+    root.setLevel(logging.WARNING)
+    root.addHandler(handler)
+
+    app.logger.addHandler(handler)
+
+configure_logging(app)
 
 app.url_map.converters['uuid'] = UUIDConverter
 
