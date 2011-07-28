@@ -258,6 +258,10 @@ navigation #search {
     text-decoration: underline;
 }
 
+.snippet td.code {
+    width: 100%;
+}
+
 .new-snippet textarea,
 .new-snippet input[type=text] {
     display: block;
