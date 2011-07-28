@@ -3,16 +3,15 @@ import urllib
 import urllib2
 import urlparse
 
-from flask import current_app as app, g, request, Blueprint, render_template, redirect, url_for, session
+from flask import g, request, Blueprint, render_template, redirect, url_for, session
 
+from codebox import app
 from codebox.apps.auth.forms import EditProfileForm
 from codebox.apps.auth.models import User, Profile
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.organizations.models import Organization, OrganizationMember
 
-auth = Blueprint('auth', __name__)
-
-@auth.route('/rpx', methods=['POST'])
+@app.route('/rpx', methods=['POST'])
 def rpx():
     token = request.form.get('token')
 
@@ -72,21 +71,21 @@ def rpx():
     g.user = user
     session['userid'] = user.pk
 
-    return redirect(session.get('next') or url_for('snippets.dashboard'))
+    return redirect(session.get('next') or url_for('dashboard'))
 
-@auth.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('auth/login.html', **{
         'callback_url': url_for('.rpx', _external=True),
     })
 
-@auth.route('/logout')
+@app.route('/logout')
 def logout():
     del session['userid']
     
     return redirect('/')
 
-@auth.route('/profile/edit', methods=['GET', 'POST'])
+@app.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm(name=g.user.name)

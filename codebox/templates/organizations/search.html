@@ -4,7 +4,7 @@
 
 {% block main_inner %}
     <div class="module">
-        <h2><a href="{{ url_for('organizations.list_snippets', org=org.pk) }}">{{ org.name }}</a></h2>
+        <h2><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></h2>
         <h3>Results for {{ query }}</h3>
         {% include "partials/snippet_list.html" %}
     </div>

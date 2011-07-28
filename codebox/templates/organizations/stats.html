@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Stats &mdash; {{ super() }}{% endblock %}
+
+{% block main %}
+
+    <div class="main">
+        {% block main_inner %}
+            <div class="module">
+                <h2>Statistics</h2>
+                <dl>
+                    <dt>Organizations:</dt>
+                    <dd>{{ num_orgs }}</dd>
+                    <dt>Snippets:</dt>
+                    <dd>{{ num_snippets }}</dd>
+                    <dt>Users:</dt>
+                    <dd>{{ num_users }}</dd>
+                </dl>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

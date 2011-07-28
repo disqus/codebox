@@ -29,17 +29,17 @@
             <div class="wrapper">
                 <h1 class="clearfix">
                     <img src="{{ url_for('static', filename="images/box.png") }}" />
-                    <a href="{{ url_for('snippets.dashboard') }}"><strong>Code</strong>Box</a>
+                    <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
                 </h1>
                 {% if g.user %}
-                    <small>Logged in as <a href="{{ url_for('auth.edit_profile') }}">{{ g.user.name }}</a> | <a href="{{ url_for('auth.logout') }}">Logout</a></small>
+                    <small>Logged in as <a href="{{ url_for('edit_profile') }}">{{ g.user.name }}</a> | <a href="{{ url_for('logout') }}">Logout</a></small>
                 {% endif %}
             </div>
         </header>
         
         <navigation>
             <div class="wrapper">
-                <form method="get" action="{{ url_for('snippets.search_snippets') }}" id="search">
+                <form method="get" action="{{ url_for('search_snippets') }}" id="search">
                     <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %}> <input type="submit" value="Go">
                 </form>
                 {% if g.user %}

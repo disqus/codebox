@@ -1,12 +1,11 @@
 # Ghetto Fixtures
 
-from codebox.app import create_app
+from codebox import app
 from codebox.apps.auth.models import User
 from codebox.apps.snippets.models import Snippet
 from codebox.apps.organizations.models import Organization, OrganizationMember
 from flask import g
 
-app = create_app()
 client = app.test_client()
 _ctx = app.test_request_context()
 _ctx.push()

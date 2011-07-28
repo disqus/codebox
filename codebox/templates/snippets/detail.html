@@ -4,7 +4,7 @@
 
 {% block main %}
     <div class="module">
-        <h2>{{ snippet.lang }} Snippet <strong><a href="{{ url_for('organizations.list_snippets', org=org.pk) }}">{{ org.name }}</a></strong></h2>
+        <h2>{{ snippet.lang }} Snippet <strong><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></strong></h2>
         <div class="snippet clearfix">
             <div class="text">
                 {{ snippet.text|colorize(snippet.lang) | safe }}
@@ -13,7 +13,7 @@
                 Posted by
                 <span class="user">{{ snippet.get_user().name }}</span>
                 from
-                <span class="org"><a href="{{ url_for('organizations.list_snippets', org=snippet.org) }}">{{ org.name }}</a></span>
+                <span class="org"><a href="{{ url_for('list_snippets', org=snippet.org) }}">{{ org.name }}</a></span>
             </p>
         </div>
     </div>

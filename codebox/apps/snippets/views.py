@@ -1,6 +1,7 @@
 from flask import request, Blueprint, render_template, abort, g, redirect, \
                   url_for
 
+from codebox import app
 from codebox.apps.auth.models import User
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.organizations.decorators import can_view_org
@@ -8,9 +9,7 @@ from codebox.apps.organizations.models import Organization
 from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 
-frontend = Blueprint('snippets', __name__)
-
-@frontend.route('/')
+@app.route('/')
 @login_required
 def dashboard():
     """
@@ -24,7 +23,7 @@ def dashboard():
     my_orgs = g.user.get_all_organizations()
     
     if len(my_orgs) == 1:
-        return redirect(url_for('organizations.list_snippets', org=my_orgs[0].pk))
+        return redirect(url_for('list_snippets', org=my_orgs[0].pk))
     
     return render_template('snippets/dashboard.html', **{
         'snippets': snippets,
@@ -32,7 +31,7 @@ def dashboard():
         'snippets_orgs': dict([(u.pk, u) for u in snippets_orgs])
     })
 
-@frontend.route('/search')
+@app.route('/search')
 @login_required
 def search_snippets():
     query = request.args.get('q')
@@ -70,7 +69,7 @@ def search_snippets():
         'snippets_orgs': dict([(u.pk, u) for u in snippets_orgs])
     })
 
-@frontend.route('/<org>/view/<id>')
+@app.route('/<org>/<uuid:id>')
 @login_required
 @can_view_org
 def snippet_detail(org, id):

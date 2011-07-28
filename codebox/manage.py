@@ -14,9 +14,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.pardir))
 
 from flaskext.actions import Manager
 
-from codebox.app import create_app
+from codebox import app
 
-app = create_app()
 manager = Manager(app, default_server_actions=True)
 
 if __name__ == "__main__":

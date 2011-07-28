@@ -1,9 +1,10 @@
 import hashlib
 
-from flask import current_app as app, g, request, Blueprint, render_template, redirect, url_for, flash
+from flask import g, request, Blueprint, render_template, redirect, url_for, flash
 from flaskext.mail import Message
 from urllib import quote
 
+from codebox import app
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.auth.models import User
 from codebox.apps.organizations.decorators import can_admin_org, can_view_org
@@ -15,9 +16,7 @@ from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
 
-orgs = Blueprint('organizations', __name__)
-
-@orgs.route('/new', methods=['POST', 'GET'])
+@app.route('/new', methods=['POST', 'GET'])
 @login_required
 def new_org():
     form = NewOrganizationForm()
@@ -63,7 +62,7 @@ def new_org():
     })
 
 
-@orgs.route('/<org>/details')
+@app.route('/<org>/details')
 @login_required
 @can_view_org
 def org_details(org):
@@ -73,7 +72,7 @@ def org_details(org):
         'org': org,
     })
 
-@orgs.route('/verify/<org>', methods=['POST', 'GET'])
+@app.route('/verify/<org>', methods=['POST', 'GET'])
 def verify_domain(org):
     porg = get_object_or_404(PendingOrganization, org)
     
@@ -131,7 +130,7 @@ def verify_domain(org):
     })
     return redirect('/')
 
-@orgs.route('/<org>/invite/confirm/<pmem>/<sig>', methods=['POST', 'GET'])
+@app.route('/<org>/invite/confirm/<pmem>/<sig>', methods=['POST', 'GET'])
 @login_required
 def invite_confirm(org, pmem, sig):
     org = get_object_or_404(Organization, org)
@@ -148,7 +147,7 @@ def invite_confirm(org, pmem, sig):
         
     return redirect(url_for('.list_snippets', org=org.pk))
 
-@orgs.route('/<org>/invite', methods=['POST', 'GET'])
+@app.route('/<org>/invite', methods=['POST', 'GET'])
 @login_required
 @can_admin_org
 def invite_members(org):
@@ -189,7 +188,7 @@ def invite_members(org):
     return redirect('/')
 
 
-@orgs.route('/<org>/new', methods=['GET', 'POST'])
+@app.route('/<org>/new', methods=['GET', 'POST'])
 @login_required
 @can_view_org
 def new_snippet(org):
@@ -212,7 +211,7 @@ def new_snippet(org):
         if request.is_xhr:
             return 'Success'
 
-        return redirect(url_for('snippets.snippet_detail', org=org.pk, id=snippet.pk))
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
 
     return render_template('organizations/new_snippet.html', **{
         'org': org,
@@ -220,7 +219,7 @@ def new_snippet(org):
     })
 
 
-@orgs.route('/<org>')
+@app.route('/<org>')
 @login_required
 @can_view_org
 def list_snippets(org):
@@ -236,7 +235,7 @@ def list_snippets(org):
         'snippets_orgs': {org.pk: org},
     })
 
-@orgs.route('/<org>/search')
+@app.route('/<org>/search')
 @login_required
 @can_view_org
 def search_snippets(org):
@@ -274,4 +273,16 @@ def search_snippets(org):
         'snippets': results,
         'snippets_users': dict([(u.pk, u) for u in snippets_users]),
         'snippets_orgs': {org.pk: org},
+    })
+
+@app.route('/stats')
+def stats():
+    num_orgs = Organization.objects.count()
+    num_users = User.objects.count()
+    num_snippets = Snippet.objects.count()
+    
+    return render_template('organizations/stats.html', **{
+        'num_orgs': num_orgs,
+        'num_snippets': num_snippets,
+        'num_users': num_users,
     })

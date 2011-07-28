@@ -1,14 +1,14 @@
 import time
 import unittest2
 
-from codebox.app import create_app
+from codebox import app
 from codebox.apps.snippets.models import Snippet
 from codebox.apps.organizations.models import Organization
-from flask import g, Response, request
+from flask import g, Response
 
 class FlaskTest(unittest2.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = app
         self.app.config.from_object('codebox.conf.TestingConfig')
         self.client = self.app.test_client()
         

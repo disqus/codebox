@@ -1,8 +1,7 @@
 import hashlib
 import time
 
-from flask import current_app as app
-
+from codebox import app
 from codebox.utils.models import Model, String, Float, Boolean
 
 class Organization(Model):

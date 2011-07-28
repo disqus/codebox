@@ -1,7 +1,7 @@
 import re
 
-from flask import current_app as app
 from flaskext.wtf import Form, TextField, TextAreaField, Required, SelectField
+from codebox import app
 from codebox.apps.organizations.models import Organization
 from codebox.apps.snippets.models import Snippet
 from wtforms.validators import ValidationError
