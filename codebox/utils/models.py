@@ -96,7 +96,7 @@ class Model(object):
             value = field.to_python(value)
         self._storage[key] = value
         # Store additional predefined index
-        if key in self.model._meta.index or key in self.model._meta.unique:
+        if key in self._meta.index or key in self._meta.unique:
             self.objects.add_to_index(self.pk, **{key: value})
 
     def __repr__(self):
