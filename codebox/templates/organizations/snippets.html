@@ -6,7 +6,7 @@
     <div class="main">
         {% block main_inner %}
             <div class="module">
-                <h2>{{ org.name }}</h2>
+                <h2>{{ org.name }} (<a href="{{ url_for('org_details', org=org.pk) }}">Details</a>)</h2>
                 {% include "partials/snippet_list.html" %}
             </div>
         {% endblock %}

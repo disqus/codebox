@@ -46,3 +46,7 @@ class VerifyDomainForm(Form):
 
 class InviteUserForm(Form):
     email_list = TextAreaField('Email', validators=[IsValidEmailList()])
+
+class EditOrganizationForm(Form):
+    name = TextField('Organization Name', validators=[Required()])
+    lang = SelectField('Default Language', choices=Snippet.languages, validators=[Required()])

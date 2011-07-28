@@ -1,4 +1,4 @@
-from flask import request, Blueprint, render_template, abort, g, redirect, \
+from flask import request, render_template, abort, g, redirect, \
                   url_for
 
 from codebox import app

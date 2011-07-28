@@ -1,6 +1,6 @@
 import hashlib
 
-from flask import g, request, Blueprint, render_template, redirect, url_for, flash
+from flask import g, request, render_template, redirect, url_for, flash
 from flaskext.mail import Message
 from urllib import quote
 
@@ -8,7 +8,8 @@ from codebox import app
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.auth.models import User
 from codebox.apps.organizations.decorators import can_admin_org, can_view_org
-from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainForm, InviteUserForm
+from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainForm, InviteUserForm, \
+                                             EditOrganizationForm
 from codebox.apps.organizations.models import Organization, OrganizationMember, PendingOrganization, \
                                               PendingMember
 from codebox.apps.snippets.forms import NewSnippetForm
@@ -31,7 +32,7 @@ def new_org():
                 created_by=g.user.pk,
             )
             
-            return redirect(url_for('.verify_domain', org=org.pk))
+            return redirect(url_for('verify_domain', org=org.pk))
         else:
             # Generate a unique slug from name
             base_slug = slugify(form.name.data)
@@ -55,18 +56,38 @@ def new_org():
 
         flash("Your organization was created successfully!")
 
-        return redirect(url_for('.list_snippets', org=org.pk))
+        return redirect(url_for('list_snippets', org=org.pk))
 
     return render_template('organizations/new.html', **{
         'form': form,
     })
 
+@app.route('/<org>/edit', methods=['POST', 'GET'])
+@login_required
+def edit_org(org):
+    org = get_object_or_404(Organization, org)
+
+    form = EditOrganizationForm(name=org.name, lang=org.lang)
+    if form.validate_on_submit():
+        org.name = form.name.data
+        org.lang = form.lang.data
+
+        flash("Your organization was updated successfully!")
+
+        return redirect(url_for('list_snippets', org=org.pk))
+
+    return render_template('organizations/edit.html', **{
+        'form': form,
+        'org': org,
+    })
 
 @app.route('/<org>/details')
 @login_required
 @can_view_org
 def org_details(org):
     org = get_object_or_404(Organization, org)
+    if not g.user.can_admin_org(org):
+        return redirect(url_for('org_snippets', org=org.pk))
 
     return render_template('organizations/details.html', **{
         'org': org,
@@ -102,7 +123,7 @@ def verify_domain(org):
         
         flash("Your organization was created successfully!")
         
-        return redirect(url_for('.list_snippets', org=org.pk))
+        return redirect(url_for('list_snippets', org=org.pk))
     
     form = VerifyDomainForm()
     if form.validate_on_submit():
@@ -114,7 +135,7 @@ def verify_domain(org):
         app.logger.info("Sending domain verification to %s", email)
 
         body = render_template('organizations/mail/verify_domain.txt', **{
-            'verify_url': '%s?e=%s&s=%s' % (url_for('.verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
+            'verify_url': '%s?e=%s&s=%s' % (url_for('verify_domain', org=porg.pk, _external=True), quote(email), quote(sig)),
         })
         
         msg = Message("Codebox Domain Verification",
@@ -145,7 +166,7 @@ def invite_confirm(org, pmem, sig):
             flash("You have been added to '%s'" % org.name)
         pmem.delete()
         
-    return redirect(url_for('.list_snippets', org=org.pk))
+    return redirect(url_for('list_snippets', org=org.pk))
 
 @app.route('/<org>/invite', methods=['POST', 'GET'])
 @login_required
@@ -169,7 +190,7 @@ def invite_members(org):
             sig = pmem.get_signature()
 
             body = render_template('organizations/mail/invite.txt', **{
-                'confirm_url': url_for('.invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
+                'confirm_url': url_for('invite_confirm', org=org.pk, pmem=pmem.pk, sig=sig, _external=True),
                 'org': org,
             })
         
@@ -179,7 +200,7 @@ def invite_members(org):
             app.mail.send(msg)
         
         flash("Your invitation(s) have been sent.")
-        return redirect(url_for('.invite_members', org=org.pk))
+        return redirect(url_for('invite_members', org=org.pk))
 
     return render_template('organizations/invite_members.html', **{
         'org': org,

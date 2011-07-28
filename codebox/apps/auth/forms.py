@@ -1,4 +1,4 @@
-from flaskext.wtf import Form, TextField, Required, PasswordField
+from flaskext.wtf import Form, TextField, Required
 
 class EditProfileForm(Form):
-    name = TextField('Name')
+    name = TextField('Name', validators=[Required()])

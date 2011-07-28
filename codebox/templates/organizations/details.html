@@ -8,6 +8,9 @@
         {% block main_inner %}
             <div class="module">
                 <h2>{{ org.name }}</h2>
+                {% if g.user.can_admin_org(org) %}
+                    <p><a href="{{ url_for('edit_org', org=org.pk) }}">Edit the details for this organization</a></p>
+                {% endif %}
                 <dl>
                     <dt>Owner:</dt>
                     <dd>{{ org.get_owner().name }}</dd>
@@ -29,8 +32,8 @@
 
 
 {% block navigation %}
-    <li><a href="{{ url_for('.new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a></li>
+    <li><a href="{{ url_for('new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a></li>
     {% if g.user.can_admin_org(org) %}
-        <li><a href="{{ url_for('.invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a></li>
+        <li><a href="{{ url_for('invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a></li>
     {% endif %}
 {% endblock %}

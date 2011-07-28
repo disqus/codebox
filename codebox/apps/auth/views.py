@@ -3,7 +3,7 @@ import urllib
 import urllib2
 import urlparse
 
-from flask import g, request, Blueprint, render_template, redirect, url_for, session
+from flask import g, request, render_template, redirect, url_for, session
 
 from codebox import app
 from codebox.apps.auth.forms import EditProfileForm
@@ -76,7 +76,7 @@ def rpx():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('auth/login.html', **{
-        'callback_url': url_for('.rpx', _external=True),
+        'callback_url': url_for('rpx', _external=True),
     })
 
 @app.route('/logout')
