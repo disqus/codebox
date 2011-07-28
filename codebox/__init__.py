@@ -21,7 +21,7 @@ except Exception, e:
     VERSION = 'unknown'
 
 class UUIDConverter(BaseConverter):
-    regex = '^[/]{32}'
+    regex = '[a-zA-Z0-9]{32}'
 
 app = Flask(__name__)
 app.config.from_object('codebox.conf.Config')
