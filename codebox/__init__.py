@@ -28,6 +28,8 @@ app.config.from_object('codebox.conf.Config')
 
 handler = logging.StreamHandler()
 handler.setLevel(getattr(logging, app.config['LOG_LEVEL'].upper()))
+logging.setLevel(logging.WARNING)
+logging.addHandler(handler)
 app.logger.addHandler(handler)
 
 app.url_map.converters['uuid'] = UUIDConverter
