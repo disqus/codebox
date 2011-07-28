@@ -17,6 +17,12 @@ from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
 
+def request_wants_text():
+    best = request.accept_mimetypes.best_match(['text/plain', 'text/html'])
+    return best == 'text/plain' and \
+        request.accept_mimetypes[best] > \
+        request.accept_mimetypes['text/html']
+
 @app.route('/new', methods=['POST', 'GET'])
 @login_required
 def new_org():
@@ -229,10 +235,12 @@ def new_snippet(org):
             user=g.user.pk,
         )
 
-        if request.is_xhr:
-            return 'Success'
+        redirect_to = url_for('snippet_detail', org=org.pk, id=snippet.pk)
 
-        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
+        if request.is_xhr or request_wants_text():
+            return redirect_to
+
+        return redirect(redirect_to)
 
     return render_template('organizations/new_snippet.html', **{
         'org': org,
