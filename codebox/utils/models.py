@@ -8,16 +8,14 @@ codebox.utils.models
 
 import datetime
 import itertools
-import logging
 import pickle
 import time
 import uuid
 
 from flask import g
+from codebox import app
 from codebox.utils.cache import cached_property
 from codebox.utils.redis import RedisHashMap, encode_key
-
-logger = logging.getLogger(__name__)
 
 NotDefined = object()
 
@@ -96,7 +94,7 @@ class Model(object):
             value = field.to_python(value)
         self._storage[key] = value
         # Store additional predefined index
-        if key in self._meta.index or key in self._meta.unique:
+        if (key,) in self._meta.index or (key,) in self._meta.unique:
             self.objects.add_to_index(self.pk, **{key: value})
 
     def __repr__(self):
@@ -116,6 +114,12 @@ class Model(object):
     def update(self, **kwargs):
         for k, v in kwargs.iteritems():
             self[k] = v
+        if len(kwargs) > 1:
+            # Store composite indexes
+            for fields in itertools.chain(self.model._meta.index, self.model._meta.unique):
+                if all([f in kwargs for f in fields]):
+                    idx_kwargs = dict((f, getattr(self, f)) for f in fields)
+                    self.add_to_index(self.pk, **idx_kwargs)
 
     def delete(self):
         # Clear all indexes first
@@ -227,16 +231,16 @@ class Manager(object):
     def filter(self, **kwargs):
         # XXX: we should have some logic to ensure the indexes requested exist
         assert kwargs
-        logger.debug('Filtering on index %r', self._get_index_key(**kwargs))
+        app.logger.debug('Filtering on index %r', self._get_index_key(**kwargs))
         return QuerySet(self.model, self._get_index_key(**kwargs), g.redis.zrevrange, True)
 
     def add_to_index(self, key, score=None, **kwargs):
-        logger.debug('Adding %r to index %r', key, self._get_index_key(**kwargs))
+        app.logger.debug('Adding %r to index %r', key, self._get_index_key(**kwargs))
         g.redis.zadd(self._get_index_key(**kwargs), key, score or time.time())
         g.redis.incr(self._get_index_count_key(**kwargs))
 
     def remove_from_index(self, key, score=None, **kwargs):
-        logger.debug('Removing %r from index %r', key, self._get_index_key(**kwargs))
+        app.logger.debug('Removing %r from index %r', key, self._get_index_key(**kwargs))
         g.redis.zrem(self._get_index_key(**kwargs), key)
         g.redis.decr(self._get_index_count_key(**kwargs))
     
