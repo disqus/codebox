@@ -151,13 +151,14 @@ def verify_domain(org):
     return redirect('/')
 
 @app.route('/<org>/invite/confirm/<pmem>/<sig>', methods=['POST', 'GET'])
+@login_required
 def invite_confirm(org, pmem, sig):
     org = get_object_or_404(Organization, org)
     pmem = get_object_or_404(PendingMember, pmem)
 
-    if pmem.org == org.pk:
+    if pmem.org == org.pk and g.user.email == pmem.email:
         if OrganizationMember.objects.get_or_create(
-                user=pmem.user,
+                user=g.user.pk,
                 org=org.pk,
             )[1]:
             
