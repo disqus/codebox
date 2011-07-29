@@ -270,6 +270,17 @@ navigation #search {
     width: 100%;
 }
 
+pre {
+    position: relative;
+    padding-left: 50px;
+}
+pre .lineno {
+    position: absolute;
+    left: 0;
+    width: 45px;
+    text-align: right;
+}
+
 .new-snippet textarea,
 .new-snippet input[type=text] {
     display: block;
