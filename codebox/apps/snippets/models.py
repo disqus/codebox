@@ -22,6 +22,7 @@ class Snippet(Model):
         ('c', 'C'),
         ('c++', 'C++'),
         ('css', 'CSS'),
+        ('erlang', 'Erlang'),
         ('java', 'Java'),
         ('scala', 'Scala'),
         ('xml', 'XML'),
