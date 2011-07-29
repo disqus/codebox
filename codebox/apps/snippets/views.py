@@ -109,7 +109,7 @@ def edit_snippet(org, id):
     if snippet.user != user.pk:
         abort(404)
 
-    form = EditSnippetForm(obj=org, lang=snippet.lang, text=snippet.text, keywords=snippet.keywords)
+    form = EditSnippetForm(obj=snippet)
     if form.validate_on_submit():
         # Generate a unique slug from name
         snippet.text = form.text.data
@@ -133,7 +133,7 @@ def new_snippet(org):
     """
     org = get_object_or_404(Organization, org)
 
-    form = NewSnippetForm(obj=org, csrf_enabled=(not g.is_api))
+    form = NewSnippetForm(lang=org.lang, csrf_enabled=(not g.is_api))
     if form.validate_on_submit():
         # Generate a unique slug from name
         snippet = Snippet.objects.create(
