@@ -5,3 +5,8 @@ class NewSnippetForm(Form):
     lang = SelectField('Language', choices=Snippet.languages, validators=[Required()])
     text = TextAreaField('Snippet', validators=[Required()])
     keywords = TextField('Keywords')
+
+class EditSnippetForm(Form):
+    lang = SelectField('Language', choices=Snippet.languages, validators=[Required()])
+    text = TextAreaField('Snippet', validators=[Required()])
+    keywords = TextField('Keywords')

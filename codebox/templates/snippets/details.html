@@ -4,6 +4,10 @@
 
 {% block main %}
     <div class="module">
+        <ul class="action-list">
+            <li><a href="{{ url_for('edit_snippet', org=org.pk, id=snippet.pk) }}" class="button">Edit</a></li>
+            <!-- <li><a href="{{ url_for('delete_snippet', org=org.pk, id=snippet.pk) }}" class="button">Delete</a></li> -->
+        </ul>
         <h2>{{ snippet.lang }} Snippet <strong><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></strong></h2>
         <div class="snippet clearfix">
             <div class="text">

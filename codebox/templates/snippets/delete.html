@@ -1,0 +1,22 @@
+{% extends "organizations/details.html" %}
+
+{% block main_inner %}
+    <div class="module">
+        <h2>Delete Snippet</h2>
+        <form method="POST" action="" class="new-snippet">
+            <input type="hidden" name="confirm" value="1"/>
+            <p>Are you sure you want to remove this snippet?</p>
+            <ul>
+                <li>
+                    <div class="snippet snippet-short clearfix">
+                        <div class="text">{{ snippet.text|truncate(length=150)|colorize(snippet.lang)|safe }}</div>
+                        <a href="{{ url_for('snippet_detail', id=snippet.pk, org=snippet.org) }}" class="row-link"></a>
+                    </div>
+                </li>
+            </ul>
+            <div class="form-row">
+                <p><input type="submit" value="Submit"></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

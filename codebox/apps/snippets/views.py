@@ -6,6 +6,7 @@ from codebox.apps.auth.models import User
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.organizations.decorators import can_view_org
 from codebox.apps.organizations.models import Organization
+from codebox.apps.snippets.forms import EditSnippetForm, NewSnippetForm
 from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 
@@ -81,8 +82,111 @@ def snippet_detail(org, id):
 
     user = User.objects.get(snippet.user)
         
-    return render_template('snippets/detail.html', **{
+    return render_template('snippets/details.html', **{
         'snippet': snippet,
         'org': org,
         'user': user,
     })
+
+@app.route('/<org>/<uuid:id>/edit', methods=['GET', 'POST'])
+@login_required
+@can_view_org
+def edit_snippet(org, id):
+    """
+    Creates a new snippet for an organization.
+    """
+    org = get_object_or_404(Organization, org)
+
+    snippet = get_object_or_404(Snippet, id)
+    if snippet.org != org.pk:
+        abort(404)
+
+    user = User.objects.get(snippet.user)
+    if snippet.user != user.pk:
+        abort(404)
+
+    form = EditSnippetForm(obj=org, lang=snippet.lang, text=snippet.text, keywords=snippet.keywords)
+    if form.validate_on_submit():
+        # Generate a unique slug from name
+        snippet.text = form.text.data
+        snippet.lang = form.lang.data
+        snippet.keywords = form.keywords.data
+
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
+
+    return render_template('snippets/edit.html', **{
+        'org': org,
+        'snippet': snippet,
+        'form': form,
+    })
+
+@app.route('/<org>/new', methods=['GET', 'POST'])
+@login_required
+@can_view_org
+def new_snippet(org):
+    """
+    Edits a snippet.
+    """
+    org = get_object_or_404(Organization, org)
+
+    form = NewSnippetForm(obj=org, csrf_enabled=(not g.is_api))
+    if form.validate_on_submit():
+        # Generate a unique slug from name
+        snippet = Snippet.objects.create(
+            org=org,
+            text=form.text.data,
+            lang=form.lang.data,
+            keywords=form.keywords.data,
+            user=g.user.pk,
+        )
+
+        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
+
+    return render_template('snippets/new.html', **{
+        'org': org,
+        'form': form,
+    })
+
+@app.route('/<org>/<uuid:id>/delete', methods=['GET', 'POST'])
+@login_required
+@can_view_org
+def delete_snippet(org, id):
+    """
+    Deletes a new snippet.
+    """
+    org = get_object_or_404(Organization, org)
+
+    snippet = get_object_or_404(Snippet, id)
+    if snippet.org != org.pk:
+        abort(404)
+
+    user = User.objects.get(snippet.user)
+    if snippet.user != user.pk:
+        abort(404)
+
+    if request.form.get('confirm'):
+        snippet.delete()
+
+        return redirect(url_for('list_snippets', org=org.pk))
+
+    return render_template('snippets/delete.html', **{
+        'org': org,
+        'snippet': snippet,
+    })
+
+@app.route('/<org>')
+@login_required
+@can_view_org
+def list_snippets(org):
+    org = get_object_or_404(Organization, org)
+    
+    snippets = list(Snippet.objects.filter(org=org.pk))
+    snippets_users = User.objects.get_many([s.user for s in snippets])
+
+    return render_template('snippets/list.html', **{
+        'org': org,
+        'snippets': snippets,
+        'snippets_users': dict([(u.pk, u) for u in snippets_users]),
+        'snippets_orgs': {org.pk: org},
+    })
+

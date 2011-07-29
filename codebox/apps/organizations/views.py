@@ -12,16 +12,9 @@ from codebox.apps.organizations.forms import NewOrganizationForm, VerifyDomainFo
                                              EditOrganizationForm
 from codebox.apps.organizations.models import Organization, OrganizationMember, PendingOrganization, \
                                               PendingMember
-from codebox.apps.snippets.forms import NewSnippetForm
 from codebox.apps.snippets.models import Snippet
 from codebox.utils.shortcuts import get_object_or_404
 from codebox.utils.text import slugify
-
-def request_wants_text():
-    best = request.accept_mimetypes.best_match(['text/plain', 'text/html'])
-    return best == 'text/plain' and \
-        request.accept_mimetypes[best] > \
-        request.accept_mimetypes['text/html']
 
 @app.route('/new', methods=['POST', 'GET'])
 @login_required
@@ -213,94 +206,6 @@ def invite_members(org):
         'form': form,
     })
     return redirect('/')
-
-
-@app.route('/<org>/new', methods=['GET', 'POST'])
-@login_required
-@can_view_org
-def new_snippet(org):
-    """
-    Creates a new snippet for an organization.
-    """
-    org = get_object_or_404(Organization, org)
-
-    form = NewSnippetForm(obj=org, csrf_enabled=(not g.is_api))
-    if form.validate_on_submit():
-        # Generate a unique slug from name
-        snippet = Snippet.objects.create(
-            org=org,
-            text=form.text.data,
-            lang=form.lang.data,
-            keywords=form.keywords.data,
-            user=g.user.pk,
-        )
-
-        if request.is_xhr or request_wants_text():
-            return url_for('snippet_detail', org=org.pk, id=snippet.pk, _external=True)
-
-        return redirect(url_for('snippet_detail', org=org.pk, id=snippet.pk))
-
-    return render_template('organizations/new_snippet.html', **{
-        'org': org,
-        'form': form,
-    })
-
-
-@app.route('/<org>')
-@login_required
-@can_view_org
-def list_snippets(org):
-    org = get_object_or_404(Organization, org)
-    
-    snippets = list(Snippet.objects.filter(org=org.pk))
-    snippets_users = User.objects.get_many([s.user for s in snippets])
-
-    return render_template('organizations/snippets.html', **{
-        'org': org,
-        'snippets': snippets,
-        'snippets_users': dict([(u.pk, u) for u in snippets_users]),
-        'snippets_orgs': {org.pk: org},
-    })
-
-@app.route('/<org>/search')
-@login_required
-@can_view_org
-def search_snippets(org):
-    query = request.args.get('q')
-    
-    org = get_object_or_404(Organization, org)
-
-    if query:    
-        i, n = 0, 0
-        results = set()
-        words = query.lower().split(' ')
-        for snippet in Snippet.objects.filter(org=org.pk):
-            i += 1
-            tokens = snippet.text.lower().split(' ')
-            if snippet.keywords:
-                tokens.extend(snippet.keywords.lower().split(' '))
-            for word in words:
-                for otherword in tokens:
-                    if word in otherword:
-                        results.add(snippet)
-                        n += 1
-            if i > 1000 or n > 25:
-                break
-    else:
-        results = []
-
-    if results:        
-        snippets_users = User.objects.get_many([s.user for s in results])
-    else:
-        snippets_users = []
-
-    return render_template('organizations/search.html', **{
-        'query': query,
-        'org': org,
-        'snippets': results,
-        'snippets_users': dict([(u.pk, u) for u in snippets_users]),
-        'snippets_orgs': {org.pk: org},
-    })
 
 @app.route('/stats')
 def stats():
