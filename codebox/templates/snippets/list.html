@@ -6,7 +6,13 @@
     <div class="main">
         {% block main_inner %}
             <div class="module">
-                <h2>{{ org.name }} (<a href="{{ url_for('org_details', org=org.pk) }}">Details</a>)</h2>
+                <ul class="action-list">
+                    <li><a href="{{ url_for('org_details', org=org.pk) }}" class="button">Details</a></li>
+                    {% if g.user.can_admin_org(org) %}
+                        <li><a href="{{ url_for('edit_org', org=org.pk) }}" class="button">Edit</a></li>
+                    {% endif %}
+                </ul>
+                <h2>{{ org.name }}</h2>
                 {% include "partials/snippet_list.html" %}
             </div>
         {% endblock %}

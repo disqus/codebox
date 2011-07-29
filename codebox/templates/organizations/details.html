@@ -7,10 +7,12 @@
     <div class="main">
         {% block main_inner %}
             <div class="module">
+                <ul class="action-list">
+                    {% if g.user.can_admin_org(org) %}
+                        <li><a href="{{ url_for('edit_org', org=org.pk) }}" class="button">Edit</a></li>
+                    {% endif %}
+                </ul>
                 <h2>{{ org.name }}</h2>
-                {% if g.user.can_admin_org(org) %}
-                    <p><a href="{{ url_for('edit_org', org=org.pk) }}">Edit the details for this organization</a></p>
-                {% endif %}
                 <dl>
                     <dt>Owner:</dt>
                     <dd>{{ org.get_owner().name }}</dd>
