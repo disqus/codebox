@@ -3,11 +3,6 @@ import time
 from codebox.utils.models import Model, String, Float
 from codebox.apps.auth.models import User
 
-LANGUAGES = {
-    'py': 'python',
-    'js': 'javascript',
-    'html': 'html',
-}
 
 class Snippet(Model):
     org = String()
@@ -23,10 +18,13 @@ class Snippet(Model):
         ('html', 'HTML'),
         ('python', 'Python'),
         ('ruby', 'Ruby'),
+        ('applescript', 'AppleScript'),
         ('c', 'C'),
-        ('java', 'Java'),
-        ('xml', 'XML'),
+        ('c++', 'C++'),
         ('css', 'CSS'),
+        ('java', 'Java'),
+        ('scala', 'Scala'),
+        ('xml', 'XML'),
     ]
 
     class Meta:
