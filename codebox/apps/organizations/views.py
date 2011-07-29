@@ -4,7 +4,7 @@ from flask import g, request, render_template, redirect, url_for, flash
 from flaskext.mail import Message
 from urllib import quote
 
-from codebox import app
+from codebox import app, mail
 from codebox.apps.auth.decorators import login_required
 from codebox.apps.auth.models import User
 from codebox.apps.organizations.decorators import can_admin_org, can_view_org
@@ -140,7 +140,7 @@ def verify_domain(org):
         msg = Message("Codebox Domain Verification",
                       recipients=[email],
                       body=body)
-        app.mail.send(msg)
+        mail.send(msg)
         
         flash("An email has been sent to %s to validate domain ownership." % email)
 
@@ -196,7 +196,7 @@ def invite_members(org):
             msg = Message("Codebox Organization Invite",
                           recipients=[email],
                           body=body)
-            app.mail.send(msg)
+            mail.send(msg)
         
         flash("Your invitation(s) have been sent.")
         return redirect(url_for('invite_members', org=org.pk))
