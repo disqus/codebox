@@ -25,6 +25,7 @@ class Snippet(Model):
         ('erlang', 'Erlang'),
         ('java', 'Java'),
         ('scala', 'Scala'),
+        ('sql', 'SQL'),
         ('xml', 'XML'),
     ]
 
