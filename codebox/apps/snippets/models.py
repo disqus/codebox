@@ -19,6 +19,7 @@ class Snippet(Model):
         ('python', 'Python'),
         ('ruby', 'Ruby'),
         ('applescript', 'AppleScript'),
+        ('bash', 'Bash'),
         ('c', 'C'),
         ('c++', 'C++'),
         ('css', 'CSS'),
