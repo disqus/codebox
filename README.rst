@@ -1,4 +1,22 @@
-Linkinus Support
+Bash
+----
+
+Copy your text to the clipboard, and use paste in bash::
+
+    #!/bin/bash
+    CODEBOX_ORG="YOUR ORG"
+    CODEBOX_TOKEN="YOUR API TOKEN"
+    function paste() {
+        BASE_URL="http://codebox.cc/${CODEBOX_ORG}/new"
+        TYPE=$1
+        if [ -z $TYPE ]; then
+            TYPE="text"
+        fi
+        pbpaste | curl ${BASE_URL} -X POST -F lang=${TYPE} -F "text=<-" -F api_token=${CODEBOX_TOKEN} -s -L -o /dev/null -w "%{url_effective}" | pbcopy
+        pbpaste
+    }
+
+Linkinus
 ----------------
 
 Save this as <command>.scpt in your scripts folder::
