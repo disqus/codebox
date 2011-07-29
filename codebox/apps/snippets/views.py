@@ -21,6 +21,7 @@ def dashboard():
     for s in snippets:
         if not s.text:
             Snippet.objects.remove_from_index(s.pk, dashboard=g.user.pk)
+    snippets = filter(lambda x: x.text, snippets)
     snippets_users = User.objects.get_many([s.user for s in snippets])
     snippets_orgs = Organization.objects.get_many([s.org for s in snippets])
 
@@ -187,6 +188,7 @@ def list_snippets(org):
     for s in snippets:
         if not s.text:
             Snippet.objects.remove_from_index(s.pk, org=org.pk)
+    snippets = filter(lambda x: x.text, snippets)
     snippets_users = User.objects.get_many([s.user for s in snippets])
 
     return render_template('snippets/list.html', **{
