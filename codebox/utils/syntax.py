@@ -17,4 +17,4 @@ def colorize(code, lang):
     """
 
     # TODO: actually colorize
-    return highlight(code, get_lexer_by_name(lang), HtmlFormatter(linenos='table'))
+    return highlight(code, get_lexer_by_name(lang), HtmlFormatter(linenos='inline'))
