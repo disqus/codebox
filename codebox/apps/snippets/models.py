@@ -14,6 +14,7 @@ class Snippet(Model):
 
     languages = [
         ('text', 'Plaintext'),
+        ('diff', 'Diff'),
         ('javascript', 'JavaScript'),
         ('html', 'HTML'),
         ('python', 'Python'),
