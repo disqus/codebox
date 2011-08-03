@@ -5,6 +5,7 @@
 {% block main %}
     <div class="module">
         <ul class="action-list">
+            <li><a href="{{ url_for('snippet_detail_raw', org=org.pk, id=snippet.pk) }}" class="button">Raw</a></li>
             {% if g.user.pk == snippet.user %}
                 <li><a href="{{ url_for('edit_snippet', org=org.pk, id=snippet.pk) }}" class="button">Edit</a></li>
                 <li><a href="{{ url_for('delete_snippet', org=org.pk, id=snippet.pk) }}" class="button">Delete</a></li>

@@ -1,5 +1,5 @@
 from flask import request, render_template, abort, g, redirect, \
-                  url_for
+                  url_for, Response
 
 from codebox import app
 from codebox.apps.auth.models import User
@@ -91,6 +91,18 @@ def snippet_detail(org, id):
         'org': org,
         'user': user,
     })
+
+@app.route('/<org>/<uuid:id>/raw')
+@login_required
+@can_view_org
+def snippet_detail_raw(org, id):
+    org = get_object_or_404(Organization, org)
+
+    snippet = get_object_or_404(Snippet, id)
+    if snippet.org != org.pk:
+        abort(404)
+
+    return Response(snippet.text, mimetype="text/plain")
 
 @app.route('/<org>/<uuid:id>/edit', methods=['GET', 'POST'])
 @login_required
