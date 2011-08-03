@@ -39,14 +39,6 @@ p, form, table, ul, ol, h1, h2, h3, h4, h5, h6, dl {
     margin-bottom: 15px;
 }
 
-pre {
-    white-space: pre-wrap;       /* CSS-3                  */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999    */
-    white-space: -pre-wrap;      /* Opera 4-6              */
-    white-space: -o-pre-wrap;    /* Opera 7                */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-
 dl {
     position: relative;
     padding-left: 150px;
@@ -241,6 +233,7 @@ navigation #search {
     -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
     background-color: #fff;
     position: relative;
+    width: 100%;
 }
 
 .snippet .info {
@@ -266,20 +259,15 @@ navigation #search {
     text-decoration: underline;
 }
 
-.snippet td.code {
-    width: 100%;
-}
-
-pre {
-    position: relative;
-    padding-left: 50px;
-}
-pre .lineno {
-    position: absolute;
-    left: 0;
-    width: 45px;
+.snippet td.linenos {
+    width: 50px;
     text-align: right;
 }
+.snippet td.code pre {
+    width: 950px;
+    overflow: auto;
+}
+
 
 .new-snippet textarea,
 .new-snippet input[type=text] {
