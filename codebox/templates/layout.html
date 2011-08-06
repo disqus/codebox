@@ -41,7 +41,7 @@
                     <img src="{{ url_for('static', filename="images/box.png") }}" />
                     <a href="{{ url_for('dashboard') }}"><strong>Code</strong>Box</a>
                 </h1>
-                <h2>{% if org %}{{ org.name }}{% else %}Dashboard{% endif %}{% if my_organizations|length > 1 %} <small>(<a href="#org-select" rel="facebox">change</a>)</small>{% endif %}</h2>
+                <h2>{% if org %}<a href="{{ url_for('new_snippet', org=org.pk) }}">{{ org.name }}</a>{% else %}Dashboard{% endif %}{% if my_organizations|length > 1 %} <small>(<a href="#org-select" rel="facebox">change</a>)</small>{% endif %}</h2>
                 <div class="user-info">
                     {% if g.user %}
                         <small>Logged in as <a href="{{ url_for('edit_profile') }}">{{ g.user.name }}</a> | <a href="{{ url_for('dashboard') }}">Dashboard</a> | <a href="{{ url_for('logout') }}">Logout</a></small>
