@@ -295,6 +295,7 @@ navigation li ul li a:hover {
 .snippet td.linenos {
     width: 50px;
     text-align: right;
+    color: #aaa;
 }
 .snippet td.code pre {
     overflow: auto;
