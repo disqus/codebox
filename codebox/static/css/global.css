@@ -266,6 +266,7 @@ navigation li ul li a:hover {
     -moz-box-shadow: 0 1px 3px rgba(0,0,0, .2);
     background-color: #fff;
     position: relative;
+    line-height: 18px;
 }
 
 .snippet .info {
@@ -296,7 +297,6 @@ navigation li ul li a:hover {
     text-align: right;
 }
 .snippet td.code pre {
-    width: 950px;
     overflow: auto;
 }
 
