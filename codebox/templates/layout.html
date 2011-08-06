@@ -1,4 +1,8 @@
-{% set my_organizations = g.user.get_all_organizations() %}
+{% if g.user %}
+    {% set my_organizations = g.user.get_all_organizations() %}
+{% else %}
+    {% set my_organizations = [] %}
+{% endif %}
 
 <!doctype html>
 
