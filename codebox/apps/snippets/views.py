@@ -12,6 +12,16 @@ from codebox.utils.shortcuts import get_object_or_404
 
 @app.route('/')
 @login_required
+def index():
+    if 'org' in request.cookies:
+        try:
+            return redirect(url_for('new_snippet', org=request.cookies['org']))
+        except:
+            del request.cookies['org']
+    return redirect(url_for('dashboard'))
+
+@app.route('/dashboard')
+@login_required
 def dashboard():
     """
     Shows organizations/recent pastes/etc
@@ -136,7 +146,7 @@ def edit_snippet(org, id):
         'form': form,
     })
 
-@app.route('/<org>/new', methods=['GET', 'POST'])
+@app.route('/<org>', methods=['GET', 'POST'])
 @login_required
 @can_view_org
 def new_snippet(org):
@@ -190,7 +200,7 @@ def delete_snippet(org, id):
         'snippet': snippet,
     })
 
-@app.route('/<org>')
+@app.route('/<org>/recent')
 @login_required
 @can_view_org
 def list_snippets(org):

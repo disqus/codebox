@@ -3,7 +3,6 @@
 {% block title %}{{ org.name }} &mdash; {{ super() }}{% endblock %}
 
 {% block main %}
-
     <div class="main">
         {% block main_inner %}
             <div class="module">
@@ -34,8 +33,9 @@
 
 
 {% block navigation %}
-    <li><a href="{{ url_for('new_snippet', org=org.pk) }}" class="new-snippet-link">New Snippet</a></li>
+    <li{% if request.path == url_for('new_snippet', org=org.pk) %} class="selected"{% endif %}><a href="{{ url_for('new_snippet', org=org.pk) }}">New Snippet</a></li>
+    <li{% if request.path == url_for('list_snippets', org=org.pk) %} class="selected"{% endif %}><a href="{{ url_for('list_snippets', org=org.pk) }}">Recent Snippets</a></li>
     {% if g.user.can_admin_org(org) %}
-        <li><a href="{{ url_for('invite_members', org=org.pk) }}" class="new-snippet-link">Invite Users</a></li>
+        <li{% if request.path == url_for('invite_members', org=org.pk) %} class="selected"{% endif %}><a href="{{ url_for('invite_members', org=org.pk) }}">Invite Users</a></li>
     {% endif %}
 {% endblock %}

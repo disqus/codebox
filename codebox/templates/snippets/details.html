@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "organizations/details.html" %}
 
 {% block title %}{{ snippet.pk }} &mdash; {{ super() }}{% endblock %}
 
@@ -11,7 +11,7 @@
                 <li><a href="{{ url_for('delete_snippet', org=org.pk, id=snippet.pk) }}" class="button">Delete</a></li>
             {% endif %}
         </ul>
-        <h2>{{ snippet.lang }} Snippet <strong><a href="{{ url_for('list_snippets', org=org.pk) }}">{{ org.name }}</a></strong></h2>
+        <h2>{% if snippet.name %}{{ snippet.name }}{% else %}{{ snippet.lang }} Snippet{% endif %}</h2>
         <div class="snippet clearfix">
             <div class="text">
                 {{ snippet.text|colorize(snippet.lang) | safe }}
