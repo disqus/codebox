@@ -7,3 +7,4 @@ lib
 *.pyc
 /build
 /dist
+.DS_Store
