@@ -17,6 +17,7 @@ class Snippet(Model):
         ('diff', 'Diff'),
         ('javascript', 'JavaScript'),
         ('html', 'HTML'),
+        ('php', 'PHP'),
         ('python', 'Python'),
         ('ruby', 'Ruby'),
         ('applescript', 'AppleScript'),
