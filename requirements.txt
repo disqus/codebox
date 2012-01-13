@@ -1,5 +1,5 @@
+https://github.com/dcramer/raven/zipball/master
 git+git://github.com/dcramer/flask-redis.git#egg=Flask-Redis
-
 oauth2
 Dolt==0.5.1
 Flask==0.7.2
