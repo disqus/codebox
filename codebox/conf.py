@@ -6,7 +6,9 @@ codebox.conf
 :license: Apache License 2.0, see LICENSE for more details.
 """
 
-import os, os.path
+import os
+import os.path
+import sys
 import urlparse
 
 class Config(object):
@@ -24,6 +26,13 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_DOMAIN = os.environ.get('SENDGRID_DOMAIN', 'codebox.cc')
     DEFAULT_MAIL_SENDER = 'verify@email.codebox.cc'
+
+if os.environ.has_key('SENTRY_DSN'):
+    try:
+        import raven
+        raven.load(os.environ['SENTRY_DSN'], Config.__dict__)
+    except:
+        print "Unexpected error:", sys.exc_info()
 
 if os.environ.has_key('REDISTOGO_URL'):
     # 'redis://username:password@my.host:6789' 
